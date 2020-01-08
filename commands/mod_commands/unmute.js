@@ -20,7 +20,7 @@ module.exports.run = async (bot, message, args, NaM) => {
         }
 
         if (unMute.roles.find(x => x.name === 'muted')) {
-          (unMute.removeRole(muteRole.id));
+          unMute.removeRole(muteRole.id);
           message.channel.send(`<@${unMute.id}> has been unmuted!`);
         } else {
           message.channel.send(`<@${unMute.id}> is not muted!`);

@@ -19,8 +19,10 @@ module.exports.run = async (bot, message, args, NaM) => {
         } if (toMute.hasPermission('ADMINISTRATOR')) {
           return message.reply(`Can't mute administrator ${NaM}`);
         } if (message.member.id === '487797385691398145') {
-          console.log('owner command'); // command for cycycy(owner)
-        } else if (res.modName === serverRole.id && toMute.roles.has(serverRole.id)) {
+          console.log('Tempmute command fired by cycycy'); // command for cycycy(owner)
+        } if (message.member.hasPermission('ADMINISTRATOR')) {
+          console.log(`Admin command from: ${message.guild.name}`); // ignore if admin fired the command
+        } if (res.modName === serverRole.id && toMute.roles.has(serverRole.id)) {
           return message.reply(`Can't mute a mod ${NaM}`);
         }
 

@@ -1,3 +1,5 @@
+const { version } = require('discord.js');
+
 module.exports.run = async (bot, message) => {
   if (!message.member.hasPermission('ADMINISTRATOR')) return message.reply("You don't have a permission for this command.");
   bot.cooldown.add(message.author.id);
@@ -17,10 +19,18 @@ module.exports.run = async (bot, message) => {
     .then((m) => {
       const ping = m.createdTimestamp - message.createdTimestamp;
 
-      m.edit(`\`Bot Latency:\` ${ping}ms, \`Uptime:\` ${upTime}`);
+      m.edit(`=== STATISTICS ===
+      \`Mem Usage:\` ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB
+      \`Bot Latency:\` ${ping}ms 
+      \`API Latency:\` ${Math.round(bot.ping)}ms 
+      \`Uptime:\` ${upTime}
+      \`Servers:\` ${bot.guilds.size.toLocaleString()}
+      \`Discord.js:\` v${version}
+      \`Node:\` ${process.version}
+      `);
     }).catch(err => message.reply(err));
 };
 
 module.exports.help = {
-  name: 'uptime',
+  name: 'stats',
 };

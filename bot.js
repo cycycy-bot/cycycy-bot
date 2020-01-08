@@ -5,13 +5,14 @@ require('dotenv').config();
 
 const bot = new Discord.Client();
 
-// Read commands directory
-module.exports = bot;
-require('./fsCommandReader');
-require('./handlers/index');
-
 // bot commands collection
 bot.commands = new Discord.Collection();
+
+// Read commands directory
+module.exports = bot;
+require('./fsCommandReader')(bot);
+require('./handlers/index');
+
 
 // global command cooldown
 bot.cooldown = new Set();
@@ -26,11 +27,16 @@ const db = require('./settings/databaseImport');
 const messageChecker = require('./handlers/messageChecker');
 
 // connect to MongoDB Atlas
-db.mongoose.connect(process.env.DB_PASS, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
-  if (err) {
-    bot.channels.get('531967060306165796').send(`Error connecting to DB: ${err}`);
-  }
-});
+db.mongoose.connect(process.env.DB_PASS,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  (err) => {
+    if (err) {
+      bot.channels.get('531967060306165796').send(`Error connecting to DB: ${err}`);
+    }
+  });
 
 bot.on('ready', async () => {
   console.log(`${bot.user.username} is online! on ${bot.guilds.size} servers!`);
@@ -38,8 +44,10 @@ bot.on('ready', async () => {
   bot.channels.get('531967060306165796').send(`${bot.user.username} is online on ${bot.guilds.size} servers!`); // my discord's bot test channel
 });
 
-bot.on('error', console.error); // error handler
+// error handler
+bot.on('error', console.error);
 
+// message handler
 bot.on('message', (message) => {
   if (message.author.bot) return;
   if (message.channel.type === 'dm') return;

@@ -4,6 +4,9 @@ const bot = require('../bot');
 const db = require('../settings/databaseImport');
 const LeaveQueueDB = require('../models/leaveQueueDB');
 
+module.exports = {
+
+};
 bot.on('guildMemberRemove', async (member) => {
   await member.guild.fetchAuditLogs().then((audit) => {
     setTimeout(() => {
