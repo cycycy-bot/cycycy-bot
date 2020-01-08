@@ -23,6 +23,7 @@ module.exports.run = async (bot, message) => {
       \`Mem Usage:\` ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB
       \`Bot Latency:\` ${ping}ms 
       \`API Latency:\` ${Math.round(bot.ping)}ms 
+      \`Server Region:\` ${message.guild.region}
       \`Uptime:\` ${upTime}
       \`Servers:\` ${bot.guilds.size.toLocaleString()}
       \`Discord.js:\` v${version}
