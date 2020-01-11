@@ -55,7 +55,7 @@ bot.on('message', (message) => {
 
   const { prefix } = botconfig;
   const messageArray = message.content.split(' ');
-  const cmd = messageArray[0];
+  const cmd = messageArray[0].toLowerCase();
   const args = messageArray.slice(1);
 
   // Emotes
@@ -63,6 +63,7 @@ bot.on('message', (message) => {
   const OMGScoots = bot.emojis.find(emoji => emoji.name === 'OMGScoots');
   const weirdChamp = bot.emojis.find(emoji => emoji.name === 'WeirdChamp');
 
+  console.log(cmd);
   // message checker handler
   messageChecker.handleMessage(bot, message, cmd, prefix, db, weirdChamp, NaM, OMGScoots);
 
@@ -72,7 +73,12 @@ bot.on('message', (message) => {
 
   // type
   if (message.isMentioned(bot.user)) {
-    const msgArr = [`What ${weirdChamp} ❓`, `Stop tagging me ${weirdChamp}`, `What do you want ${weirdChamp}`, `Are you actually tagging me ${weirdChamp}`];
+    const msgArr = [
+      `What ${weirdChamp} ❓`,
+      `Stop tagging me ${weirdChamp}`,
+      `What do you want ${weirdChamp}`,
+      `Are you actually tagging me ${weirdChamp}`,
+    ];
     message.channel.startTyping(100);
     setTimeout(() => {
       message.reply(msgArr[Math.floor(Math.random() * msgArr.length)]);
