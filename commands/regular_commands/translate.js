@@ -221,10 +221,16 @@ const langsReversed = {
 };
 
 module.exports.run = async (bot, message, args, NaM) => {
-  if (args[0] === 'help') return message.channel.send('```Usage: $translate <message> or $translate to <language> <message>```');
+  if (args[0] === 'help') {
+    return message
+      .channel
+      .send('```Usage: $translate <message> or $translate to <language> <message>```');
+  }
   if (!args[0]) return message.reply(`Please add arguments ${NaM}`);
 
-  bot.cooldown.add(message.author.id);
+  bot
+    .cooldown
+    .add(message.author.id);
   setTimeout(() => {
     bot.cooldown.delete(message.author.id);
   }, 15000);

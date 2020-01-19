@@ -1,9 +1,13 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (bot, message) => {
-  bot.cooldown.add(message.author.id);
+  bot
+    .cooldown
+    .add(message.author.id);
   setTimeout(() => {
-    bot.cooldown.delete(message.author.id);
+    bot
+      .cooldown
+      .delete(message.author.id);
   }, 15000);
   const serverIcon = message.guild.iconURL;
   const serverEmbed = new Discord.RichEmbed()
@@ -13,7 +17,9 @@ module.exports.run = async (bot, message) => {
     .addField('Created On', message.guild.createdAt)
     .addField('You joined', message.member.joinedAt)
     .addField('Total Members', message.guild.memberCount);
-  return message.channel.send(serverEmbed);
+  return message
+    .channel
+    .send(serverEmbed);
 };
 
 module.exports.help = {

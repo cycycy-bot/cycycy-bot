@@ -17,12 +17,18 @@ module.exports.run = async (bot, message, args, NaM, OMGScoots) => {
       .addField('Result', 'Returns the `top headlines` for `sports` in `USA`')
       .setFooter('Need more help? Ask cycycy, my pepega creator');
 
-    return message.channel.send(help);
+    return message
+      .channel
+      .send(help);
   }
 
   if (!args[0] === 'top' || !args[0] === 'publishers' || !args[0]) {
-    message.channel.send(`Please add \`top\` as the second parameter ${NaM}`);
-    return message.channel.send('Example: `$news top country us`');
+    message
+      .channel
+      .send(`Please add \`top\` as the second parameter ${NaM}`);
+    return message
+      .channel
+      .send('Example: `$news top country us`');
   }
 
   const country = args.includes('country');
@@ -37,7 +43,9 @@ module.exports.run = async (bot, message, args, NaM, OMGScoots) => {
 
   if (args[0] === 'top') {
     if (result && args[(args.indexOf('result') + 1)] > 3) {
-      return message.channel.send(`\`result\` parameter must be less than 3 ${NaM}`);
+      return message
+        .channel
+        .send(`\`result\` parameter must be less than 3 ${NaM}`);
     }
     return newsapi.v2.topHeadlines({
       sources: sources ? args[(args.indexOf('sources') + 1)] : null,
@@ -47,10 +55,23 @@ module.exports.run = async (bot, message, args, NaM, OMGScoots) => {
       pageSize: result ? args[(args.indexOf('result') + 1)] : 1,
     })
       .then((res) => {
-        if (res.articles.length <= 0) return message.channel.send(`No results found ${NaM}`);
+        if (res.articles.length <= 0) {
+          return message
+            .channel
+            .send(`No results found ${NaM}`);
+        }
         res.articles.map((article) => {
           const {
-            source: { name }, author, title, description, url, urlToImage, publishedAt,
+            source:
+            {
+              name,
+            },
+            author,
+            title,
+            description,
+            url,
+            urlToImage,
+            publishedAt,
           } = article;
 
           const articleEmbed = new Discord.RichEmbed()
@@ -64,7 +85,9 @@ module.exports.run = async (bot, message, args, NaM, OMGScoots) => {
             .setFooter('Powered by News API', 'https://newsapi.org/images/n-logo-border.png')
             .setColor('#95ff4f');
 
-          return message.channel.send(articleEmbed);
+          return message
+            .channel
+            .send(articleEmbed);
         });
       })
       .catch((err) => {

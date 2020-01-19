@@ -14,9 +14,8 @@ module.exports.run = async (bot, message, args, NaM) => {
     .then((weather) => {
       if (weather.cod === '404') return message.reply(`City not found ${NaM}`);
       const {
-        name, sys: { country }, main: { temp, humidity }, clouds: { all }, wind: { speed }, dt,
+        name, sys: { country }, main: { temp, humidity }, clouds: { all }, wind: { speed },
       } = weather;
-      const newDate = new Date(dt * 1000);
 
       return getColors(path.join(__dirname, `./weatherimg/${weather.weather[0].icon}@2x.png`))
         .then((colors) => {
@@ -33,7 +32,7 @@ module.exports.run = async (bot, message, args, NaM) => {
             .addField('Wind Speed', `${speed}m/s`, true)
             .addField('Cloudiness', `${all}%`, true)
             .setColor(colors[0].hex())
-            .setFooter(`🕒 ${newDate}`);
+            .setFooter('Powered by openweather API');
           return message.channel.send(weatherEmbed);
         })
         .catch(err => message.reply(`\`${err}\``));

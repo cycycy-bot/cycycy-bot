@@ -3,7 +3,9 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args) => {
   if (args[0] === 'help') {
-    message.channel.send('```Usage: $dogfact```');
+    message
+      .channel
+      .send('```Usage: $dogfact```');
     return;
   }
   fetch('https://dog-api.kinduff.com/api/facts')
@@ -14,7 +16,9 @@ module.exports.run = async (bot, message, args) => {
         .setDescription(fact.facts[0])
         .setFooter('Powered by kinduff/dog-api');
 
-      return message.channel.send(factEmbed);
+      return message
+        .channel
+        .send(factEmbed);
     })
     .catch(err => message.reply(`Error ${err}`));
 };

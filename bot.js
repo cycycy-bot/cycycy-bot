@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const botconfig = require('./botconfig.json');
-require('http').createServer().listen(3000);
 require('dotenv').config();
 
 const bot = new Discord.Client();
@@ -34,14 +33,22 @@ db.mongoose.connect(process.env.DB_PASS,
   },
   (err) => {
     if (err) {
-      bot.channels.get('531967060306165796').send(`Error connecting to DB: ${err}`);
+      bot
+        .channels
+        .get('531967060306165796')
+        .send(`Error connecting to DB: ${err}`);
     }
   });
 
 bot.on('ready', async () => {
   console.log(`${bot.user.username} is online! on ${bot.guilds.size} servers!`);
-  bot.user.setActivity('forsan [$help]', { type: 'WATCHING' });
-  bot.channels.get('531967060306165796').send(`${bot.user.username} is online on ${bot.guilds.size} servers!`); // my discord's bot test channel
+  bot
+    .user
+    .setActivity('forsan [$help]', { type: 'WATCHING' });
+  bot
+    .channels
+    .get('531967060306165796')
+    .send(`${bot.user.username} is online on ${bot.guilds.size} servers!`); // my discord's bot test channel
 });
 
 // error handler
@@ -59,11 +66,16 @@ bot.on('message', (message) => {
   const args = messageArray.slice(1);
 
   // Emotes
-  const NaM = bot.emojis.find(emoji => emoji.name === 'NaM');
-  const OMGScoots = bot.emojis.find(emoji => emoji.name === 'OMGScoots');
-  const weirdChamp = bot.emojis.find(emoji => emoji.name === 'WeirdChamp');
+  const NaM = bot
+    .emojis
+    .find(emoji => emoji.name === 'NaM');
+  const OMGScoots = bot
+    .emojis
+    .find(emoji => emoji.name === 'OMGScoots');
+  const weirdChamp = bot
+    .emojis
+    .find(emoji => emoji.name === 'WeirdChamp');
 
-  console.log(cmd);
   // message checker handler
   messageChecker.handleMessage(bot, message, cmd, prefix, db, weirdChamp, NaM, OMGScoots);
 
@@ -79,10 +91,15 @@ bot.on('message', (message) => {
       `What do you want ${weirdChamp}`,
       `Are you actually tagging me ${weirdChamp}`,
     ];
-    message.channel.startTyping(100);
+    message
+      .channel
+      .startTyping(100);
     setTimeout(() => {
-      message.reply(msgArr[Math.floor(Math.random() * msgArr.length)]);
-      return message.channel.stopTyping(true);
+      message
+        .reply(msgArr[Math.floor(Math.random() * msgArr.length)]);
+      return message
+        .channel
+        .stopTyping(true);
     }, 2000);
   }
 });

@@ -3,12 +3,18 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args) => {
   if (args[0] === 'help') {
-    message.channel.send('```Usage: $thesaurus <word>```');
+    message
+      .channel
+      .send('```Usage: $thesaurus <word>```');
     return;
   }
-  bot.cooldown.add(message.author.id);
+  bot
+    .cooldown
+    .add(message.author.id);
   setTimeout(() => {
-    bot.cooldown.delete(message.author.id);
+    bot
+      .cooldown
+      .delete(message.author.id);
   }, 15000);
   const word = args.join(' ');
   fetch(`https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.DICTIONARY_KEY}`)
@@ -21,7 +27,9 @@ module.exports.run = async (bot, message, args) => {
           .setThumbnail('https://www.flaticon.com/premium-icon/icons/svg/78/78924.svg')
           .addField('Did you mean these words?', definition.join(', '))
           .setFooter('Powered by Merriam Webster API', 'https://www.merriam-webster.com/assets/mw/static/app-standalone-images/MW_logo.png');
-        return message.channel.send(wordEmbed);
+        return message
+          .channel
+          .send(wordEmbed);
       }
       definition.forEach(async (defs) => {
         const functionalLabel = defs.fl;
@@ -38,9 +46,13 @@ module.exports.run = async (bot, message, args) => {
           .addField('Definition: ', wordDef)
           .addField('Example: ', `\`\`\`${example}\`\`\``)
           .setFooter('Powered by Merriam Webster API', 'https://www.merriam-webster.com/assets/mw/static/app-standalone-images/MW_logo.png');
-        await message.channel.send(wordEmbed);
+        await message
+          .channel
+          .send(wordEmbed);
       });
-    }).catch(err => message.channel.send(`Error ${err}`));
+    }).catch(err => message
+      .channel
+      .send(`Error ${err}`));
 };
 
 module.exports.help = {

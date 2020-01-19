@@ -12,11 +12,22 @@ bot.on('messageDelete', (message) => {
           .addField('User', `<@${message.author.id}>`, true)
           .addField('Reason', logArgs, true)
           .addField('Channel', `<#${message.channel.id}>`, true)
-          .addField('Message', message.content)
           .setFooter(`MESSAGE ID: ${message.id}`)
           .setTimestamp();
-
-        return bot.channels.get(logRes.logChannelID).send(logEmbed);
+        if (message.content) {
+          logEmbed.addField('Message', message.content);
+        } else if (message.attachments.size >= 1) {
+          logEmbed.setImage(message
+            .attachments
+            .get(message
+              .attachments
+              .firstKey())
+            .proxyURL);
+        }
+        return bot
+          .channels
+          .get(logRes.logChannelID)
+          .send(logEmbed);
       }
     }).catch(console.log);
   };
@@ -24,7 +35,12 @@ bot.on('messageDelete', (message) => {
   db.BanPhrase.find({ serverID: message.guild.id }).then((banPhrase) => {
     let bpIdentifier = false;
     banPhrase.forEach((banPhraseItems) => {
-      if (message.content.toUpperCase().includes(banPhraseItems.banphrase.toUpperCase())) {
+      if (message
+        .content
+        .toUpperCase()
+        .includes(banPhraseItems
+          .banphrase
+          .toUpperCase())) {
         bpIdentifier = true;
         return logger(`Match ban phrase: **${banPhraseItems.banphrase}**`);
       }

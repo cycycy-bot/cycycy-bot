@@ -25,7 +25,9 @@ module.exports.run = async (bot, message) => {
       serverCmdEmbed.addField(' ‏‏‎ ', cmdArr[i].join(' \n'), true);
     }
 
-    return message.channel.send(serverCmdEmbed);
+    return message
+      .channel
+      .send(serverCmdEmbed);
   }).catch(err => message.reply(`Error ${err}`));
 };
 

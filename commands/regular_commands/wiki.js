@@ -3,7 +3,9 @@ const wiki = require('wikijs').default;
 
 module.exports.run = async (bot, message, args) => {
   if (args[0] === 'help') {
-    message.channel.send('```Usage: $wiki <wiki search> or $wiki search <query>```');
+    message
+      .channel
+      .send('```Usage: $wiki <wiki search> or $wiki search <query>```');
     return;
   }
   bot.cooldown.add(message.author.id);

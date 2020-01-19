@@ -3,7 +3,9 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args) => {
   if (args[0] === 'help') {
-    message.channel.send('```Usage: $catfact```');
+    message
+      .channel
+      .send('```Usage: $catfact```');
     return;
   }
 
@@ -21,7 +23,9 @@ module.exports.run = async (bot, message, args) => {
         .setImage(url)
         .setFooter('Powered thecatpi');
 
-      return message.channel.send(catEmbed);
+      return message
+        .channel
+        .send(catEmbed);
     })
     .catch(err => message.reply(`Error ${err}`));
 };

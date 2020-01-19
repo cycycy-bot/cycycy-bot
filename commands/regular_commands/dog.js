@@ -3,7 +3,9 @@ const fetch = require('node-fetch');
 
 module.exports.run = async (bot, message, args) => {
   if (args[0] === 'help') {
-    message.channel.send('```Usage: $dog <breed>(Optional)```');
+    message
+      .channel
+      .send('```Usage: $dog <breed>(Optional)```');
     return;
   }
   if (!args[0]) {
@@ -15,7 +17,9 @@ module.exports.run = async (bot, message, args) => {
           .setImage(doggo)
           .setFooter('Powered by dog.ceo');
 
-        return message.channel.send(dogEmbed);
+        return message
+          .channel
+          .send(dogEmbed);
       })
       .catch(err => message.reply(`Error ${err}`));
   }
@@ -27,7 +31,9 @@ module.exports.run = async (bot, message, args) => {
         .setImage(doggo)
         .setFooter('Powered by dog.ceo');
 
-      return message.channel.send(dogEmbed);
+      return message
+        .channel
+        .send(dogEmbed);
     })
     .catch(err => message.reply(`Error ${err}`));
 };
