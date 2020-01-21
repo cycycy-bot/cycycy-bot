@@ -66,15 +66,9 @@ bot.on('message', (message) => {
   const args = messageArray.slice(1);
 
   // Emotes
-  const NaM = bot
-    .emojis
-    .find(emoji => emoji.name === 'NaM');
-  const OMGScoots = bot
-    .emojis
-    .find(emoji => emoji.name === 'OMGScoots');
-  const weirdChamp = bot
-    .emojis
-    .find(emoji => emoji.name === 'WeirdChamp');
+  const NaM = bot.emojis.find(emoji => emoji.name === 'NaM');
+  const OMGScoots = '<:OMGScoots:669029552495788082>';
+  const weirdChamp = bot.emojis.find(emoji => emoji.name === 'WeirdChamp');
 
   // message checker handler
   messageChecker.handleMessage(bot, message, cmd, prefix, db, weirdChamp, NaM, OMGScoots);
