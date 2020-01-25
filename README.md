@@ -1,5 +1,5 @@
 # cycycy-bot
-A simple bot for a simple discord server
+A scuffed bot for a discord server
 
 Invite link: https://discordapp.com/oauth2/authorize?client_id=530305194131456000&scope=bot&permissions=8
 
