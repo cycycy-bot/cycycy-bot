@@ -1,6 +1,7 @@
 # cycycy-bot
 A scuffed bot for a discord server
 
+Website: https://bot.cycycy.me/
 Invite link: https://discordapp.com/oauth2/authorize?client_id=530305194131456000&scope=bot&permissions=8
 
 # Install and run locally
