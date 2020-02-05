@@ -7,7 +7,7 @@ module.exports.run = (bot, message, args, NaM) => {
   }
 
   let time = args[0];
-  let rmdMessage = args.slice(1).join('');
+  let rmdMessage = args.slice(1).join(' ');
 
   message.reply(`I will send you a message in ${time} ${NaM}`);
 
