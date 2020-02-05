@@ -1,6 +1,6 @@
 const scheduler = require('node-schedule');
 
-module.exports.run = ({ args }) => {
+module.exports.run = (args) => {
   console.log(args);
 };
 
