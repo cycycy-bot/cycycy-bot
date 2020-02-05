@@ -114,7 +114,10 @@ Invite link: https://discordapp.com/oauth2/authorize?client_id=53030519413145600
   ### Thesaurus
   **Gives you the definition of a word and example**
   * Usage: $thesaurus <word>
-
+  
+  ### Reminder
+  **Sends a DM in a specified time**
+  * Usage: $remindme <time> <message>
 
 # Upcoming features
 ### ~~Weather Search~~ ✔
