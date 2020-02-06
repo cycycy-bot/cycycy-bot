@@ -1,6 +1,6 @@
-const kick = require('./kick');
-const onMessageDelete = require('./onMessageDelete');
-const onGuildMemberAdd = require('./onGuildMemberAdd');
+const kick = require('./guildMemberRemove');
+const onMessageDelete = require('./messageDelete');
+const onGuildMemberAdd = require('./guildMemberAdd');
 const onMessageUpdate = require('./onMessageEdit');
 
 module.exports = {

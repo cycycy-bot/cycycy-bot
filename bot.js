@@ -10,6 +10,7 @@ bot.commands = new Discord.Collection();
 // Read commands directory
 module.exports = bot;
 require('./fsCommandReader')(bot);
+require('./fsEventsReader')(bot);
 require('./handlers/index');
 
 
@@ -98,4 +99,4 @@ bot.on('message', (message) => {
   }
 });
 
-bot.login(process.env.BOT_TOKEN);
+bot.login("process.env.BOT_TOKEN");
