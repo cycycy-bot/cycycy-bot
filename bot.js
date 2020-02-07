@@ -13,7 +13,6 @@ require('./fsCommandReader')(bot);
 require('./fsEventsReader')(bot);
 // require('./handlers/index');
 
-
 // global command cooldown
 bot.cooldown = new Set();
 
