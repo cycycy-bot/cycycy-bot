@@ -1,6 +1,5 @@
 const db = require('../settings/databaseImport');
 
-
 module.exports = (bot, member) => {
   db.Welcome.findOne({ serverID: member.guild.id }).then((res) => {
     if (!res) return; // silently do nothing if disabled

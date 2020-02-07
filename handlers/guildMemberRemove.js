@@ -1,10 +1,9 @@
 const discord = require('discord.js');
 const mongoose = require('mongoose');
-const bot = require('../bot');
 const db = require('../settings/databaseImport');
 const LeaveQueueDB = require('../models/leaveQueueDB');
 
-bot.on('guildMemberRemove', async (member) => {
+module.exports = async (bot, member) => {
   await member.guild.fetchAuditLogs().then((audit) => {
     setTimeout(() => {
       console.log(audit.entries.first().action);
@@ -78,4 +77,4 @@ bot.on('guildMemberRemove', async (member) => {
       }).catch(console.log);
     }, 1000);
   }).catch(console.log);
-});
+};
