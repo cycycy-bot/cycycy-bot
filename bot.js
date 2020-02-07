@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const bot = new Discord.Client();
 
-// Read commands directory
+// Read commands/events handlers
 require('./fsCommandReader')(bot);
 require('./fsEventsReader')(bot);
 
@@ -33,7 +33,6 @@ db.mongoose.connect(process.env.DB_PASS,
         .send(`Error connecting to DB: ${err}`);
     }
   });
-
 
 // error handler
 bot.on('error', console.error);

@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
+const db = require('../settings/databaseImport');
 
-const handleMessage = (bot, message, cmd, prefix, db, weirdChamp, NaM, OMGScoots) => {
+const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) => {
   // Custom command checker
   if (cmd.startsWith(prefix)) {
     const cmdChk = cmd.slice(prefix.length);
@@ -128,6 +129,26 @@ const handleMessage = (bot, message, cmd, prefix, db, weirdChamp, NaM, OMGScoots
       }
     }
   });
+
+  // type
+  if (message.isMentioned(bot.user)) {
+    const msgArr = [
+      `What ${weirdChamp} ❓`,
+      `Stop tagging me ${weirdChamp}`,
+      `What do you want ${weirdChamp}`,
+      `Are you actually tagging me ${weirdChamp}`,
+    ];
+    message
+      .channel
+      .startTyping(100);
+    setTimeout(() => {
+      message
+        .reply(msgArr[Math.floor(Math.random() * msgArr.length)]);
+      return message
+        .channel
+        .stopTyping(true);
+    }, 2000);
+  }
 };
 
 module.exports = {

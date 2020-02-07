@@ -13,7 +13,7 @@ module.exports = (bot) => {
 
     jsfile.forEach((f) => {
       const props = require(`./commands/regular_commands/${f}`);
-      console.log(`${f} loaded!`);
+      console.log(`Command: ${f} loaded!`);
       bot.commands.set(props.help.name, props);
     });
   });
@@ -30,7 +30,7 @@ module.exports = (bot) => {
 
     jsfile.forEach((f) => {
       const props = require(`./commands/mod_commands/${f}`);
-      console.log(`${f} loaded!`);
+      console.log(`Command: ${f} loaded!`);
       bot.commands.set(props.help.name, props);
     });
   });
@@ -47,7 +47,7 @@ module.exports = (bot) => {
 
     jsfile.forEach((f) => {
       const props = require(`./commands/admin_commands/${f}`);
-      console.log(`${f} loaded!`);
+      console.log(`Command: ${f} loaded!`);
       bot.commands.set(props.help.name, props);
     });
   });
