@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (bot, message) => {
-  console.log(new Date(message.guild.createdTimestamp));
+  console.log(message.guild.createdTimestamp);
   bot
     .cooldown
     .add(message.author.id);

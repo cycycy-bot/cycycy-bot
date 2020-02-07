@@ -1,8 +1,7 @@
 const Discord = require('discord.js');
-const bot = require('../bot');
 const db = require('../settings/databaseImport');
 
-bot.on('messageDelete', (message) => {
+module.exports = (bot, message) => {
   const logger = (logArgs) => {
     db.Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
       if (logRes.isEnabled && logRes.isEnabled === 'enable') {
@@ -49,4 +48,4 @@ bot.on('messageDelete', (message) => {
       return logger('Message deleted');
     }
   });
-});
+};

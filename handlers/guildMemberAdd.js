@@ -1,8 +1,8 @@
-const bot = require('../bot');
 const db = require('../settings/databaseImport');
 
-bot.on('guildMemberAdd', (member) => {
+module.exports = (bot, member) => {
   db.Welcome.findOne({ serverID: member.guild.id }).then((res) => {
+    if (!res) return; // silently do nothing if disabled
     const {
       isEnabled,
       welcomeChannel,
@@ -14,4 +14,4 @@ bot.on('guildMemberAdd', (member) => {
       bot.channels.get(welcomeChannel).send(user);
     }
   });
-});
+};
