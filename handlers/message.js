@@ -7,10 +7,8 @@ module.exports = (bot, message) => {
   if (message.author.bot) return;
   if (message.channel.type === 'dm') return;
 
-  const cycycyHalt = bot.emojis.find(emoji => emoji.name === 'cycycyHalt');
-  if (bot.cooldown.has(message.author.id)) {
-    return message.reply(`You're sending commands too fast ${cycycyHalt} halt.`);
-  }
+  if (bot.cooldown.has(message.author.id)) return;
+
 
   const messageArray = message.content.split(' ');
   const cmd = messageArray[0].toLowerCase();
