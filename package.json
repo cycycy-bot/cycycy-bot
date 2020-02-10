@@ -4,7 +4,7 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "test": "git checkout remind-me-feature && npm run start",
+    "test": "git checkout remind-me-feature && git branch",
     "start": "node bot.js"
   },
   "author": "",
