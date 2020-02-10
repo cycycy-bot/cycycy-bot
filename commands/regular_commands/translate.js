@@ -251,13 +251,15 @@ module.exports.run = async (bot, message, args, NaM) => {
     const joinedArgs1 = args.slice(2).join(' ');
     const selectedLanguage = langsReversed[capitalized];
 
-    return translate(joinedArgs1, { to: selectedLanguage }).then((res) => {
-      console.log(res);
+    return translate(joinedArgs1, { from: 'en', to: selectedLanguage }).then((res) => {
       const langEmbed = new Discord.RichEmbed()
         .setDescription('Translation')
         .setColor('#FFFFFF')
-        .addField(`Translated to ${langs[selectedLanguage]}`, res.text)
-        .addField('Translated from:', langs[res.from.language.iso]);
+        .addField(`Translated to ${langs[selectedLanguage]}`, res.text);
+      if (res.pronunciation) {
+        langEmbed.addField('Pronunciation', res.pronunciation);
+      }
+      langEmbed.addField('Translated from', langs[res.from.language.iso]);
 
       message.channel.send(langEmbed);
     }).catch(err => message.reply(`Error ${err}`));
