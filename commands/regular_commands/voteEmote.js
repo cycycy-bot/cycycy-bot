@@ -46,7 +46,7 @@ module.exports.run = async (bot, message, args, NaM) => {
           if (thumbsupCount > thumbsdownCount) {
             return message.guild.createEmoji(emoteUrl, emoteName)
               .then(emoji => message.channel.send(`The brugs have voted to add the \`${emoji.name}\` emote!`))
-              .catch(err => message.channel.send(`Error adding the emote: ${err.message}`));
+              .catch(err => message.channel.send(`Error adding the \`${emoteName}\` emote: ${err.message}`));
           }
           return message.channel.send(`The brugs don't like to add the emote \`${emoteName}\` ${forHead}`);
         });
