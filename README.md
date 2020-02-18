@@ -1,4 +1,4 @@
-# cycycy-bot
+# cycycy-bot [![CircleCI](https://circleci.com/gh/cycycy-bot/cycycy-bot.svg?style=svg)](https://circleci.com/gh/cycycy-bot/cycycy-bot)
 A scuffed bot for a discord server
 
 Website: https://bot.cycycy.me/
