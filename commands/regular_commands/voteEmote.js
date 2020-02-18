@@ -37,15 +37,15 @@ module.exports.run = async (bot, message, args, NaM) => {
           const thumbsupCount = thumbsup.users.get(message.author.id) ? thumbsup.count - 1 : thumbsup.count;
           const thumbsdownCount = thumbsdown.users.get(message.author.id) ? thumbsdown.count - 1 : thumbsdown.count;
           if (thumbsupCount === thumbsdownCount) {
-            return message.channel.send(`The vote is tied! Therefore the emote won't be added ${forHead}`);
+            return message.channel.send(`The vote is tied! Therefore the emote won't be added LOOOOL ${forHead}`);
           }
 
           if (thumbsupCount > thumbsdownCount) {
             return message.guild.createEmoji(emoteUrl, emoteName)
-              .then(emoji => message.channel.send(`The brugs have voted to add the ${emoji.name} emote!`))
+              .then(emoji => message.channel.send(`The brugs have voted to add the \`${emoji.name}\` emote!`))
               .catch(err => message.channel.send(`Error adding the emote: ${err.message}`));
           }
-          return message.channel.send(`The brugs don't like to add the emote ${forHead}`);
+          return message.channel.send(`The brugs don't like to add the emote \`${emoteName}\` ${forHead}`);
         });
       })
       .catch(err => message.reply(err));
