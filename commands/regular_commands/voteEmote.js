@@ -10,6 +10,9 @@ const checkImage = (src, good, bad) => {
 };
 
 module.exports.run = async (bot, message, args, NaM) => {
+  if (args[0] === 'help') {
+    return message.channel.send('```Usage: $voteemote <link_with_image> <emote_name>```');
+  }
   const emoteUrl = args[0];
   const emoteName = args[1];
   if (!emoteUrl) return message.reply(`Please add a valid image URL ${NaM}`);
