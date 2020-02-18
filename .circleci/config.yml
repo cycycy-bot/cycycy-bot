@@ -38,7 +38,10 @@ jobs:
      machine:
        enabled: true
      steps:
-       - run:
+        - add_ssh_keys:
+            fingerprints:
+              - "1b:b5:7c:a9:f8:5d:18:45:55:9e:37:6a:0e:28:46:21"
+        - run:
            name: Deploy Over SSH
            command: |
              ssh $SSH_USER@$SSH_HOST "cd bot-folder/cycycy-bot/ && git pull && pm2 restart bot"
