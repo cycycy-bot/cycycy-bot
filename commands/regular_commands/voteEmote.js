@@ -20,27 +20,30 @@ module.exports.run = async (bot, message, args, NaM) => {
   checkImage(emoteUrl, () => {
     const forHead = '<:4HEad:499105501280469002>';
     const kekega = '<:KEKEGA:647259545676021780>';
+    const YEP = bot.emojis.find(emoji => emoji.name === 'YEP');
+    const NOP = bot.emojis.find(emoji => emoji.name === 'NOP');
     message.channel.send(`A vote for emote \`${emoteName}\` has started! Vote will end in 30mins.`);
 
     const emoteEmbed = new Discord.RichEmbed()
       .setImage(emoteUrl);
     message.channel.send(emoteEmbed)
       .then((m) => {
-        m.react('👍').then(() => {
-          m.react('👎');
+        m.react(YEP).then(() => {
+          m.react(NOP);
         });
-        const filter = (reaction, user) => ['👍', '👎'].includes(reaction.emoji.name) && user.id !== message.author.id;
+        const filter = (reaction, user) => [YEP.name, NOP.name].includes(reaction.emoji.name) && user.id !== message.author.id;
 
-        const collector = m.createReactionCollector(filter, { time: 1800000 });
+        const collector = m.createReactionCollector(filter, { time: 10000 });
 
         collector.on('end', (collected) => {
           if (!collected) return message.channel.send(`No one has voted to vote ${kekega}`);
-          const thumbsup = collected.get('👍');
-          const thumbsdown = collected.get('👎');
+          console.log(collected);
+          const thumbsup = collected.get(YEP.id);
+          const thumbsdown = collected.get(NOP.id);
           const thumbsupCount = thumbsup.users.get(message.author.id) ? thumbsup.count - 1 : thumbsup.count;
           const thumbsdownCount = thumbsdown.users.get(message.author.id) ? thumbsdown.count - 1 : thumbsdown.count;
           if (thumbsupCount === thumbsdownCount) {
-            return message.channel.send(`The vote is tied! Therefore the emote won't be added LOOOOL ${forHead}`);
+            return message.channel.send(`The vote is tied! Therefore the \`${emoteName}\` emote won't be added LOOOOL ${forHead}`);
           }
 
           if (thumbsupCount > thumbsdownCount) {
