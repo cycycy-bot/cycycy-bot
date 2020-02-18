@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args, NaM) => {
   checkImage(emoteUrl, () => {
     const forHead = '<:4HEad:499105501280469002>';
     const kekega = '<:KEKEGA:647259545676021780>';
-    message.channel.send(`A vote for emote ${emoteName} has started!`);
+    message.channel.send(`A vote for emote ${emoteName} has started! Vote will end in 1 hour.`);
 
     const emoteEmbed = new Discord.RichEmbed()
       .setImage(emoteUrl);
@@ -28,7 +28,7 @@ module.exports.run = async (bot, message, args, NaM) => {
         });
         const filter = (reaction, user) => ['👍', '👎'].includes(reaction.emoji.name) && user.id !== message.author.id;
 
-        const collector = m.createReactionCollector(filter, { time: 15000 });
+        const collector = m.createReactionCollector(filter, { time: ‬3600000 });
 
         collector.on('end', (collected) => {
           if (!collected) return message.channel.send(`No one has voted to vote ${kekega}`);
