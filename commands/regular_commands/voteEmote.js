@@ -28,7 +28,7 @@ module.exports.run = async (bot, message, args, NaM) => {
         });
         const filter = (reaction, user) => ['👍', '👎'].includes(reaction.emoji.name) && user.id !== message.author.id;
 
-        const collector = m.createReactionCollector(filter, { time: ‬3600000 });
+        const collector = m.createReactionCollector(filter, { time: 3600000 });
 
         collector.on('end', (collected) => {
           if (!collected) return message.channel.send(`No one has voted to vote ${kekega}`);
