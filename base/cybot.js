@@ -64,6 +64,7 @@ class CyBot extends Client {
    * @param {String} path The path where the commands are located
    */
   loadCommands(path) {
+    // read regular commands
     readdir(`${path}/regular_commands/`, (err, files) => {
       if (err) console.error(chalk.red(err));
 
@@ -77,6 +78,58 @@ class CyBot extends Client {
         const props = require(`../${path}/regular_commands/${f}`);
         console.info(chalk.green(`Command: ${f} loaded!`));
         this.commands.set(props.help.name, props);
+      });
+    });
+    // read mod commands
+    readdir(`${path}/mod_commands/`, (err, files) => {
+      if (err) console.error(chalk.red(err));
+
+      const jsfile = files.filter(f => f.split('.').pop() === 'js');
+      if (jsfile.length <= 0) {
+        console.error(chalk.red('Couldn\'t find commands.'));
+        return;
+      }
+      
+      jsfile.forEach((f) => {
+        const props = require(`../${path}/mod_commands/${f}`);
+        console.info(chalk.green(`Command: ${f} loaded!`));
+        this.commands.set(props.help.name, props);
+      });
+    });
+    // read admin commands
+    readdir(`${path}/admin_commands/`, (err, files) => {
+      if (err) console.error(chalk.red(err));
+
+      const jsfile = files.filter(f => f.split('.').pop() === 'js');
+      if (jsfile.length <= 0) {
+        console.error(chalk.red('Couldn\'t find commands.'));
+        return;
+      }
+      
+      jsfile.forEach((f) => {
+        const props = require(`../${path}/admin_commands/${f}`);
+        console.info(chalk.green(`Command: ${f} loaded!`));
+        this.commands.set(props.help.name, props);
+      });
+    });
+  }
+
+  /**
+   * Loads all events in the directory specified
+   * @param {String} path The path where the events are located
+   */
+  loadEvents(path) {
+    readdir(`${path}`, (err, files) => {
+      if (err) console.error(chalk.red(err));
+
+      // ignores files starting with underscore
+      const jsFile = files.filter(f => !(/_/g).test(f));
+
+      jsFile.forEach((file) => {
+        const eventHandler = require(`../${path}/${file}`);
+        const eventName = file.split('.')[0];
+        console.info(chalk.green(`Event: ${eventName} loaded!`));
+        super.on(eventName, (...args) => eventHandler(this, ...args));
       });
     });
   }
