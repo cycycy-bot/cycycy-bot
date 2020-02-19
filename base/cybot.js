@@ -7,7 +7,7 @@ const { readdir } = require('fs');
  * Represents a Discord client
  * @extends Discord.Client
  */
-class CyBot extends Client {
+class Cybot extends Client {
   /**
    * @param {Object} options               The options passed to the client
    * @param {Object} options.clientOptions The client options used by the original discord.js client
@@ -16,11 +16,13 @@ class CyBot extends Client {
    */
   constructor(options) {
     super(options.clientOptions || {});
+
     /**
      * Collection of commands
      * @type {Discord.Collection}
      */
     this.commands = new Collection();
+
     /**
      * Collection of command aliases
      * @type {Discord.Collection}
@@ -28,11 +30,13 @@ class CyBot extends Client {
     this.aliases = new Collection();
 
     // Bot variables
+
     /**
      * The bot's configuration
      * @type {Object}
      */
     this.config = options.config ? require(`${options.config}`) : {};
+
     /**
      * The bot's permission levels
      * @type {Object}
@@ -65,7 +69,7 @@ class CyBot extends Client {
    */
   loadCommands(path) {
     // read regular commands
-    readdir(`${path}/regular_commands/`, (err, files) => {
+    readdir(`${path}/test_classcommands/`, (err, files) => {
       if (err) console.error(chalk.red(err));
 
       const jsfile = files.filter(f => f.split('.').pop() === 'js');
@@ -73,45 +77,45 @@ class CyBot extends Client {
         console.error(chalk.red('Couldn\'t find commands.'));
         return;
       }
-      
+
       jsfile.forEach((f) => {
-        const props = require(`../${path}/regular_commands/${f}`);
+        const props = new (require(`../${path}/test_classcommands/${f}`))(this);
         console.info(chalk.green(`Command: ${f} loaded!`));
         this.commands.set(props.help.name, props);
       });
     });
     // read mod commands
-    readdir(`${path}/mod_commands/`, (err, files) => {
-      if (err) console.error(chalk.red(err));
+    // readdir(`${path}/mod_commands/`, (err, files) => {
+    //   if (err) console.error(chalk.red(err));
 
-      const jsfile = files.filter(f => f.split('.').pop() === 'js');
-      if (jsfile.length <= 0) {
-        console.error(chalk.red('Couldn\'t find commands.'));
-        return;
-      }
-      
-      jsfile.forEach((f) => {
-        const props = require(`../${path}/mod_commands/${f}`);
-        console.info(chalk.green(`Command: ${f} loaded!`));
-        this.commands.set(props.help.name, props);
-      });
-    });
-    // read admin commands
-    readdir(`${path}/admin_commands/`, (err, files) => {
-      if (err) console.error(chalk.red(err));
+    //   const jsfile = files.filter(f => f.split('.').pop() === 'js');
+    //   if (jsfile.length <= 0) {
+    //     console.error(chalk.red('Couldn\'t find commands.'));
+    //     return;
+    //   }
 
-      const jsfile = files.filter(f => f.split('.').pop() === 'js');
-      if (jsfile.length <= 0) {
-        console.error(chalk.red('Couldn\'t find commands.'));
-        return;
-      }
-      
-      jsfile.forEach((f) => {
-        const props = require(`../${path}/admin_commands/${f}`);
-        console.info(chalk.green(`Command: ${f} loaded!`));
-        this.commands.set(props.help.name, props);
-      });
-    });
+    //   jsfile.forEach((f) => {
+    //     const props = require(`../${path}/mod_commands/${f}`);
+    //     console.info(chalk.green(`Command: ${f} loaded!`));
+    //     this.commands.set(props.help.name, props);
+    //   });
+    // });
+    // // read admin commands
+    // readdir(`${path}/admin_commands/`, (err, files) => {
+    //   if (err) console.error(chalk.red(err));
+
+    //   const jsfile = files.filter(f => f.split('.').pop() === 'js');
+    //   if (jsfile.length <= 0) {
+    //     console.error(chalk.red('Couldn\'t find commands.'));
+    //     return;
+    //   }
+
+    //   jsfile.forEach((f) => {
+    //     const props = require(`../${path}/admin_commands/${f}`);
+    //     console.info(chalk.green(`Command: ${f} loaded!`));
+    //     this.commands.set(props.help.name, props);
+    //   });
+    // });
   }
 
   /**
@@ -135,4 +139,4 @@ class CyBot extends Client {
   }
 }
 
-module.exports = CyBot;
+module.exports = Cybot;
