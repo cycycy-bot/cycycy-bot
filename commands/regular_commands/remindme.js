@@ -6,12 +6,12 @@ module.exports.run = (bot, message, args, NaM) => {
     return message.channel.send('```Usage: $remindme <time> <message>```');
   }
 
-  let time = args[0];
-  let rmdMessage = args.slice(1).join(' ');
+  const time = args[0];
+  const rmdMessage = args.slice(1).join(' ');
 
   message.reply(`I will send you a message in ${time} ${NaM}`);
 
-  let remindEmbed = new Discord.RichEmbed()
+  const remindEmbed = new Discord.RichEmbed()
     .addField(`A reminder from you ${time} ago`, rmdMessage);
   setTimeout(() => {
     try {
