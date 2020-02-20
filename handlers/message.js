@@ -1,15 +1,10 @@
 const messageChecker = require('./_messageChecker');
-const botconfig = require('../botconfig.json');
-
-const { prefix } = botconfig;
 
 module.exports = (bot, message) => {
   if (message.author.bot) return;
   if (message.channel.type === 'dm') return;
 
-  if (bot.cooldown.has(message.author.id)) return;
-
-
+  const { prefix } = bot.config;
   const messageArray = message.content.split(' ');
   const cmd = messageArray[0].toLowerCase();
   const args = messageArray.slice(1);
@@ -24,5 +19,12 @@ module.exports = (bot, message) => {
 
   // call command handler
   const cmdFile = bot.commands.get(cmd.slice(prefix.length));
+  // return if command is not found
+  if (!cmdFile) return;
+  if (!cmdFile.hasPermission(message)) return message.reply(`You don't have permission for this command ${NaM}`);
+  // checks if the user in on cooldown
+  if (cmdFile.cooldown.has(message.author.id)) return;
+  cmdFile.setMessage(message);
   if (cmdFile && cmd.startsWith(prefix)) cmdFile.run(bot, message, args, NaM, OMGScoots);
+  if (cmdFile.conf.cooldown > 0) cmdFile.startCooldown(message.author.id);
 };

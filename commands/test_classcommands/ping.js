@@ -6,7 +6,17 @@ class Ping extends Command {
       name: 'ping',
       description: 'Pings the bot.',
       usage: '',
+      cooldown: 5000,
+      ownerOnly: true,
     });
+  }
+
+  /**
+   * Runs the command
+   * @param {Object} message The message object
+   */
+  run(bot, message) {
+    super.respond(`Pong! Took ${Date.now() - message.createdAt}ms.`);
   }
 }
 

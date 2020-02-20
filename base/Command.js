@@ -63,8 +63,8 @@ class Command {
    * @param {Object} message The object of the message that contains the user's permisions in the guild
    */
   hasPermission(message) {
-    if (this.ownerOnly && message.author.id === this.bot.owner) return true;
-    
+    if (this.conf.ownerOnly && message.author.id === this.bot.config.owner) return true;
+    return false;
   }
 
   setMessage(message) {
