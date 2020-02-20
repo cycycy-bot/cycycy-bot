@@ -64,6 +64,7 @@ class Command {
    */
   hasPermission(message) {
     if (this.ownerOnly && message.author.id === this.bot.owner) return true;
+    
   }
 
   setMessage(message) {
