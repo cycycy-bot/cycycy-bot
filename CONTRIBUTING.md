@@ -7,5 +7,5 @@ pull request. We use ESLint to enforce a consistent coding style.
 1. Fork & Clone this repository
 2. Run ```npm install```
 3. Make a ```.env``` file in the root folder of the project (this is important for hiding API tokens and logging in to your own test bot)
-4. Copy the contents of example.env to .env and fill in the necessary tokens
+4. Copy the contents of ```example.env``` to ```.env``` and fill in the necessary tokens
 5. Run the bot! ```npm start```
