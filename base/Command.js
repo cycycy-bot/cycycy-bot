@@ -64,6 +64,7 @@ class Command {
    */
   hasPermission(message) {
     if (this.conf.ownerOnly && message.author.id === this.bot.config.owner) return true;
+    if (this.conf.permission === 'SEND_MESSAGES') return true;
     return false;
   }
 

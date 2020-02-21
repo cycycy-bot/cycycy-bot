@@ -44,8 +44,8 @@ class Cybot extends Client {
 
     // Client initialization info
     const nodeVersion = process.versions.node.split('.')[0];
-    if (nodeVersion < 12) {
-      console.warn(chalk.yellow(`[WARNING] cybot initialized. You are using NodeJS ${process.version}. Versions 12+ are advised to be used.`));
+    if (nodeVersion < 10) {
+      console.warn(chalk.yellow(`[WARNING] cybot initialized. You are using NodeJS ${process.version}. Version 10+ or latest stable release of NodeJS is advised to be used.`));
     } else {
       console.info(chalk.green(`cybot initialized. You are using NodeJS ${process.version}.`));
     }
