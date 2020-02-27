@@ -2,7 +2,6 @@ const { Client, Collection } = require('discord.js');
 const chalk = require('chalk');
 const { readdir } = require('fs');
 
-
 /**
  * Represents a Discord client
  * @extends Discord.Client
@@ -38,9 +37,10 @@ class Cybot extends Client {
     this.config = options.config ? require(`${options.config}`) : {};
 
     /**
-     * The bot's permission levels
+     * Mongoose dependency
      * @type {Object}
      */
+    this.db = require('../settings/databaseImport');
 
     // Client initialization info
     const nodeVersion = process.versions.node.split('.')[0];
@@ -82,6 +82,7 @@ class Cybot extends Client {
         const props = new (require(`../${path}/test_classcommands/${f}`))(this);
         console.info(chalk.green(`Command: ${f} loaded!`));
         this.commands.set(props.help.name, props);
+        props.conf.aliases.forEach(a => this.aliases.set(a, props.help.name));
       });
     });
     // read mod commands
@@ -136,6 +137,26 @@ class Cybot extends Client {
         super.on(eventName, (...args) => eventHandler(this, ...args));
       });
     });
+  }
+
+  /**
+   * Initiates mongoDB connection
+   * @param {String} dbPass The connection string for mongoDB
+   */
+  loadDb(dbPass) {
+    this.db.mongoose.connect(dbPass,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+      (err) => {
+        if (err) {
+          this
+            .channels
+            .get('531967060306165796')
+            .send(`Error connecting to DB: ${err}`);
+        }
+      });
   }
 }
 

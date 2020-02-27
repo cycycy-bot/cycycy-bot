@@ -7,7 +7,7 @@ class Ping extends Command {
       description: 'Pings the bot.',
       usage: '',
       cooldown: 5000,
-      ownerOnly: true,
+      permission: 'MODERATOR',
     });
   }
 

@@ -21,7 +21,7 @@ class Command {
       name: options.name || null,
       description: options.description || 'No information specified',
       usage: options.usage || '',
-      category: options.category || 'Information',
+      category: options.category || 'regular',
     };
 
     /**
@@ -42,6 +42,12 @@ class Command {
      * @type {Set}
      */
     this.cooldown = new Set();
+
+    /**
+     * Fetch module
+     * @type {Object}
+     */
+    this.fetch = require('node-fetch');
   }
 
   /**
@@ -62,11 +68,19 @@ class Command {
    * Checks whether the user has a permission to fire the command
    * @param {Object} message The object of the message that contains the user's permisions in the guild
    */
-  hasPermission(message) {
-    if (this.conf.ownerOnly && message.author.id === this.bot.config.owner) return true;
-    if (this.conf.permission === 'SEND_MESSAGES') return true;
-    return false;
+  async hasPermission(message) {
+    return this.bot.db.Mod.findOne({ serverID: message.guild.id }).then((res) => {
+      const serverRole = message.guild.roles.get(res.modName);
+      if (this.conf.ownerOnly && message.author.id !== this.bot.config.owner) return false;
+      if (this.conf.permission === 'ADMINISTRATOR' && !message.member.hasPermission('ADMINISTRATOR')) return false;
+      if (this.conf.permission === 'MODERATOR') {
+        if ((res.modName !== serverRole.id && !message.member.roles.has(serverRole.id)) || !message.member.hasPermission('ADMINISTRATOR')) return false;
+      }
+      if (this.conf.permission === 'SEND_MESSAGES') return true;
+      return true;
+    });
   }
+
 
   setMessage(message) {
     this.message = message;
@@ -74,6 +88,10 @@ class Command {
 
   respond(message) {
     this.message.channel.send(message);
+  }
+
+  reply(message) {
+    this.message.reply(message);
   }
 }
 
