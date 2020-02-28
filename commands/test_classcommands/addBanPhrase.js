@@ -8,7 +8,7 @@ class AddBanPhrase extends Command {
       usage: '$addbanphrase <word>',
       cooldown: 0,
       permission: 'MODERATOR',
-      aliases: ['abp', 'banphrase'],
+      aliases: ['abp'],
     });
   }
 
@@ -25,11 +25,11 @@ class AddBanPhrase extends Command {
 
     this.bot.db.BanPhrase.find({ serverID: message.guild.id, banphrase: bp }).then((serverRes) => {
       if (serverRes.length >= 1) {
-        return this.respond('Banphrase already exists');
+        return message.channel.send('Banphrase already exists');
       }
       return banphrase.save()
-        .then(this.respond('Banphrase added'))
-        .catch(err => this.reply(`Error ${err}`));
+        .then(message.channel.send('Banphrase added'))
+        .catch(err => message.reply(`Error ${err}`));
     });
   }
 }

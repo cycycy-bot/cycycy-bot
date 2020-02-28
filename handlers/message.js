@@ -27,10 +27,10 @@ module.exports = (bot, message) => {
   if (cmdFile.cooldown.has(message.author.id)) return;
 
   // permission checker
+  cmdFile.setMessage(message);
   cmdFile.hasPermission(message).then((perm) => {
-    console.log(perm);
+    if (perm === undefined) return message.reply(`You haven't set a mod in this server ${NaM}. To set a mod in this server do $setmod help.`);
     if (!perm) return message.reply(`You don't have permission for this command ${NaM}`);
-    cmdFile.setMessage(message);
     if (cmdFile && cmd.startsWith(prefix)) cmdFile.run(message, args, NaM, OMGScoots);
     if (cmdFile.conf.cooldown > 0) cmdFile.startCooldown(message.author.id);
   });

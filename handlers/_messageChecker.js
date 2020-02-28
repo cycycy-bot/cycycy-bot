@@ -19,6 +19,7 @@ const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) =>
 
   // Banphrase checker
   db.BanPhrase.find({ serverID: message.guild.id }).then((res) => {
+    if (cmd === `${prefix}addbanphrase` || cmd === `${prefix}delbanphrase`) return;
     res.forEach((bp) => {
       if (message.content.toUpperCase().includes(bp.banphrase.toUpperCase())) {
         return message.delete()

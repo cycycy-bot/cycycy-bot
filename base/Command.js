@@ -69,14 +69,16 @@ class Command {
    * @param {Object} message The object of the message that contains the user's permisions in the guild
    */
   async hasPermission(message) {
+    if (message.author.id === this.bot.config.owner) return true;
     return this.bot.db.Mod.findOne({ serverID: message.guild.id }).then((res) => {
-      const serverRole = message.guild.roles.get(res.modName);
       if (this.conf.ownerOnly && message.author.id !== this.bot.config.owner) return false;
       if (this.conf.permission === 'ADMINISTRATOR' && !message.member.hasPermission('ADMINISTRATOR')) return false;
-      if (this.conf.permission === 'MODERATOR') {
+      if (this.conf.permission === 'MODERATOR' && res) {
+        const serverRole = message.guild.roles.get(res.modName);
         if ((res.modName !== serverRole.id && !message.member.roles.has(serverRole.id)) || !message.member.hasPermission('ADMINISTRATOR')) return false;
       }
       if (this.conf.permission === 'SEND_MESSAGES') return true;
+      if (!res) return;
       return true;
     });
   }
