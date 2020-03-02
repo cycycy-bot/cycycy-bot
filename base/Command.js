@@ -82,15 +82,26 @@ class Command {
     });
   }
 
-
+  /**
+   * Sets the message object to this.message
+   * @param {Object} message The message object passed
+   */
   setMessage(message) {
     this.message = message;
   }
 
+  /**
+   * Response to the command
+   * @param {String} message The message string in response to the command
+   */
   respond(message) {
     this.message.channel.send(message);
   }
 
+  /**
+   * Replies to the user who sent the command
+   * @param {String} message The message string in response to the command
+   */
   reply(message) {
     this.message.reply(message);
   }
