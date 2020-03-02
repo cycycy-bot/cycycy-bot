@@ -28,7 +28,7 @@ module.exports = (bot, message) => {
 
   // permission checker
   cmdFile.setMessage(message);
-  cmdFile.hasPermission(message).then((perm) => {
+  cmdFile.hasPermission().then((perm) => {
     if (perm === undefined) return message.reply(`You haven't set a mod in this server ${NaM}. To set a mod in this server do $setmod help.`);
     if (!perm) return message.reply(`You don't have permission for this command ${NaM}`);
     if (cmdFile && cmd.startsWith(prefix)) cmdFile.run(message, args, NaM, OMGScoots);
