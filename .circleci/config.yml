@@ -34,3 +34,25 @@ jobs:
 
       # run tests!
       - run: npm test
+  deploy:
+     machine:
+       enabled: true
+     steps:
+        - add_ssh_keys:
+            fingerprints:
+              - "7d:e4:a1:7f:6c:2c:ae:69:02:77:1c:23:05:f2:3d:1c"
+        - run:
+           name: Deploy Over SSH
+           command: |
+             ssh $SSH_USER@$SSH_HOST "cd bot-folder/cycycy-bot/ && git pull && pm2 restart bot"
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build # only deploy once build job has completed
+          filters:
+            branches:
+              only: master # only deploy on the master branch

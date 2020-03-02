@@ -5,13 +5,8 @@ Website: https://bot.cycycy.me/
 
 Invite link: https://discordapp.com/oauth2/authorize?client_id=530305194131456000&scope=bot&permissions=8
 
-# Install and run locally
-1. Clone this repo.
-2. Run ```npm install```
-2. Make a ```.env``` file 
-3. Inside the ```.env``` file add your own MongoDB URL with a variable ```DB_PASS```
-3. Inside the ```.env``` file add your own discord bot token with a variable ```BOT_TOKEN```
-4. Run the bot! ```node bot.js```
+# Contributing
+See [the contribution guide](https://github.com/cycycy-bot/cycycy-bot/blob/master/CONTRIBUTING.md) if you'd like to submit a PR.
 
 # Functions(for now)
 ## --- Admin Commands ---
