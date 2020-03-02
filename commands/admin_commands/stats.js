@@ -26,6 +26,7 @@ module.exports.run = async (bot, message) => {
       \`Server Region:\` ${message.guild.region}
       \`Uptime:\` ${upTime}
       \`Servers:\` ${bot.guilds.size.toLocaleString()}
+      \`Cybot:\` v${require('../../package.json').version}
       \`Discord.js:\` v${version}
       \`Node:\` ${process.version}
       `);
