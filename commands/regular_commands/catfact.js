@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args) => {
       const factEmbed = new Discord.RichEmbed()
         .setColor('#1fca05')
         .setDescription(fact.text)
-        .setFooter('Powered cat fact api');
+        .setFooter('Powered by cat-fact api');
 
       return message
         .channel
