@@ -1,3 +1,13 @@
 {
-    "prefix": "$"
+    "prefix": "$",
+    "status": [
+        {
+            "name": "forsan [$help]",
+            "type": "WATCHING"
+        },
+        {
+            "name": "bot.cycycy.me",
+            "type": "PLAYING"
+        }
+    ]
 }
