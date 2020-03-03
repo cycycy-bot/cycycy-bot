@@ -1,6 +1,6 @@
 # CONTRIBUTING instructions
 
-If you wish to contribute to the cycycybot codebase or documentation, feel free to fork the repository and submit a
+If you wish to contribute to the cybot codebase or documentation, feel free to fork the repository and submit a
 pull request. We use ESLint to enforce a consistent coding style.
 
 ## Intall and run an instance of the bot
