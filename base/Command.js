@@ -45,7 +45,7 @@ class Command {
 
     /**
      * Fetch module
-     * @type {Object}
+     * @type {Function}
      */
     this.fetch = require('node-fetch');
   }
