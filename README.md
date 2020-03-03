@@ -1,4 +1,4 @@
-# cycycy-bot [![CircleCI](https://circleci.com/gh/cycycy-bot/cycycy-bot.svg?style=svg)](https://circleci.com/gh/cycycy-bot/cycycy-bot)
+# cybot [![CircleCI](https://circleci.com/gh/cycycy-bot/cycycy-bot.svg?style=svg)](https://circleci.com/gh/cycycy-bot/cycycy-bot)
 A scuffed bot for a discord server
 
 Website: https://bot.cycycy.me/
@@ -10,27 +10,29 @@ See [the contribution guide](https://github.com/cycycy-bot/cycycy-bot/blob/maste
 
 # Functions(for now)
 ## --- Admin Commands ---
+  ### Set Mod Role **(IMPORTANT TO SETUP)**
+  **Sets the mod role of the server to be able to use mod commands**
+  * Usage: $setmod <role>
+  Alternitavely: You can set it up in cybot's website
+
   ### Test
   **Tests if the bot is running**
   * Usage: $test
   
   ### Role Counter
   **Returns how many members the given role have**
-  * Usage: $rc <role_name>
+  * Usage: $rc <role>
   
   ### Set logger channel
   **Enable/Disable the event logger (message deleted, member left, member kicked, etc.)**
-  * Usage: $setlogger <enable/disable> <channel_name> (channel name is optional only if you set it to disabled)
+  * Usage: $setlogger <enable/disable> <channel> (channel name is optional only if you set it to disabled)
   
-   ### Set Mod Role **(IMPORTANT TO SETUP)**
-  **Sets the mod role of the server to be able to use mod commands**
-  * Usage: $setmod <mod_role_name>
   
 ## --- Mod Commands ---
   ### Adding/Deleting Ban Phrase
   **Adds/Deletes a ban phrase/word to the server**
-  * Usage: $addbanphrase <phrase/word>
-  * Usage: $delbanphrase <phrase/word>
+  * Usage: $addbanphrase <word>
+  * Usage: $delbanphrase <word>
   
   ### Adding/Deleting/Editing custom command
   **Adds/Deletes/Edits a custom command to the server**
@@ -40,16 +42,16 @@ See [the contribution guide](https://github.com/cycycy-bot/cycycy-bot/blob/maste
   
   ### Adding/Deleting Ban Phrase
   **Adds/Deletes a ban phrase/word to the server**
-  * Usage: $addbanphrase <phrase/word>
+  * Usage: $addbanphrase <word>
   
   ### Temporary mute/ Unmute
   **Temporarily mutes a user/Unmute a user**
-  * Usage: $tempmute <tag_user> <1s/1m/1h/1d>
-  * Usage: $unmute <tag_user>
+  * Usage: $tempmute <member> <1s/1m/1h/1d>
+  * Usage: $unmute <member>
 
   ### Kick
   **Kicks a user**
-  * Usage: $kick <tag_user>
+  * Usage: $kick <member>
   
 ## --- Regular Commands ---
   ### Help
@@ -58,19 +60,19 @@ See [the contribution guide](https://github.com/cycycy-bot/cycycy-bot/blob/maste
   
   ### Translate
   **Translates message from any language to english**
-  * Usage: $translate <your_message>
+  * Usage: $translate <message>
 
   ### Wiki search
   **Returns a summary of the user's input from wikipedia**
-  * Usage: $wiki <search_word> (word you want to search from wikipedia)
+  * Usage: $wiki <word> (word you want to search from wikipedia)
 
   ### Avatar
   **Shows the user's avatar**
-  * Usage: $avatar <user> (optional)
+  * Usage: $avatar <member> (optional)
 
   ### Get User Info
   **Shows the user's information in the server**
-  * Usage: $userinfo <tag_user> (optional)
+  * Usage: $userinfo <member> (optional)
   
   ### Get Server Info
   **Shows the server's information**
@@ -83,12 +85,12 @@ See [the contribution guide](https://github.com/cycycy-bot/cycycy-bot/blob/maste
 
   ### AFK/GN
   **GN sets your status to sleeping/AFK sets your status to AFK**
-  * Usage: $afk <your_message> (optional)
-  * Usage: $gn <your_message> (optional)
+  * Usage: $afk <message> (optional)
+  * Usage: $gn <message> (optional)
   
   ### Tuck
   **Tucks the Sleeping User 4HEad**
-  * Usage: $tuck <tag_user>
+  * Usage: $tuck <member>
   
   ### Cat facts HYPERS!!
   **Gives you a fact about cats OMGSCoots**
@@ -102,9 +104,9 @@ See [the contribution guide](https://github.com/cycycy-bot/cycycy-bot/blob/maste
   **Gives you a fact about dogs OMGSCoots**
   * Usage: $dogfact
   
-  ### Random Dpg pictures
+  ### Random Dog pictures
   **Gives you a random picture of a dog**
-  * Usage: $dog <breed>
+  * Usage: $dog <breed> (optional)
 
   ### Thesaurus
   **Gives you the definition of a word and example**
