@@ -13,7 +13,7 @@ See [the contribution guide](https://github.com/cycycy-bot/cycycy-bot/blob/maste
   ### Set Mod Role **(IMPORTANT TO SETUP)**
   **Sets the mod role of the server to be able to use mod commands**
   * Usage: $setmod <role>
-  Alternitavely: You can set it up in cybot's website
+  `Alternitavely: You can set it up in cybot's website`
 
   ### Test
   **Tests if the bot is running**
