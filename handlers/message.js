@@ -9,13 +9,8 @@ module.exports = (bot, message) => {
   const cmd = messageArray[0].toLowerCase();
   const args = messageArray.slice(1);
 
-  // Emotes
-  const NaM = bot.emojis.find(emoji => emoji.name === 'NaM');
-  const OMGScoots = '<:OMGScoots:669029552495788082>';
-  const weirdChamp = bot.emojis.find(emoji => emoji.name === 'WeirdChamp');
-
   // message checker handler
-  messageChecker.handleMessage(bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots);
+  messageChecker.handleMessage(bot, message, cmd, prefix);
 
   // call command handler
   const cmdFile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length)));
@@ -29,9 +24,11 @@ module.exports = (bot, message) => {
   // permission checker
   cmdFile.setMessage(message);
   cmdFile.hasPermission().then((perm) => {
-    if (perm === undefined) return message.reply(`You haven't set a mod in this server ${NaM}. To set a mod in this server do $setmod help.`);
-    if (!perm) return message.reply(`You don't have permission for this command ${NaM}`);
-    if (cmdFile && cmd.startsWith(prefix)) cmdFile.run(message, args, NaM, OMGScoots);
+    const nam = bot.emojis.find(emoji => emoji.name === 'NaM');
+
+    if (perm === undefined) return message.reply(`You haven't set a mod in this server ${nam}. To set a mod in this server do $setmod help.`);
+    if (!perm) return message.reply(`You don't have permission for this command ${nam}`);
+    if (cmdFile && cmd.startsWith(prefix)) cmdFile.run(message, args);
     if (cmdFile.conf.cooldown > 0) cmdFile.startCooldown(message.author.id);
   });
 };

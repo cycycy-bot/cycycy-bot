@@ -13,10 +13,11 @@ class Purge extends Command {
     });
   }
 
-  async run(message, args, NaM) {
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
     await message.delete();
-    if (!args[0]) return this.reply(`Please add number of messages ${NaM}`);
-    if (isNaN(args[0])) return this.reply(`Please use number as arguments. ${NaM}`);
+    if (!args[0]) return this.reply(`Please add number of messages ${nam}`);
+    if (isNaN(args[0])) return this.reply(`Please use number as arguments. ${nam}`);
 
     return message.channel.bulkDelete(args[0]).then((messages) => {
       this.bot.db.Logger.findOne({ serverID: message.guild.id }).then((logRes) => {

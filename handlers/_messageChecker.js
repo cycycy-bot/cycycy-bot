@@ -1,7 +1,11 @@
 const Discord = require('discord.js');
 const db = require('../settings/databaseImport');
 
-const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) => {
+const handleMessage = (bot, message, cmd, prefix) => {
+  const nam = bot.emojis.find(emoji => emoji.name === 'NaM');
+  const omgScoots = '<:OMGScoots:669029552495788082>';
+  const weirdChamp = bot.emojis.find(emoji => emoji.name === 'WeirdChamp');
+
   // Custom command checker
   if (cmd.startsWith(prefix)) {
     const cmdChk = cmd.slice(prefix.length);
@@ -24,8 +28,7 @@ const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) =>
       if (message.content.toUpperCase().includes(bp.banphrase.toUpperCase())) {
         return message.delete()
           .then(
-            message
-              .reply(`Your message matched the ban phrase in this server ${weirdChamp}`),
+            message.reply(`Your message matched the ban phrase in this server ${weirdChamp}`),
           ).catch(console.log);
       }
     });
@@ -49,7 +52,9 @@ const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) =>
       if (result.afkType === 'gn') backEmbed.setFooter(`tucked by ${result.tucker || 'no one PepeHands'}`);
 
       message.channel.send(backEmbed);
-      return db.Afk.deleteOne({ userID: result.userID }).then(console.log('Message Deleted')).catch(console.log);
+      return db.Afk.deleteOne({ userID: result.userID })
+        .then(console.log(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`))
+        .catch(console.log);
     }
   });
 
@@ -73,10 +78,15 @@ const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) =>
         });
 
         db.Notify.find({ userID: res.userID }).then((notifyRes) => {
-          if (notifyRes.length >= 3) { // message limiter
-            return message.reply(`${notifyUser.username} has already reached the limit of recieving messages ${NaM}`);
+          // message limiter
+          if (notifyRes.length >= 3) {
+            return message.reply(`${notifyUser.username} has already reached the limit of recieving messages ${nam}`);
           }
-          return notify.save().then(() => message.reply(`${notifyUser.username} is afk but i will send them that message when they type in any server im on ${OMGScoots} 👍`)).catch(console.log);
+          return notify.save()
+            .then(() => {
+              message.reply(`${notifyUser.username} is afk but i will send them that message when they type in any server im on ${omgScoots} 👍`);
+            })
+            .catch(console.log);
         });
       }
     });
@@ -86,7 +96,7 @@ const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) =>
   // Notify checker
   db.Notify.find({ userID: message.author.id }).then((result) => {
     if (result.length >= 1) {
-      message.reply(`You have notifications ${NaM}`);
+      message.reply(`You have notifications ${nam}`);
 
       result.forEach((resData) => {
         const newTime = new Date();
@@ -105,7 +115,9 @@ const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) =>
           .addField(`Message (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago): `, resData.notifyMsg);
         return message.channel.send(notifyEmbed)
           .then(() => {
-            db.Notify.deleteOne({ userID: resData.userID }).then(console.log('Message Deleted')).catch(console.log);
+            db.Notify.deleteOne({ userID: resData.userID })
+              .then(console.log('Message Deleted'))
+              .catch(console.log);
           })
           .catch(console.log);
       });
@@ -117,15 +129,18 @@ const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) =>
     if (res) {
       if (res.isEnabled) {
         if (message.content.toUpperCase().includes('AYAYA')) {
-          if (message.channel.id === '500399188627161109' || message.channel.id === '579333258999889981' || message.content.includes('cycycyAYAYA')) return; // weeb dungeon
+          // weeb dungeon
+          if (message.channel.id === '500399188627161109' || message.channel.id === '579333258999889981' || message.content.includes('cycycyAYAYA')) return;
           const DansGame = bot.emojis.find(emoji => emoji.name === 'DansGame');
           message.channel.send(`${DansGame.toString()} :point_right: :door:`);
           message.channel.send('WEEBS OUT');
-          message.react(DansGame.id).then(() => {
-            message.react('👉').then(() => {
-              message.react('🚪').catch(console.log);
+          message.react(DansGame.id)
+            .then(() => {
+              message.react('👉')
+                .then(() => {
+                  message.react('🚪').catch(console.log);
+                }).catch(console.log);
             }).catch(console.log);
-          }).catch(console.log);
         }
       }
     }
@@ -139,15 +154,10 @@ const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) =>
       `What do you want ${weirdChamp}`,
       `Are you actually tagging me ${weirdChamp}`,
     ];
-    message
-      .channel
-      .startTyping(100);
+    message.channel.startTyping(100);
     setTimeout(() => {
-      message
-        .reply(msgArr[Math.floor(Math.random() * msgArr.length)]);
-      return message
-        .channel
-        .stopTyping(true);
+      message.reply(msgArr[Math.floor(Math.random() * msgArr.length)]);
+      return message.channel.stopTyping(true);
     }, 2000);
   }
 };

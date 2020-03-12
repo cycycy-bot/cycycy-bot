@@ -23,10 +23,6 @@ class TempMute extends Command {
       return message.reply(`Can't mute my master ${PepeS}`);
     } if (toMute.hasPermission('ADMINISTRATOR')) {
       return message.reply(`Can't mute administrator ${nam}`);
-    } if (message.member.id === '487797385691398145') {
-      console.log('Tempmute command fired by cycycy'); // command for cycycy(owner)
-    } if (message.member.hasPermission('ADMINISTRATOR')) {
-      console.log(`Admin command from: ${message.guild.name}`); // ignore if admin fired the command
     } if (toMute.hasPermission('KICK_MEMBERS') || toMute.hasPermission('BAN_MEMBERS')) {
       return message.reply(`Can't mute a mod ${nam}`);
     }
