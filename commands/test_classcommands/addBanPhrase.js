@@ -26,11 +26,11 @@ class AddBanPhrase extends Command {
 
     this.bot.db.BanPhrase.find({ serverID: message.guild.id, banphrase: bp }).then((serverRes) => {
       if (serverRes.length >= 1) {
-        return message.channel.send('Banphrase already exists');
+        return this.respond('Banphrase already exists');
       }
       return banphrase.save()
-        .then(message.channel.send('Banphrase added'))
-        .catch(err => message.reply(`Error ${err}`));
+        .then(this.respond('Banphrase added'))
+        .catch(err => this.reply(`Error ${err}`));
     });
   }
 }

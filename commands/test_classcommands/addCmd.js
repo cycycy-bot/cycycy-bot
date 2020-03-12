@@ -16,8 +16,8 @@ class AddCmd extends Command {
     const cmdRes = args.slice(1);
     const resJoined = cmdRes.join(' ');
     const commandName = args[0];
-    if (!commandName) return message.reply(`Please add a command name ${nam}`);
-    if (!resJoined) return message.reply(`Please add a command response ${nam}`);
+    if (!commandName) return this.reply(`Please add a command name ${nam}`);
+    if (!resJoined) return this.reply(`Please add a command response ${nam}`);
 
     const cmd = new this.bot.db.Cmd({
       _id: this.bot.db.mongoose.Types.ObjectId(),
