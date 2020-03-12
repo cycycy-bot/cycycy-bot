@@ -1,7 +1,7 @@
-const Client = require('./base/Cybot');
+const Cybot = require('./base/Cybot');
 require('dotenv').config();
 
-const bot = new Client({ config: '../botconfig.json' });
+const bot = new Cybot({ config: '../botconfig.json' });
 
 bot.loadCommands('./commands');
 bot.loadEvents('./handlers');
