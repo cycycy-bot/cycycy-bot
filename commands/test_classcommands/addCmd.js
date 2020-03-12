@@ -11,12 +11,13 @@ class AddCmd extends Command {
     });
   }
 
-  run(message, args, NaM) {
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
     const cmdRes = args.slice(1);
     const resJoined = cmdRes.join(' ');
     const commandName = args[0];
-    if (!commandName) return message.reply(`Please add a command name ${NaM}`);
-    if (!resJoined) return message.reply(`Please add a command response ${NaM}`);
+    if (!commandName) return message.reply(`Please add a command name ${nam}`);
+    if (!resJoined) return message.reply(`Please add a command response ${nam}`);
 
     const cmd = new this.bot.db.Cmd({
       _id: this.bot.db.mongoose.Types.ObjectId(),
@@ -38,7 +39,7 @@ class AddCmd extends Command {
           .catch(err => this.reply(`Error ${err}`));
       });
     } else {
-      return this.respond(`The command name is a default command ${NaM}`);
+      return this.respond(`The command name is a default command ${nam}`);
     }
   }
 }

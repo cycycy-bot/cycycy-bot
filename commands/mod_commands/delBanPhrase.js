@@ -12,15 +12,16 @@ class DelBanPhrase extends Command {
     });
   }
 
-  run(message, args, NaM) {
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
     const bp = args.join(' ');
-    if (!bp) return this.reply(`Please add a word to be unbanned ${NaM}`);
+    if (!bp) return this.reply(`Please add a word to be unbanned ${nam}`);
 
     this.bot.db.BanPhrase.deleteOne({ serverID: message.guild.id, banphrase: bp }).then((bpRes) => {
       if (bpRes.n >= 1) {
-        this.reply(`The ban phrase \`${bp}\` has been deleted ${NaM}`);
+        this.reply(`The ban phrase \`${bp}\` has been deleted ${nam}`);
       } else {
-        this.reply(`Ban phrase doesn't exist ${NaM}`);
+        this.reply(`Ban phrase doesn't exist ${nam}`);
       }
     });
   }

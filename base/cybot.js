@@ -45,9 +45,9 @@ class Cybot extends Client {
     // Client initialization info
     const nodeVersion = process.versions.node.split('.')[0];
     if (nodeVersion < 10) {
-      console.warn(chalk.yellow(`[WARNING] cybot initialized. You are using NodeJS ${process.version}. Version 10+ or latest stable release of NodeJS is advised to be used.`));
+      console.warn(`${chalk.yellow('[WARNING]')} cybot initialized. You are using NodeJS ${process.version}. Version 10+ or latest stable release of NodeJS is advised to be used`);
     } else {
-      console.info(chalk.green(`cybot initialized. You are using NodeJS ${process.version}.`));
+      console.info(`${chalk.green('cybot initialized')} You are using NodeJS ${process.version}`);
     }
   }
 
@@ -70,7 +70,7 @@ class Cybot extends Client {
   loadCommands(path) {
     // read regular commands
     readdir(`${path}/test_classcommands/`, (err, files) => {
-      if (err) console.error(chalk.red(err));
+      if (err) console.error(`${chalk.red('Error:')} ${err}`);
 
       const jsfile = files.filter(f => f.split('.').pop() === 'js');
       if (jsfile.length <= 0) {
@@ -80,7 +80,7 @@ class Cybot extends Client {
 
       jsfile.forEach((f) => {
         const props = new (require(`../${path}/test_classcommands/${f}`))(this);
-        console.info(chalk.green(`Command: ${f} loaded!`));
+        console.info(`${chalk.green('Command loaded!:')} ${f}`);
         this.commands.set(props.help.name, props);
         props.conf.aliases.forEach(a => this.aliases.set(a, props.help.name));
       });
@@ -133,7 +133,7 @@ class Cybot extends Client {
       jsFile.forEach((file) => {
         const eventHandler = require(`../${path}/${file}`);
         const eventName = file.split('.')[0];
-        console.info(chalk.green(`Event: ${eventName} loaded!`));
+        console.info(`${chalk.green('Event loaded!:')} ${eventName}`);
         super.on(eventName, (...args) => eventHandler(this, ...args));
       });
     });

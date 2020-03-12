@@ -12,9 +12,10 @@ class AddBanPhrase extends Command {
     });
   }
 
-  run(message, args, NaM) {
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
     const bp = args.join(' ');
-    if (!bp) return this.reply(`Please add a word to be banned ${NaM}`);
+    if (!bp) return this.reply(`Please add a word to be banned ${nam}`);
 
     const banphrase = new this.bot.db.BanPhrase({
       _id: this.bot.db.mongoose.Types.ObjectId(),

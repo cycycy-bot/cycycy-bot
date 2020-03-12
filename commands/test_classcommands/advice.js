@@ -12,7 +12,7 @@ class Advice extends Commands {
     });
   }
 
-  async run(message) {
+  async run(message, args) {
     const OMGScoots = this.bot.emojis.find(emoji => emoji.name === 'OMGScoots');
     this.fetch('https://api.adviceslip.com/advice')
       .then(res => res.json())

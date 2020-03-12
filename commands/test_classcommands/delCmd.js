@@ -11,15 +11,16 @@ class DelCmd extends Command {
     });
   }
 
-  run(message, args, NaM) {
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
     const commandName = args[0];
-    if (!commandName) return this.reply(`Please add a command name ${NaM}`);
+    if (!commandName) return this.reply(`Please add a command name ${nam}`);
 
     this.bot.db.Cmd.deleteOne({ serverID: message.guild.id, commandName }).then((cmdRes) => {
       if (cmdRes.n >= 1) {
         this.reply(`The command ${commandName} has been deleted`);
       } else {
-        this.reply(`Command doesn't exists ${NaM}`);
+        this.reply(`Command doesn't exists ${nam}`);
       }
     }).catch(err => this.reply(`Error ${err}`));
   }

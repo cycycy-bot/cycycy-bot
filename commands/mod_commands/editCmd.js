@@ -11,17 +11,24 @@ class EditCmd extends Command {
     });
   }
 
-  run(message, args, NaM) {
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
     const commandName = args[0];
     const cmdRes = args.slice(1);
-    if (!commandName) return this.reply(`Please add a command name ${NaM}`);
-    if (!cmdRes) return this.reply(`Please add a command response ${NaM}`);
+    if (!commandName) return this.reply(`Please add a command name ${nam}`);
+    if (!cmdRes.length) return this.reply(`Please add a command response ${nam}`);
 
     this.bot.db.Cmd.updateOne({ serverID: message.guild.id, commandName },
       {
         commandRes: cmdRes.join(' '),
       })
-      .then(this.respond(`Command was changed ${NaM}`))
+      .then((res) => {
+        const modified = res.n;
+        if (modified >= 1) {
+          return this.respond(`Command was changed ${nam}`);
+        }
+        return this.respond(`No command was found ${nam}`);
+      })
       .catch(err => this.reply(`Error ${err}`));
   }
 }

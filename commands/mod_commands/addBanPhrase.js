@@ -8,13 +8,14 @@ class AddBanPhrase extends Command {
       usage: '$addbanphrase <word>',
       cooldown: 0,
       permission: 'MODERATOR',
-      aliases: ['abp', 'banphrase'],
+      aliases: ['abp'],
     });
   }
 
-  run(message, args, NaM) {
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
     const bp = args.join(' ');
-    if (!bp) return this.reply(`Please add a word to be banned ${NaM}`);
+    if (!bp) return this.reply(`Please add a word to be banned ${nam}`);
 
     const banphrase = new this.bot.db.BanPhrase({
       _id: this.bot.db.mongoose.Types.ObjectId(),
@@ -25,11 +26,11 @@ class AddBanPhrase extends Command {
 
     this.bot.db.BanPhrase.find({ serverID: message.guild.id, banphrase: bp }).then((serverRes) => {
       if (serverRes.length >= 1) {
-        return this.respond('Banphrase already exists');
+        return message.channel.send('Banphrase already exists');
       }
       return banphrase.save()
-        .then(this.respond('Banphrase added'))
-        .catch(err => this.reply(`Error ${err}`));
+        .then(message.channel.send('Banphrase added'))
+        .catch(err => message.reply(`Error ${err}`));
     });
   }
 }
