@@ -66,6 +66,7 @@ class Command {
 
   /**
    * Checks whether the user has a permission to fire the command
+   * @function
    */
   async hasPermission() {
     if (this.message.author.id === this.bot.config.owner) return true;

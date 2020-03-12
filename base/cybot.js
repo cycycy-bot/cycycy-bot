@@ -1,6 +1,7 @@
 const { Client, Collection } = require('discord.js');
 const chalk = require('chalk');
 const { readdir } = require('fs');
+const { version } = require('../package.json');
 
 /**
  * Represents a Discord client
@@ -41,26 +42,6 @@ class Cybot extends Client {
      * @type {Object}
      */
     this.db = require('../settings/databaseImport');
-
-    // Client initialization info
-    const nodeVersion = process.versions.node.split('.')[0];
-    if (nodeVersion < 10) {
-      console.warn(`${chalk.yellow('[WARNING]')} cybot initialized. You are using NodeJS ${process.version}. Version 10+ or latest stable release of NodeJS is advised to be used`);
-    } else {
-      console.info(`${chalk.green('cybot initialized')} You are using NodeJS ${process.version}`);
-    }
-  }
-
-  /**
-   * Logs the client in
-   * @param {String} token The token used to login for bot
-   */
-  login(token) {
-    // call Discord.Client's login method passing in the token
-    super.login(token);
-
-    // Returning the client to allow chaning of function calls
-    return this;
   }
 
   /**
@@ -157,6 +138,28 @@ class Cybot extends Client {
             .send(`Error connecting to DB: ${err}`);
         }
       });
+  }
+
+  /**
+   * Logs the client in
+   * @param {String} token The token used to login for bot
+   */
+  login(token) {
+    // call Discord.Client's login method passing in the token
+    super.login(token)
+      .then(() => {
+        // Client initialization info
+        const nodeVersion = process.versions.node.split('.')[0];
+        if (nodeVersion < 10) {
+          console.warn(`${chalk.yellow('[WARNING]')} cybot v${version} initialized. You are using NodeJS ${process.version}. Version 10+ or latest stable release of NodeJS is advised to be used`);
+        } else {
+          console.info(`${chalk.green(`cybot v${version} initialized`)} You are using NodeJS ${process.version}`);
+        }
+      })
+      .catch(err => console.error(`${chalk.red(err)}`));
+
+    // Returning the client to allow chaning of function calls
+    return this;
   }
 }
 

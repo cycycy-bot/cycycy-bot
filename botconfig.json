@@ -1,4 +1,17 @@
 {
     "prefix": "$",
-    "owner": "487797385691398145"
+    "status": [
+        {
+            "name": "forsan [$help]",
+            "type": "WATCHING"
+        },
+        {
+            "name": "bot.cycycy.me",
+            "type": "PLAYING"
+        },
+        {
+            "name": "NaM NaM NaM NaM NaM NaM NaM ",
+            "type": "STREAMING"
+        }
+    ]
 }

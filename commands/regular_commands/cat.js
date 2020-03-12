@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
       const { url } = cat[0];
       const catEmbed = new Discord.RichEmbed()
         .setImage(url)
-        .setFooter('Powered thecatpi');
+        .setFooter('Powered by thecatpi');
 
       return message
         .channel
