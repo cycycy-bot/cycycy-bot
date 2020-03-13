@@ -1,4 +1,3 @@
-const Pedo = require('../../models/pedoModDB');
 const Command = require('../../base/Command');
 
 class Pedofy extends Command {
@@ -14,7 +13,7 @@ class Pedofy extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
-    await Pedo.findOne({ serverID: message.guild.id, userID: message.member.id }).then((pedoRes) => {
+    await this.bot.db.Pedo.findOne({ serverID: message.guild.id, userID: message.member.id }).then((pedoRes) => {
       if (!pedoRes) {
         return this.reply(`You dont have permission for this command ${nam}`);
       }

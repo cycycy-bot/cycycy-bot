@@ -7,6 +7,7 @@ const Logger = require('../models/loggerDB');
 const Welcome = require('../models/welcomeDB');
 const AntiWeeb = require('../models/antiweebDB');
 const Mod = require('../models/modDBtest');
+const Pedo = require('../models/pedoModDB');
 
 module.exports = {
   mongoose,
@@ -18,4 +19,5 @@ module.exports = {
   Welcome,
   AntiWeeb,
   Mod,
+  Pedo,
 };
