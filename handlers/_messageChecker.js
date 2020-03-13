@@ -8,7 +8,7 @@ const handleMessage = (bot, message, cmd, prefix, weirdChamp, NaM, OMGScoots) =>
     db.Cmd.findOne({
       serverID: message.guild.id,
       commandName: {
-        $regex: new RegExp(`^${cmdChk.toLowerCase()}`, 'i'),
+        $regex: new RegExp(`^${cmdChk.toLowerCase()}$`, 'i'),
       },
     }).then((res) => {
       if (res) {
