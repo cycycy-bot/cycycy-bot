@@ -129,15 +129,19 @@ class Cybot extends Client {
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-      },
-      (err) => {
-        if (err) {
-          this
-            .channels
-            .get('531967060306165796')
-            .send(`Error connecting to DB: ${err}`);
-        }
       });
+
+    this.db.mongoose.connection.on('connected', () => {
+      console.log(`${chalk.green('MongoDB Connected!')}`);
+    });
+
+    this.db.mongoose.connection.on('error', (err) => {
+      console.error(`${chalk.red(err)}`);
+    });
+
+    this.db.mongoose.connection.on('disconnected', () => {
+      console.info(`${chalk.yellow('Mongoose default connection is disconnected')}`);
+    });
   }
 
   /**

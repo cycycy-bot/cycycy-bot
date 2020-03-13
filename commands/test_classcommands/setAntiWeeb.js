@@ -1,44 +1,58 @@
-const mongoose = require('mongoose');
-const AntiWeeb = require('../../models/antiweebDB');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args, NaM) => {
-  if (!message.member.hasPermission('ADMINISTRATOR')) return message.reply(`Only administrator have permission for this command ${NaM}`);
-  if (args[0] === 'help') {
-    return message.reply('```Usage: $setantiweeb <enable/disable>```');
-  }
-  const isEnabled = args[0];
-  const OkayChamp = bot.emojis.find(emoji => emoji.name === 'OkayChamp');
-  const DansGame = bot.emojis.find(emoji => emoji.name === 'DansGame');
-
-  if (!isEnabled) return message.reply('Please add enable or disable. Use `$setantiweeb help` for setting the anti weeb channel.');
-  if (isEnabled === 'enable') {
-    const antiweeb = new AntiWeeb({
-      _id: mongoose.Types.ObjectId(),
-      serverID: message.guild.id,
-      serverName: message.guild.name,
-      isEnabled: true,
+class SetAntiWeeb extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'setantiweeb',
+      description: 'Toggles the anti weeb response on a server',
+      usage: '$setantiweeb <enable/disable>',
+      permission: 'ADMINISTRATOR',
+      cooldown: 1000,
     });
-
-    AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
-      if (res) {
-        return AntiWeeb.updateOne({ serverID: message.guild.id },
-          { isEnabled: true, serverName: message.guild.name }).then(message.channel.send(`Anti weeb is now enabled in this server ${OkayChamp}`)).catch(err => message.reply(`Error ${err}`));
-      }
-      return antiweeb.save().then(message.channel.send(`Anti weeb is now enabled in this server ${OkayChamp}`)).catch(err => message.reply(`Error ${err}`));
-    }).catch(err => message.reply(`Error ${err}`));
-  } else if (isEnabled === 'disable') {
-    AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
-      if (res) {
-        return AntiWeeb.updateOne({ serverID: message.guild.id },
-          { isEnabled: false }).then(message.channel.send(`Anti weeb is disabled ${DansGame}`)).catch(err => message.reply(`Error ${err}`));
-      }
-      return message.channel.send(`Anti weeb has not been setup in this server yet ${DansGame}`);
-    }).catch(err => message.reply(`Error ${err}`));
-  } else {
-    return message.channel.send('An error has occured. Use `$setantiweeb help` for setting the logger channel.');
   }
-};
 
-module.exports.help = {
-  name: 'setantiweeb',
-};
+  async run(message, args) {
+    const okayChamp = this.bot.emojis.find(emoji => emoji.name === 'OkayChamp');
+    const dansGame = this.bot.emojis.find(emoji => emoji.name === 'DansGame');
+    const isEnabled = args[0];
+
+    if (!isEnabled) return this.reply('Please add `enable` or `disable` as 3rd argument. Use `$help setantiweeb` for setting the anti weeb channel.');
+    if (isEnabled === 'enable') {
+      const antiweeb = new this.db.AntiWeeb({
+        _id: this.db.mongoose.Types.ObjectId(),
+        serverID: message.guild.id,
+        serverName: message.guild.name,
+        isEnabled: true,
+      });
+
+      this.db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
+        if (res) {
+          return this.db.AntiWeeb.updateOne({ serverID: message.guild.id },
+            {
+              isEnabled: true,
+              serverName: message.guild.name,
+            })
+            .then(this.respond(`Anti weeb is now enabled in this server ${okayChamp}`))
+            .catch(err => this.reply(`Error ${err}`));
+        }
+        return antiweeb.save()
+          .then(this.respond(`Anti weeb is now enabled in this server ${okayChamp}`))
+          .catch(err => this.reply(`Error ${err}`));
+      }).catch(err => this.reply(`Error ${err}`));
+    } else if (isEnabled === 'disable') {
+      this.db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
+        if (res) {
+          return this.db.AntiWeeb.updateOne({ serverID: message.guild.id },
+            { isEnabled: false })
+            .then(this.respond(`Anti weeb is disabled ${dansGame}`))
+            .catch(err => this.reply(`Error ${err}`));
+        }
+        return this.respond(`Anti weeb has not been setup in this server yet ${dansGame}`);
+      }).catch(err => this.reply(`Error ${err}`));
+    } else {
+      return this.respond('An error has occured. Use `$help setantiweeb` for setting the antiweeb module.');
+    }
+  }
+}
+
+module.exports = SetAntiWeeb;
