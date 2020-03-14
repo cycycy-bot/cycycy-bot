@@ -15,12 +15,14 @@ class Purge extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
-    await message.delete();
+    const { Logger } = this.bot.db;
+
     if (!args[0]) return this.reply(`Please add number of messages ${nam}`);
     if (isNaN(args[0])) return this.reply(`Please use number as arguments. ${nam}`);
+    await message.delete();
 
     return message.channel.bulkDelete(args[0]).then((messages) => {
-      this.bot.db.Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
+      Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
         if (logRes.isEnabled && logRes.isEnabled === 'enable') {
           messages.map((messagesItem) => {
             const logEmbed = new Discord.RichEmbed()

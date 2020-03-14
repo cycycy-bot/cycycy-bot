@@ -14,6 +14,7 @@ class Unmute extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+
     const unMute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
     const muteRole = message.guild.roles.find(x => x.name === 'muted');
     if (!unMute) return message.channel.send(`User not found ${nam}`);

@@ -13,12 +13,14 @@ class EditCmd extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { Cmd } = this.bot.db;
+
     const commandName = args[0];
     const cmdRes = args.slice(1);
     if (!commandName) return this.reply(`Please add a command name ${nam}`);
     if (!cmdRes.length) return this.reply(`Please add a command response ${nam}`);
 
-    this.bot.db.Cmd.updateOne({ serverID: message.guild.id, commandName },
+    Cmd.updateOne({ serverID: message.guild.id, commandName },
       {
         commandRes: cmdRes.join(' '),
       })

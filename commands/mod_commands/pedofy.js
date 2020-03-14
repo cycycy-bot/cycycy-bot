@@ -13,7 +13,9 @@ class Pedofy extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
-    await this.bot.db.Pedo.findOne({ serverID: message.guild.id, userID: message.member.id }).then((pedoRes) => {
+    const { Pedo } = this.bot.db;
+
+    Pedo.findOne({ serverID: message.guild.id, userID: message.member.id }).then((pedoRes) => {
       if (!pedoRes) {
         return this.reply(`You dont have permission for this command ${nam}`);
       }

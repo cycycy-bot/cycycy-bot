@@ -13,10 +13,12 @@ class DelCmd extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { Cmd } = this.bot.db;
+
     const commandName = args[0];
     if (!commandName) return this.reply(`Please add a command name ${nam}`);
 
-    this.bot.db.Cmd.deleteOne({ serverID: message.guild.id, commandName }).then((cmdRes) => {
+    Cmd.deleteOne({ serverID: message.guild.id, commandName }).then((cmdRes) => {
       if (cmdRes.n >= 1) {
         this.reply(`The command ${commandName} has been deleted`);
       } else {

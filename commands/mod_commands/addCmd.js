@@ -13,14 +13,16 @@ class AddCmd extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { mongoose, Cmd } = this.bot.db;
+
     const cmdRes = args.slice(1);
     const resJoined = cmdRes.join(' ');
     const commandName = args[0];
     if (!commandName) return this.reply(`Please add a command name ${nam}`);
     if (!resJoined) return this.reply(`Please add a command response ${nam}`);
 
-    const cmd = new this.bot.db.Cmd({
-      _id: this.bot.db.mongoose.Types.ObjectId(),
+    const cmd = new Cmd({
+      _id: mongoose.Types.ObjectId(),
       serverID: message.guild.id,
       serverName: message.guild.name,
       commandName: args[0],
@@ -30,7 +32,7 @@ class AddCmd extends Command {
     // checks if command exists or not
     const defaultCmd = this.bot.commands.get(commandName) || this.bot.aliases.get(commandName);
     if (!defaultCmd) {
-      this.bot.db.Cmd.find({ serverID: message.guild.id, commandName }).then((serverRes) => {
+      Cmd.find({ serverID: message.guild.id, commandName }).then((serverRes) => {
         if (serverRes.length >= 1) {
           return this.respond('Command already exists');
         }

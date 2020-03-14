@@ -14,9 +14,10 @@ class TempMute extends Command {
   }
 
   async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+
     const toMute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
     const PepeS = this.bot.emojis.find(emoji => emoji.name === 'PepeS');
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
 
     if (!toMute) return message.channel.send(`User not found ${nam}`);
     if (toMute.id === '487797385691398145') {

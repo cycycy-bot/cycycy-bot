@@ -14,11 +14,12 @@ class DelWeebMod extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { Pedo } = this.bot.db;
 
     const weebMod = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
     if (!weebMod) return this.respond(`User not found ${nam}`);
 
-    this.bot.Pedo.deleteOne({ serverID: message.guild.id, userID: weebMod.id }).then((pedoRes) => {
+    Pedo.deleteOne({ serverID: message.guild.id, userID: weebMod.id }).then((pedoRes) => {
       if (pedoRes.n >= 1) {
         return this.reply(`Weeb mod ${weebMod.user.username} deleted ${nam}`);
       }

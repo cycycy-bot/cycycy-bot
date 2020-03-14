@@ -14,20 +14,21 @@ class SetAntiWeeb extends Command {
   async run(message, args) {
     const okayChamp = this.bot.emojis.find(emoji => emoji.name === 'OkayChamp');
     const dansGame = this.bot.emojis.find(emoji => emoji.name === 'DansGame');
+    const { mongoose, AntiWeeb } = this.bot.db;
     const isEnabled = args[0];
 
     if (!isEnabled) return this.reply('Please add `enable` or `disable` as 3rd argument. Use `$help setantiweeb` for setting the anti weeb channel.');
     if (isEnabled === 'enable') {
-      const antiweeb = new this.db.AntiWeeb({
-        _id: this.db.mongoose.Types.ObjectId(),
+      const antiweeb = new AntiWeeb({
+        _id: mongoose.Types.ObjectId(),
         serverID: message.guild.id,
         serverName: message.guild.name,
         isEnabled: true,
       });
 
-      this.db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
+      AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
         if (res) {
-          return this.db.AntiWeeb.updateOne({ serverID: message.guild.id },
+          return AntiWeeb.updateOne({ serverID: message.guild.id },
             {
               isEnabled: true,
               serverName: message.guild.name,
@@ -40,9 +41,9 @@ class SetAntiWeeb extends Command {
           .catch(err => this.reply(`Error ${err}`));
       }).catch(err => this.reply(`Error ${err}`));
     } else if (isEnabled === 'disable') {
-      this.db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
+      AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
         if (res) {
-          return this.db.AntiWeeb.updateOne({ serverID: message.guild.id },
+          return AntiWeeb.updateOne({ serverID: message.guild.id },
             { isEnabled: false })
             .then(this.respond(`Anti weeb is disabled ${dansGame}`))
             .catch(err => this.reply(`Error ${err}`));

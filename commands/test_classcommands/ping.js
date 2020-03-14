@@ -13,8 +13,8 @@ class Ping extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
-
     const KEKW = this.bot.emojis.find(emoji => emoji.name === 'KEKW');
+
     if (!message.member.hasPermission('ADMINISTRATOR')) return message.reply(`You don't have a permission for this command. ${nam}`);
     return this.respond(`PINGING ${KEKW} took ${Math.round(this.bot.ping)}ms`);
   }
