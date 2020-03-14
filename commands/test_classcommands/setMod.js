@@ -1,5 +1,3 @@
-// const mongoose = require('mongoose');
-// const Mod = require('../../models/modDBtest');
 const Command = require('../../base/Command');
 
 class SetMod extends Command {
