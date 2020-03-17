@@ -97,7 +97,7 @@ class Command {
    * @param {String} message The message string in response to the command
    */
   respond(message) {
-    this.message.channel.send(message);
+    return this.message.channel.send(message);
   }
 
   /**
