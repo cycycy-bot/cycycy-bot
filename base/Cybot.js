@@ -186,6 +186,13 @@ class Cybot extends Client {
       console.error(`${chalk.red('Uncaught Promise Error: ')} ${err}`);
     });
 
+    // close db connection on closed process
+    process.on('SIGINT', () => {
+      this.db.mongoose.connection.close(() => {
+        console.info(`${chalk.yellow('Mongoose default connection is disconnected due to application termination')}`);
+        process.exit(0);
+      });
+    });
 
     this.loadCommands('./commands');
     this.loadEvents('./handlers');
