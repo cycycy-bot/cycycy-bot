@@ -167,7 +167,12 @@ class Cybot extends Client {
     return this;
   }
 
+
   init() {
+    this.on('disconnect', () => console.warn(`${chalk.yellow('Bot is disconnecting...')}`))
+      .on('reconnecting', () => console.log(`${chalk.green('Bot reconnecting...')}`))
+      .on('error', e => console.error(chalk.red(e))
+        .on('warn', info => console.warn(chalk.yellow(info))));
     // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
     process.on('uncaughtException', (err) => {
       const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
