@@ -3,6 +3,7 @@ const chalk = require('chalk');
 const { readdir } = require('fs');
 const { version } = require('../package.json');
 
+
 /**
  * Represents a Discord client
  * @extends Discord.Client
@@ -164,6 +165,27 @@ class Cybot extends Client {
 
     // Returning the client to allow chaning of function calls
     return this;
+  }
+
+  init() {
+    // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
+    process.on('uncaughtException', (err) => {
+      const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
+      console.error(`${chalk.red('Uncaught Promise Error: ')} ${errorMsg}`);
+      // Always best practice to let the code crash on uncaught exceptions.
+      // Because you should be catching them anyway.
+      process.exit(1);
+    });
+
+    process.on('unhandledRejection', (err) => {
+      console.error(`${chalk.red('Uncaught Promise Error: ')} ${err}`);
+    });
+
+
+    this.loadCommands('./commands');
+    this.loadEvents('./handlers');
+    this.loadDb(process.env.DB_PASS);
+    this.login(process.env.TEST_BOT);
   }
 }
 
