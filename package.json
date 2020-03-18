@@ -21,6 +21,7 @@
     "ms": "^2.1.2",
     "newsapi": "^2.4.0",
     "node-fetch": "^2.6.0",
+    "steam-user": "^4.13.2",
     "wikijs": "^5.5.1"
   },
   "devDependencies": {
