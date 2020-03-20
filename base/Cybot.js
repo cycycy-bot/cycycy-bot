@@ -30,6 +30,12 @@ class Cybot extends Client {
      */
     this.aliases = new Collection();
 
+    /**
+     * Collection of users in cookie command cooldown
+     * @type {Discord.Collection}
+     */
+    this.cookieCD = new Collection();
+
     // Bot variables
 
     /**
@@ -43,6 +49,12 @@ class Cybot extends Client {
      * @type {Object}
      */
     this.db = require('../settings/databaseImport');
+
+    /**
+     * Fetch Module
+     * @type {Object}
+     */
+    this.fetch = require('node-fetch');
   }
 
   /**

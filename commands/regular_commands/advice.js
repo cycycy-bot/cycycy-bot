@@ -20,9 +20,9 @@ class Advice extends Command {
         const cookieEmbed = new Discord.RichEmbed()
           .setColor(3447003)
           .addField(`${message.author.username} here is your advice ${omgScoots}`, res.slip.advice);
-        super.respond(cookieEmbed);
+        this.respond(cookieEmbed);
       })
-      .catch(err => super.reply(`Error ${err}`));
+      .catch(err => this.reply(`Error ${err}`));
   }
 }
 

@@ -29,10 +29,8 @@ class AfkCommand extends Command {
       if (res.length >= 1) { // afk limiter
         return this.reply(`You are already AFK ${nam}`);
       }
-      afk
-        .save()
-        .then(message
-          .reply(`is now AFK: ${reason}`))
+      afk.save()
+        .then(this.reply(`is now AFK: ${reason}`))
         .catch(err => this.reply(`Error ${err}`));
     });
   }
