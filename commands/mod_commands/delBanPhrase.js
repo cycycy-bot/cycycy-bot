@@ -9,6 +9,7 @@ class DelBanPhrase extends Command {
       cooldown: 0,
       permission: 'MODERATOR',
       aliases: ['dbp'],
+      category: 'mod',
     });
   }
 

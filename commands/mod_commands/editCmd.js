@@ -8,6 +8,7 @@ class EditCmd extends Command {
       usage: '$editcmd <command_name> <command_response>',
       cooldown: 0,
       permission: 'MODERATOR',
+      category: 'mod',
     });
   }
 

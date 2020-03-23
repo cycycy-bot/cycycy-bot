@@ -8,6 +8,7 @@ class SetAntiWeeb extends Command {
       usage: '$setantiweeb <enable/disable>',
       permission: 'ADMINISTRATOR',
       cooldown: 1000,
+      category: 'admin',
     });
   }
 

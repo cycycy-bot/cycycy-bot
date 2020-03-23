@@ -9,6 +9,7 @@ class ShutDown extends Command {
       usage: '$shutdown',
       ownerOnly: true,
       cooldown: 0,
+      category: 'admin',
     });
   }
 

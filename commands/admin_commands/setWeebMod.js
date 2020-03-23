@@ -8,6 +8,7 @@ class SetWeebMod extends Command {
       usage: '$setweebmod <user>',
       permission: 'ADMINISTRATOR',
       cooldown: 1000,
+      category: 'admin',
     });
   }
 

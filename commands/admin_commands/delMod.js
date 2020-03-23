@@ -9,6 +9,7 @@ class DelMod extends Command {
       aliases: ['dm'],
       permission: 'ADMINISTRATOR',
       cooldown: 0,
+      category: 'admin',
     });
   }
 

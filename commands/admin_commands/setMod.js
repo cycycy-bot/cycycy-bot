@@ -5,9 +5,10 @@ class SetMod extends Command {
     super(bot, {
       name: 'setmod',
       description: 'Sets the mod role in guild',
-      usage: '$setmod <mod_role_name>>',
+      usage: '$setmod <mod_role_name>',
       permission: 'ADMINISTRATOR',
       cooldown: 1000,
+      category: 'admin',
     });
   }
 

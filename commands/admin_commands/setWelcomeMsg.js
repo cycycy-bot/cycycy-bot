@@ -8,6 +8,7 @@ class SetWelcomeMsg extends Command {
       usage: '$setwelcomemsg <enable/disable> <channel_name> <welcome_msg>',
       permission: 'ADMINISTRATOR',
       cooldown: 1000,
+      category: 'admin',
     });
   }
 

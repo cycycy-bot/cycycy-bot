@@ -8,6 +8,7 @@ class AddCmd extends Command {
       usage: '$addcmd <command_name> <command_response>',
       cooldown: 0,
       permission: 'MODERATOR',
+      category: 'mod',
     });
   }
 

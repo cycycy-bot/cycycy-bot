@@ -8,6 +8,7 @@ class Test extends Command {
       usage: '$test',
       permission: 'ADMINISTRATOR',
       cooldown: 1000,
+      category: 'admin',
     });
   }
 

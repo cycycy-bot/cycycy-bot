@@ -9,6 +9,7 @@ class Stats extends Command {
       usage: '$stats',
       permission: 'ADMINISTRATOR',
       cooldown: 1000,
+      category: 'admin',
     });
   }
 

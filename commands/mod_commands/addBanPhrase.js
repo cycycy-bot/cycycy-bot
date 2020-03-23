@@ -9,6 +9,7 @@ class AddBanPhrase extends Command {
       cooldown: 0,
       permission: 'MODERATOR',
       aliases: ['abp'],
+      category: 'mod',
     });
   }
 

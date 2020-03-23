@@ -10,6 +10,7 @@ class TempMute extends Command {
       cooldown: 0,
       permission: 'MODERATOR',
       aliases: ['mute', 'tm'],
+      category: 'mod',
     });
   }
 

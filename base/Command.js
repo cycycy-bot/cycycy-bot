@@ -42,12 +42,6 @@ class Command {
      * @type {Set}
      */
     this.cooldown = new Set();
-
-    /**
-     * Fetch module
-     * @type {Function}
-     */
-    this.fetch = require('node-fetch');
   }
 
   /**
@@ -95,17 +89,28 @@ class Command {
   /**
    * Response to the command
    * @param {String} message The message string in response to the command
+   * @param {Object} options The message options
    */
-  respond(message) {
-    return this.message.channel.send(message);
+  respond(message, options) {
+    return this.message.channel.send(message, options);
   }
 
   /**
    * Replies to the user who sent the command
    * @param {String} message The message string in response to the command
+   * @param {Object} options The message options
    */
-  reply(message) {
-    this.message.reply(message);
+  reply(message, options) {
+    this.message.reply(message, options);
+  }
+
+  /**
+   * Replies to the user in DMs
+   * @param {String} message The message string in response to the command
+   * @param {Object} options The message options
+   */
+  dm(message, options) {
+    this.message.author.send(message, options);
   }
 }
 

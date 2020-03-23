@@ -8,6 +8,7 @@ class DelCmd extends Command {
       usage: '$delcmd <command_name>',
       cooldown: 0,
       permission: 'MODERATOR',
+      category: 'mod',
     });
   }
 

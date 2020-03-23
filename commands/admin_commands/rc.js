@@ -9,6 +9,7 @@ class RoleCount extends Command {
       permission: 'ADMINISTRATOR',
       aliases: ['rc'],
       cooldown: 1000,
+      category: 'admin',
     });
   }
 

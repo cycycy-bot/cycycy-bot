@@ -9,6 +9,7 @@ class DelWeebMod extends Command {
       aliases: ['dwm'],
       permission: 'ADMINISTRATOR',
       cooldown: 0,
+      category: 'admin',
     });
   }
 

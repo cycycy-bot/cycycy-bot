@@ -9,6 +9,7 @@ class Advice extends Command {
       usage: '$advice',
       aliases: ['adv'],
       cooldown: 0,
+      category: 'mod',
     });
   }
 

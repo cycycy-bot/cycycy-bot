@@ -8,6 +8,7 @@ class Ping extends Command {
       usage: '$ping',
       permission: 'ADMINISTRATOR',
       cooldown: 1000,
+      category: 'admin',
     });
   }
 

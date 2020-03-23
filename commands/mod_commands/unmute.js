@@ -9,6 +9,7 @@ class Unmute extends Command {
       cooldown: 0,
       permission: 'MODERATOR',
       aliases: ['um'],
+      category: 'mod',
     });
   }
 

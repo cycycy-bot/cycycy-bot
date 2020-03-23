@@ -9,6 +9,7 @@ class Restart extends Command {
       permission: 'ADMINISTRATOR',
       ownerOnly: true,
       cooldown: 1000,
+      category: 'admin',
     });
   }
 

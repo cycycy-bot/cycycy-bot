@@ -8,6 +8,7 @@ class Pedofy extends Command {
       usage: '$pedofy <member>',
       cooldown: 0,
       permission: 'MODERATOR',
+      category: 'mod',
     });
   }
 

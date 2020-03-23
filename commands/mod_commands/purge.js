@@ -10,6 +10,7 @@ class Purge extends Command {
       cooldown: 0,
       permission: 'MODERATOR',
       aliases: ['p'],
+      category: 'mod',
     });
   }
 

@@ -8,6 +8,7 @@ class SetLogger extends Command {
       usage: '$setlogger <enable/disable> <channel_name>(case sensitive)',
       permission: 'ADMINISTRATOR',
       cooldown: 1000,
+      category: 'admin',
     });
   }
 

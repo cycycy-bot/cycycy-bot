@@ -180,17 +180,16 @@ class Cybot extends Client {
   }
 
 
-  init() {
+  async init() {
     this.on('disconnect', () => console.warn(`${chalk.yellow('Bot is disconnecting...')}`))
       .on('reconnecting', () => console.log(`${chalk.green('Bot reconnecting...')}`))
       .on('error', e => console.error(chalk.red(e))
         .on('warn', info => console.warn(chalk.yellow(info))));
+
     // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
     process.on('uncaughtException', (err) => {
       const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
       console.error(`${chalk.red('Uncaught Promise Error: ')} ${errorMsg}`);
-      // Always best practice to let the code crash on uncaught exceptions.
-      // Because you should be catching them anyway.
       process.exit(1);
     });
 

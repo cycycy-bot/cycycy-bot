@@ -9,6 +9,7 @@ class Kick extends Command {
       cooldown: 0,
       permission: 'MODERATOR',
       aliases: ['k'],
+      category: 'mod',
     });
   }
 

@@ -26,7 +26,7 @@ module.exports = (bot, message) => {
   cmdFile.hasPermission().then((perm) => {
     const nam = bot.emojis.find(emoji => emoji.name === 'NaM');
 
-    if (perm === undefined) return message.reply(`You haven't set a mod in this server ${nam}. To set a mod in this server do $setmod help.`);
+    if (perm === undefined) return message.reply(`You haven't set a mod in this server ${nam}. To set a mod in this server do $help setmod.`);
     if (!perm) return message.reply(`You don't have permission for this command ${nam}`);
     if (cmdFile && cmd.startsWith(prefix)) cmdFile.run(message, args);
     if (cmdFile.conf.cooldown > 0) cmdFile.startCooldown(message.author.id);

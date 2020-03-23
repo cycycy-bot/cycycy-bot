@@ -8,6 +8,7 @@ class SetLeaveQueue extends Command {
       usage: '$setleavequeue <integer/number>',
       permission: 'ADMINISTRATOR',
       cooldown: 1000,
+      category: 'admin',
     });
   }
 
