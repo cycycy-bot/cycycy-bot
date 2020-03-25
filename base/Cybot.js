@@ -208,7 +208,7 @@ class Cybot extends Client {
     this.loadCommands('./commands');
     this.loadEvents('./handlers');
     this.loadDb(process.env.DB_PASS);
-    this.login(process.env.TEST_BOT);
+    this.login(process.env.BOT_TOKEN);
   }
 }
 
