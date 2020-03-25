@@ -26,8 +26,8 @@ class Pedofy extends Command {
 
       const pedo = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
       const weirdChamp = this.bot.emojis.find(emoji => emoji.name === 'WeirdChamp');
-      if (!pedo) return this.send(`User not found ${nam}`);
-      if (pedo.id === '487797385691398145') return this.send(`My master is not a pedo ${weirdChamp}`);
+      if (!pedo) return this.respond(`User not found ${nam}`);
+      if (pedo.id === '487797385691398145') return this.respond(`My master is not a pedo ${weirdChamp}`);
 
       let pedoRole = message.guild.roles.find(role => role.name === 'Pedo');
       if (!pedoRole) {
