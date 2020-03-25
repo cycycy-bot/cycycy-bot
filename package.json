@@ -10,14 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@vitalets/google-translate-api": "^2.9.0",
+    "@vitalets/google-translate-api": "^3.0.0",
     "canvas": "^2.6.1",
     "chalk": "^3.0.0",
     "discord.js": "^11.5.1",
     "dotenv": "^6.2.0",
     "express": "^4.17.1",
     "get-image-colors": "^2.0.0",
-    "mongoose": "^5.8.9",
+    "mongoose": "^5.9.5",
     "ms": "^2.1.2",
     "newsapi": "^2.4.0",
     "node-fetch": "^2.6.0",
@@ -25,8 +25,8 @@
     "wikijs": "^5.5.1"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
+    "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.20.0"
+    "eslint-plugin-import": "^2.20.1"
   }
 }
