@@ -14,7 +14,7 @@ class Advice extends Command {
 
   async run(message, args) {
     const omgScoots = this.bot.emojis.find(emoji => emoji.name === 'OMGScoots');
-    this.fetch('https://api.adviceslip.com/advice')
+    this.bot.fetch('https://api.adviceslip.com/advice')
       .then(res => res.json())
       .then((res) => {
         const cookieEmbed = new Discord.RichEmbed()

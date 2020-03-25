@@ -37,7 +37,6 @@ class Help extends Commands {
       if (!commandName) {
         let output = `= Command List = \n\n[Use ${this.bot.config.prefix}help <commandname> for details]\n`;
         regularCommands.forEach((c) => {
-          console.log(c);
           output += `${this.bot.config.prefix}${c.commandInfo.name} :: ${c.commandInfo.description}\n`;
         });
         this.respond(output, { code: 'asciidoc', split: { char: '\u200b' } });
@@ -46,7 +45,6 @@ class Help extends Commands {
         if (message.member.roles.has(serverRole.id) || message.member.hasPermission('ADMINISTRATOR')) {
           output = `= Mod Commands List = \n\n[Use ${this.bot.config.prefix}help <commandname> for details]\n`;
           modCommands.forEach((c) => {
-            console.log(c);
             output += `${this.bot.config.prefix}${c.commandInfo.name} :: ${c.commandInfo.description}\n`;
           });
           try {
@@ -60,7 +58,6 @@ class Help extends Commands {
         if (message.member.hasPermission('ADMINISTRATOR')) {
           output = `= Admin Command List = \n\n[Use ${this.bot.config.prefix}help <commandname> for details]\n`;
           adminCommands.forEach((c) => {
-            console.log(c);
             output += `${this.bot.config.prefix}${c.commandInfo.name} :: ${c.commandInfo.description}\n`;
           });
           try {
