@@ -93,6 +93,7 @@ class Cybot extends Client {
         const props = new (require(`../${path}/mod_commands/${f}`))(this);
         console.info(chalk.green(`Command: ${f} loaded!`));
         this.commands.set(props.help.name, props);
+        props.conf.aliases.forEach(a => this.aliases.set(a, props.help.name));
       });
     });
     // // read admin commands
@@ -109,6 +110,7 @@ class Cybot extends Client {
         const props = new (require(`../${path}/admin_commands/${f}`))(this);
         console.info(chalk.green(`Command: ${f} loaded!`));
         this.commands.set(props.help.name, props);
+        props.conf.aliases.forEach(a => this.aliases.set(a, props.help.name));
       });
     });
   }
