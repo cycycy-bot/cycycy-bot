@@ -1,56 +1,80 @@
-const discord = require('discord.js');
-const Mods = require('../../models/modDBtest');
+const Commands = require('../../base/Command');
 
-module.exports.run = async (bot, message) => {
-  const helpEmbed = new discord.RichEmbed()
-    .setDescription('Help Menu')
-    .setColor('#4286f4')
-    .addField('Command Help', 'do **$<command_name> help** for command usage')
-    .addField('Member Commands', '**serverinfo** | info about server \n **botinfo** | info about bot \n **userinfo** | info about user \n **advice/cookie** | gives you advice or fortune cookie OMGScoots \n **catfact** | random cat facts \n **translate** | automatically translates detected langauge \n **gn/afk** | set status to AFK or sleeping(gives you stats about your sleep time)\n **notify** | notify a specific user \n **tuck** | tuck someone to bed \n **wiki** | wiki search OMGScoots \n **avatar** | shows the user\'s avatar \n **news** | show top headlines from any country, category, or custom search \n **weather** | shows current weather for a city \n **commands** | shows server commands');
+class Help extends Commands {
+  constructor(bot) {
+    super(bot, {
+      name: 'help',
+      description: 'Displays a list of available commands with description',
+      usage: '$help',
+      aliases: ['h'],
+      cooldown: 0,
+    });
+  }
 
-  await message
-    .channel
-    .send(helpEmbed);
+  async run(message, args) {
+    const regularCommands = [];
+    const modCommands = [];
+    const adminCommands = [];
+    const { Mod } = this.bot.db;
 
-  Mods.findOne({ serverID: message.guild.id }).then((res) => {
-    if (res) {
+    await this.bot.commands.forEach((c) => {
+      const { category } = c.help;
+      const { aliases } = c.conf;
+
+      if (category === 'regular') {
+        regularCommands.push({ commandInfo: c.help, aliases });
+      } else if (category === 'mod') {
+        modCommands.push({ commandInfo: c.help, aliases });
+      } else {
+        adminCommands.push({ commandInfo: c.help, aliases });
+      }
+    });
+
+    const commandName = args[0];
+
+    Mod.findOne({ serverID: message.guild.id }).then((res) => {
       const serverRole = message.guild.roles.get(res.modName);
-      if ((res.modName === serverRole.id && message.member.roles.has(serverRole.id)) || message.member.hasPermission('ADMINISTRATOR')) {
-        const modEmbed = new discord.RichEmbed()
-          .setDescription('Mod Help Menu')
-          .setColor('#6dbefd')
-          .addField('Mod Commands', 'tempmute | temporarily mutes a user \n unmute | unmute a user \n kick | kicks a user \n addcmd | adds a command \n editcmd | edits a custom command \n delcmd | deletes a custom command \n addbanphrase | adds a banphrase \n delbanphrase | deletes a banphrase');
+      if (!commandName) {
+        let output = `= Command List = \n\n[Use ${this.bot.config.prefix}help <commandname> for details]\n`;
+        regularCommands.forEach((c) => {
+          console.log(c);
+          output += `${this.bot.config.prefix}${c.commandInfo.name} :: ${c.commandInfo.description}\n`;
+        });
+        this.respond(output, { code: 'asciidoc', split: { char: '\u200b' } });
 
-        try {
-          message
-            .author
-            .send(modEmbed);
-        } catch (e) {
-          return message.reply("Your DMs are locked. I can't send mod commands");
-        }
-
-        if (message
-          .member
-          .hasPermission('ADMINISTRATOR')) {
-          const adminEmbed = new discord.RichEmbed()
-            .setDescription('Admin Help Menu')
-            .setColor('#008fff')
-            .addField('Admin Commands', 'setmod | sets mod role for the server **IMPORTANT TO SETUP!** \n delmod | deletes a mod role in server \n rc | counts how many members a role has \n setlogger | sets the logger channel in the server \n test | tests if the bot is running \n stats | server count');
-
+        // send mod commands if member is a mod
+        if (message.member.roles.has(serverRole.id) || message.member.hasPermission('ADMINISTRATOR')) {
+          output = `= Mod Commands List = \n\n[Use ${this.bot.config.prefix}help <commandname> for details]\n`;
+          modCommands.forEach((c) => {
+            console.log(c);
+            output += `${this.bot.config.prefix}${c.commandInfo.name} :: ${c.commandInfo.description}\n`;
+          });
           try {
-            return message
-              .author
-              .send(adminEmbed);
+            this.dm(output, { code: 'asciidoc', split: { char: '\u200b' } });
           } catch (e) {
-            return message.reply("Your DMs are locked. I can't send admin commands");
+            return this.reply("Your DMs are locked. I can't send mod commands");
           }
         }
-      }
-    }
-  })
-    .catch(err => message.reply(`Error ${err}`));
-};
 
-module.exports.help = {
-  name: 'help',
-};
+        // send admin commands if member is a mod
+        if (message.member.hasPermission('ADMINISTRATOR')) {
+          output = `= Admin Command List = \n\n[Use ${this.bot.config.prefix}help <commandname> for details]\n`;
+          adminCommands.forEach((c) => {
+            console.log(c);
+            output += `${this.bot.config.prefix}${c.commandInfo.name} :: ${c.commandInfo.description}\n`;
+          });
+          try {
+            this.dm(output, { code: 'asciidoc', split: { char: '\u200b' } });
+          } catch (e) {
+            return this.reply("Your DMs are locked. I can't send mod commands");
+          }
+        }
+      } else if (this.bot.commands.has(commandName)) {
+        const command = this.bot.commands.get(commandName);
+        this.respond(`= ${command.help.name} =\n${command.help.description}\nusage:: ${command.help.usage}\nalises:: ${command.conf.aliases.join(', ')}`, { code: 'asciidoc' });
+      }
+    });
+  }
+}
+
+module.exports = Help;

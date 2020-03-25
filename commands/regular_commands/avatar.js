@@ -8,7 +8,7 @@ class Avatar extends Command {
       description: 'Shows the user\'s avatar',
       usage: '$avatar <user> (optional)',
       aliases: ['atr'],
-      cooldown: 0,
+      cooldown: 1000,
     });
   }
 

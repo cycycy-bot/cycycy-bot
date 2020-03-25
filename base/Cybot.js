@@ -63,7 +63,7 @@ class Cybot extends Client {
    */
   loadCommands(path) {
     // read regular commands
-    readdir(`${path}/test_classcommands/`, (err, files) => {
+    readdir(`${path}/regular_commands/`, (err, files) => {
       if (err) console.error(`${chalk.red('Error:')} ${err}`);
 
       const jsfile = files.filter(f => f.split('.').pop() === 'js');
@@ -73,44 +73,44 @@ class Cybot extends Client {
       }
 
       jsfile.forEach((f) => {
-        const props = new (require(`../${path}/test_classcommands/${f}`))(this);
+        const props = new (require(`../${path}/regular_commands/${f}`))(this);
         console.info(`${chalk.green('Command loaded!:')} ${f}`);
         this.commands.set(props.help.name, props);
         props.conf.aliases.forEach(a => this.aliases.set(a, props.help.name));
       });
     });
     // read mod commands
-    // readdir(`${path}/mod_commands/`, (err, files) => {
-    //   if (err) console.error(chalk.red(err));
+    readdir(`${path}/mod_commands/`, (err, files) => {
+      if (err) console.error(chalk.red(err));
 
-    //   const jsfile = files.filter(f => f.split('.').pop() === 'js');
-    //   if (jsfile.length <= 0) {
-    //     console.error(chalk.red('Couldn\'t find commands.'));
-    //     return;
-    //   }
+      const jsfile = files.filter(f => f.split('.').pop() === 'js');
+      if (jsfile.length <= 0) {
+        console.error(chalk.red('Couldn\'t find commands.'));
+        return;
+      }
 
-    //   jsfile.forEach((f) => {
-    //     const props = require(`../${path}/mod_commands/${f}`);
-    //     console.info(chalk.green(`Command: ${f} loaded!`));
-    //     this.commands.set(props.help.name, props);
-    //   });
-    // });
+      jsfile.forEach((f) => {
+        const props = new (require(`../${path}/mod_commands/${f}`))(this);
+        console.info(chalk.green(`Command: ${f} loaded!`));
+        this.commands.set(props.help.name, props);
+      });
+    });
     // // read admin commands
-    // readdir(`${path}/admin_commands/`, (err, files) => {
-    //   if (err) console.error(chalk.red(err));
+    readdir(`${path}/admin_commands/`, (err, files) => {
+      if (err) console.error(chalk.red(err));
 
-    //   const jsfile = files.filter(f => f.split('.').pop() === 'js');
-    //   if (jsfile.length <= 0) {
-    //     console.error(chalk.red('Couldn\'t find commands.'));
-    //     return;
-    //   }
+      const jsfile = files.filter(f => f.split('.').pop() === 'js');
+      if (jsfile.length <= 0) {
+        console.error(chalk.red('Couldn\'t find commands.'));
+        return;
+      }
 
-    //   jsfile.forEach((f) => {
-    //     const props = require(`../${path}/admin_commands/${f}`);
-    //     console.info(chalk.green(`Command: ${f} loaded!`));
-    //     this.commands.set(props.help.name, props);
-    //   });
-    // });
+      jsfile.forEach((f) => {
+        const props = new (require(`../${path}/admin_commands/${f}`))(this);
+        console.info(chalk.green(`Command: ${f} loaded!`));
+        this.commands.set(props.help.name, props);
+      });
+    });
   }
 
   /**

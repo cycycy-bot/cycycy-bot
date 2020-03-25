@@ -1,33 +1,40 @@
-const mongoose = require('mongoose');
-const Afk = require('../../models/afkDB');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args, NaM) => {
-  const reason = args.join(' ');
-  if (args[0] === 'help') {
-    message.reply('```Usage: $gn <message>```');
-    return;
+class Gn extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'gn',
+      description: 'Sets your bot status to AFK',
+      usage: '$gn <message>(optional)',
+      cooldown: 1000,
+    });
   }
-  const afk = new Afk({
-    _id: mongoose.Types.ObjectId(),
-    userID: message.author.id,
-    userName: message.author.username,
-    reason,
-    date: new Date(),
-    afkType: 'gn',
-    isTucked: false,
-  });
 
-  Afk.find({ userID: message.author.id }).then((res) => {
-    if (res.length >= 1) { // afk limiter
-      return message.reply(`You are already AFK ${NaM}`);
-    }
-    return afk.save()
-      .then(message.reply(`is now sleeping: ${reason}`))
-      .then(message.channel.send(`Somebody tuck them ${NaM}`))
-      .catch(err => message.reply(`Error ${err}`));
-  });
-};
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const reason = args.join(' ');
+    const { Afk, mongoose } = this.bot.db;
 
-module.exports.help = {
-  name: 'gn',
-};
+    const afk = new Afk({
+      _id: mongoose.Types.ObjectId(),
+      userID: message.author.id,
+      userName: message.author.username,
+      reason,
+      date: new Date(),
+      afkType: 'gn',
+      isTucked: false,
+    });
+
+    Afk.find({ userID: message.author.id }).then((res) => {
+      if (res.length >= 1) { // afk limiter
+        return this.reply(`You are already AFK ${nam}`);
+      }
+      return afk.save()
+        .then(this.reply(`is now sleeping: ${reason}`))
+        .then(this.respond(`Somebody tuck them ${nam}`))
+        .catch(err => this.reply(`Error ${err}`));
+    });
+  }
+}
+
+module.exports = Gn;

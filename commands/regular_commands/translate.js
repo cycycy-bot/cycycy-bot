@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const translate = require('@vitalets/google-translate-api');
+const Command = require('../../base/Command');
 
 const langs = {
   auto: 'Automatic',
@@ -220,63 +221,62 @@ const langsReversed = {
   Zulu: 'zu',
 };
 
-module.exports.run = async (bot, message, args, NaM) => {
-  if (args[0] === 'help') {
-    return message
-      .channel
-      .send('```Usage: $translate <message> or $translate to <language> <message>```');
+class Translate extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'translate',
+      description: 'Translates a phrase or sentence',
+      usage: '$translate <message> or $translate to <language> <message>',
+      cooldown: 1000,
+    });
   }
-  if (!args[0]) return message.reply(`Please add arguments ${NaM}`);
 
-  bot
-    .cooldown
-    .add(message.author.id);
-  setTimeout(() => {
-    bot.cooldown.delete(message.author.id);
-  }, 15000);
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
 
-  if (args[0].includes('to')) {
-    if (!args[1]) {
-      message.reply(`Please add a language to translate from english ${NaM}`);
-      const languages = new Discord.RichEmbed()
-        .addField('languages', 'Automatic: \'auto\' \n Afrikaans: \'af\' \n Albanian: \'sq\' \n Amharic: \'am\' \n Arabic: \'ar\' \n Armenian: \'hy\' \n Azerbaijani: \'az\' \n Basque: \'eu\' \n Belarusian: \'be\' \n Bengali: \'bn\' \n Bosnian: \'bs\', \n Bulgarian: \'bg\' \n Catalan: \'ca\' \n Cebuano: \'ceb\' \n Chichewa: \'ny\' \n \'Chinese-S\': \'zh\' \n \'Chinese-T\': \'zh-tw\' \n Corsican: \'co\' \n Croatian: \'hr\' \n Czech: \'cs\' \n Danish: \'da\' \n Dutch: \'nl\' \n English: \'en\' \n Esperanto: \'eo\' \n Estonian: \'et\' \n Filipino: \'tl\' \n Finnish: \'fi\' \n French: \'fr\' \n Frisian: \'fy\' \n Galician: \'gl\' \n Georgian: \'ka\' \n German: \'de\' \n Greek: \'el\' \n Gujarati: \'gu\' \n \'Haitian-Creole\': \'ht\' \n', true)
-        .addField('⠀', ' Hausa: \'ha\' \n Hawaiian: \'haw\' \n Hebrewh: \'he\' \n Hebrewi: \'iw\' \n Hindi: \'hi\' \n Hmong: \'hmn\' \n Hungarian: \'hu\' \n Icelandic: \'is\' \n Igbo: \'ig\' \n Indonesian: \'id\' \n Irish: \'ga\' \n Italian: \'it\' \n Japanese: \'ja\' \n Javanese: \'jw\' \n Kannada: \'kn\' \n Kazakh: \'kk\' \n Khmer: \'km\' \n Korean: \'ko\' \n Kurdish: \'ku\' \n Kyrgyz: \'ky\' \n Lao: \'lo\' \n Latin: \'la\' \n Latvian: \'lv\' \n Lithuanian: \'lt\' \n Luxembourgish: \'lb\' \n Macedonian: \'mk\' \n Malagasy: \'mg\' \n Malay: \'ms\' \n Malayalam: \'ml\' \n Maltese: \'mt\' \n Maori: \'mi\' \n Marathi: \'mr\' \n Mongolian: \'mn\' \n Burmese: \'my\' \n Nepali: \'ne\' \n Norwegian: \'no\' \n', true)
-        .addField('⠀', 'Pashto: \'ps\' \n Persian: \'fa\' \n Polish: \'pl\' \n Portuguese: \'pt\' \n Punjabi: \'pa\' \n Romanian: \'ro\' \n Russian: \'ru\' \n Samoan: \'sm\' \n \'Scots-Gaelic\': \'gd\' \n Serbian: \'sr\' \n Sesotho: \'st\' \n Shona: \'sn\' \n Sindhi: \'sd\' \n Sinhala: \'si\' \n Slovak: \'sk\' \n Slovenian: \'sl\' \n Somali: \'so\' \n Spanish: \'es\' \n Sundanese: \'su\' \n Swahili: \'sw\' \n Swedish: \'sv\' \n Tajik: \'tg\' \n Tamil: \'ta\' \n Telugu: \'te\' \n Thai: \'th\' \n Turkish: \'tr\' \n Ukrainian: \'uk\' \n Urdu: \'ur\' \n Uzbek: \'uz\' \n Vietnamese: \'vi\' \n Welsh: \'cy\' \n Xhosa: \'xh\' \n Yiddish: \'yi\' \n Yoruba: \'yo\' \n Zulu: \'zu\' \n', true);
-      return message.channel.send(languages);
+    if (!args[0]) return this.reply(`Please add arguments ${nam}`);
+
+    if (args[0].includes('to')) {
+      if (!args[1]) {
+        this.reply(`Please add a language to translate from english ${nam}`);
+        const languages = new Discord.RichEmbed()
+          .addField('languages', 'Automatic: \'auto\' \n Afrikaans: \'af\' \n Albanian: \'sq\' \n Amharic: \'am\' \n Arabic: \'ar\' \n Armenian: \'hy\' \n Azerbaijani: \'az\' \n Basque: \'eu\' \n Belarusian: \'be\' \n Bengali: \'bn\' \n Bosnian: \'bs\', \n Bulgarian: \'bg\' \n Catalan: \'ca\' \n Cebuano: \'ceb\' \n Chichewa: \'ny\' \n \'Chinese-S\': \'zh\' \n \'Chinese-T\': \'zh-tw\' \n Corsican: \'co\' \n Croatian: \'hr\' \n Czech: \'cs\' \n Danish: \'da\' \n Dutch: \'nl\' \n English: \'en\' \n Esperanto: \'eo\' \n Estonian: \'et\' \n Filipino: \'tl\' \n Finnish: \'fi\' \n French: \'fr\' \n Frisian: \'fy\' \n Galician: \'gl\' \n Georgian: \'ka\' \n German: \'de\' \n Greek: \'el\' \n Gujarati: \'gu\' \n \'Haitian-Creole\': \'ht\' \n', true)
+          .addField('⠀', ' Hausa: \'ha\' \n Hawaiian: \'haw\' \n Hebrewh: \'he\' \n Hebrewi: \'iw\' \n Hindi: \'hi\' \n Hmong: \'hmn\' \n Hungarian: \'hu\' \n Icelandic: \'is\' \n Igbo: \'ig\' \n Indonesian: \'id\' \n Irish: \'ga\' \n Italian: \'it\' \n Japanese: \'ja\' \n Javanese: \'jw\' \n Kannada: \'kn\' \n Kazakh: \'kk\' \n Khmer: \'km\' \n Korean: \'ko\' \n Kurdish: \'ku\' \n Kyrgyz: \'ky\' \n Lao: \'lo\' \n Latin: \'la\' \n Latvian: \'lv\' \n Lithuanian: \'lt\' \n Luxembourgish: \'lb\' \n Macedonian: \'mk\' \n Malagasy: \'mg\' \n Malay: \'ms\' \n Malayalam: \'ml\' \n Maltese: \'mt\' \n Maori: \'mi\' \n Marathi: \'mr\' \n Mongolian: \'mn\' \n Burmese: \'my\' \n Nepali: \'ne\' \n Norwegian: \'no\' \n', true)
+          .addField('⠀', 'Pashto: \'ps\' \n Persian: \'fa\' \n Polish: \'pl\' \n Portuguese: \'pt\' \n Punjabi: \'pa\' \n Romanian: \'ro\' \n Russian: \'ru\' \n Samoan: \'sm\' \n \'Scots-Gaelic\': \'gd\' \n Serbian: \'sr\' \n Sesotho: \'st\' \n Shona: \'sn\' \n Sindhi: \'sd\' \n Sinhala: \'si\' \n Slovak: \'sk\' \n Slovenian: \'sl\' \n Somali: \'so\' \n Spanish: \'es\' \n Sundanese: \'su\' \n Swahili: \'sw\' \n Swedish: \'sv\' \n Tajik: \'tg\' \n Tamil: \'ta\' \n Telugu: \'te\' \n Thai: \'th\' \n Turkish: \'tr\' \n Ukrainian: \'uk\' \n Urdu: \'ur\' \n Uzbek: \'uz\' \n Vietnamese: \'vi\' \n Welsh: \'cy\' \n Xhosa: \'xh\' \n Yiddish: \'yi\' \n Yoruba: \'yo\' \n Zulu: \'zu\' \n', true);
+        return this.respond(languages);
+      }
+      const capitalized = args[1].charAt(0).toUpperCase() + args[1].slice(1);
+      if (!langsReversed[capitalized]) return this.reply(`Language not found ${nam}`);
+      if (!args[2]) return this.reply(`Please add arguments ${nam}`);
+
+      const joinedArgs1 = args.slice(2).join(' ');
+      const selectedLanguage = langsReversed[capitalized];
+
+      return translate(joinedArgs1, { from: 'en', to: selectedLanguage }).then((res) => {
+        const langEmbed = new Discord.RichEmbed()
+          .setDescription('Translation')
+          .setColor('#FFFFFF')
+          .addField(`Translated to ${langs[selectedLanguage]}`, res.text);
+        if (res.pronunciation) {
+          langEmbed.addField('Pronunciation', res.pronunciation);
+        }
+        langEmbed.addField('Translated from', langs[res.from.language.iso]);
+
+        this.respond(langEmbed);
+      }).catch(err => this.reply(`Error ${err}`));
     }
-    const capitalized = args[1].charAt(0).toUpperCase() + args[1].slice(1);
-    if (!langsReversed[capitalized]) return message.reply(`Language not found ${NaM}`);
-    if (!args[2]) return message.reply(`Please add arguments ${NaM}`);
 
-    const joinedArgs1 = args.slice(2).join(' ');
-    const selectedLanguage = langsReversed[capitalized];
-
-    return translate(joinedArgs1, { from: 'en', to: selectedLanguage }).then((res) => {
+    const joinedArgs = args.join(' ');
+    translate(joinedArgs, { to: 'en' }).then((res) => {
       const langEmbed = new Discord.RichEmbed()
         .setDescription('Translation')
         .setColor('#FFFFFF')
-        .addField(`Translated to ${langs[selectedLanguage]}`, res.text);
-      if (res.pronunciation) {
-        langEmbed.addField('Pronunciation', res.pronunciation);
-      }
-      langEmbed.addField('Translated from', langs[res.from.language.iso]);
+        .addField('Translated to English:', res.text)
+        .addField('Translated from:', langs[res.from.language.iso]);
 
-      message.channel.send(langEmbed);
-    }).catch(err => message.reply(`Error ${err}`));
+      this.respond(langEmbed);
+    }).catch(err => this.reply(`Error ${err}`));
   }
+}
 
-  const joinedArgs = args.join(' ');
-  translate(joinedArgs, { to: 'en' }).then((res) => {
-    const langEmbed = new Discord.RichEmbed()
-      .setDescription('Translation')
-      .setColor('#FFFFFF')
-      .addField('Translated to English:', res.text)
-      .addField('Translated from:', langs[res.from.language.iso]);
-
-    message.channel.send(langEmbed);
-  }).catch(err => message.reply(`Error ${err}`));
-};
-
-module.exports.help = {
-  name: 'translate',
-};
+module.exports = Translate;

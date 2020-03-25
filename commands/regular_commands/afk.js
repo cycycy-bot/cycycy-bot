@@ -6,7 +6,7 @@ class AfkCommand extends Command {
       name: 'afk',
       description: 'Sets your bot status to AFK',
       usage: '$afk <message>(optional)',
-      cooldown: 0,
+      cooldown: 5000,
     });
   }
 

@@ -1,29 +1,35 @@
 const Discord = require('discord.js');
 const ms = require('ms');
+const Command = require('../../base/Command');
 
-module.exports.run = (bot, message, args, NaM) => {
-  if (args[0] === 'help') {
-    return message.channel.send('```Usage: $remindme <time> <message>```');
+class RemindMe extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'remindme',
+      description: 'Sends a DM in specified time',
+      usage: '$remindme <time> <message>',
+      cooldown: 1000,
+    });
   }
 
-  const time = args[0];
-  const rmdMessage = args.slice(1).join(' ');
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
 
-  message.reply(`I will send you a message in ${time} ${NaM}`);
+    const time = args[0];
+    const rmdMessage = args.slice(1).join(' ');
 
-  const remindEmbed = new Discord.RichEmbed()
-    .addField(`A reminder from you ${time} ago`, rmdMessage);
-  setTimeout(() => {
-    try {
-      message
-        .author
-        .send(remindEmbed);
-    } catch (e) {
-      return message.reply('Your DMs are locked. I can\'t send mod commands');
-    }
-  }, ms(time));
-};
+    this.reply(`I will send you a message in ${time} ${nam}`);
 
-module.exports.help = {
-  name: 'remindme',
-};
+    const remindEmbed = new Discord.RichEmbed()
+      .addField(`A reminder from you ${time} ago`, rmdMessage);
+    setTimeout(() => {
+      try {
+        this.dm(remindEmbed);
+      } catch (e) {
+        return this.reply('Your DMs are locked. I can\'t send you a reminder.');
+      }
+    }, ms(time));
+  }
+}
+
+module.exports = RemindMe;
