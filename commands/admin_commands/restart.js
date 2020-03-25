@@ -5,7 +5,7 @@ class Restart extends Command {
     super(bot, {
       name: 'restart',
       description: 'Restarts the bot',
-      usage: '$rolecount',
+      usage: '$restart',
       permission: 'ADMINISTRATOR',
       ownerOnly: true,
       cooldown: 1000,

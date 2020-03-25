@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const { Client, Collection } = require('discord.js');
 const chalk = require('chalk');
 const { readdir } = require('fs');
@@ -55,6 +56,26 @@ class Cybot extends Client {
      * @type {Object}
      */
     this.fetch = require('node-fetch');
+  }
+
+  /**
+   * MESSAGE CLEAN FUNCTION
+   *   "Clean" removes @everyone pings, as well as tokens, and makes code blocks
+   * escaped so they're shown more easily. As a bonus it resolves promises
+   * and stringifies objects!
+   * This is mostly only used by the Eval and Exec commands.
+   * @param {String} text the evaluated javascript code
+   */
+  async clean(text) {
+    if (text && text.constructor.name == 'Promise') { text = await text; }
+    if (typeof text !== 'string') { text = require('util').inspect(text, { depth: 1 }); }
+
+    text = text
+      .replace(/`/g, `\`${String.fromCharCode(8203)}`)
+      .replace(/@/g, `@${String.fromCharCode(8203)}`)
+      .replace(this.config.token, 'mfa.VkO_2G4Qv3T--NO--lWetW_tjND--TOKEN--QFTm6YGtzq9PH--4U--tG0');
+
+    return text;
   }
 
   /**
