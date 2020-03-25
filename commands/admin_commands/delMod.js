@@ -1,19 +1,29 @@
-const Mod = require('../../models/modDBtest');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args, NaM) => {
-  if (!message.member.hasPermission('ADMINISTRATOR')) return message.reply(`Only administrator have permission for this command ${NaM}`);
-  if (args[0] === 'help') {
-    return message.reply('```Usage: $delmod```');
+class DelMod extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'delmod',
+      description: 'Removes a mod role',
+      usage: '$delmod',
+      aliases: ['dm'],
+      permission: 'ADMINISTRATOR',
+      cooldown: 0,
+      category: 'admin',
+    });
   }
 
-  Mod.deleteOne({ serverID: message.guild.id }).then((res) => {
-    if (res.n >= 1) {
-      return message.reply(`Mod role deleted ${NaM}`);
-    }
-    return message.reply('Mod role is not set in this server');
-  }).catch(err => message.reply(`Error ${err}`));
-};
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { Mod } = this.bot.db;
 
-module.exports.help = {
-  name: 'delmod',
-};
+    Mod.deleteOne({ serverID: message.guild.id }).then((res) => {
+      if (res.n >= 1) {
+        return this.reply(`Mod role deleted ${nam}`);
+      }
+      return this.reply('Mod role is not set in this server');
+    }).catch(err => this.reply(`Error ${err}`));
+  }
+}
+
+module.exports = DelMod;

@@ -16,17 +16,9 @@ module.exports = (bot, message) => {
         if (message.content) {
           logEmbed.addField('Message', message.content);
         } else if (message.attachments.size >= 1) {
-          logEmbed.setImage(message
-            .attachments
-            .get(message
-              .attachments
-              .firstKey())
-            .proxyURL);
+          logEmbed.setImage(message.attachments.get(message.attachments.firstKey()).proxyURL);
         }
-        return bot
-          .channels
-          .get(logRes.logChannelID)
-          .send(logEmbed);
+        return bot.channels.get(logRes.logChannelID).send(logEmbed);
       }
     }).catch(console.log);
   };
@@ -34,12 +26,7 @@ module.exports = (bot, message) => {
   db.BanPhrase.find({ serverID: message.guild.id }).then((banPhrase) => {
     let bpIdentifier = false;
     banPhrase.forEach((banPhraseItems) => {
-      if (message
-        .content
-        .toUpperCase()
-        .includes(banPhraseItems
-          .banphrase
-          .toUpperCase())) {
+      if (message.content.toUpperCase().includes(banPhraseItems.banphrase.toUpperCase())) {
         bpIdentifier = true;
         return logger(`Match ban phrase: **${banPhraseItems.banphrase}**`);
       }

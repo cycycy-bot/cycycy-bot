@@ -1,9 +1,22 @@
-module.exports.run = async (bot, message, NaM) => {
-  const KEKW = bot.emojis.find(emoji => emoji.name === 'KEKW');
-  if (!message.member.hasPermission('ADMINISTRATOR')) return message.reply(`You don't have a permission for this command. ${NaM}`);
-  return message.channel.send(`PINGING ${KEKW}`);
-};
+const Command = require('../../base/Command');
 
-module.exports.help = {
-  name: 'ping',
-};
+class Ping extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'ping',
+      description: 'Pings the bot',
+      usage: '$ping',
+      permission: 'ADMINISTRATOR',
+      cooldown: 1000,
+      category: 'admin',
+    });
+  }
+
+  async run(message, args) {
+    const KEKW = this.bot.emojis.find(emoji => emoji.name === 'KEKW');
+
+    return this.respond(`PINGING ${KEKW} took ${Math.round(this.bot.ping)}ms`);
+  }
+}
+
+module.exports = Ping;

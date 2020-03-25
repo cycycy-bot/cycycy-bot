@@ -1,5 +1,6 @@
 {
     "prefix": "$",
+    "owner": "487797385691398145",
     "status": [
         {
             "name": "forsan [$help]",
@@ -12,6 +13,10 @@
         {
             "name": "NaM NaM NaM NaM NaM NaM NaM ",
             "type": "STREAMING"
+        },
+        {
+            "name": "with your mom forsenHead",
+            "type":"PLAYING"
         }
     ]
 }

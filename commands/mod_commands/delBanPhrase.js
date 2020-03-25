@@ -1,35 +1,33 @@
-const BanPhrase = require('../../models/banPhraseDB');
-const Mods = require('../../models/modDBtest');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args, NaM) => {
-  if (args[0] === 'help') {
-    message.channel.send('```Usage: $delbanphrase <word>```');
-    return;
+class DelBanPhrase extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'delbanphrase',
+      description: 'Deletes a ban phrase in the server',
+      usage: '$delbanphrase <word>',
+      cooldown: 0,
+      permission: 'MODERATOR',
+      aliases: ['dbp'],
+      category: 'mod',
+    });
   }
 
-  Mods.findOne({ serverID: message.guild.id }).then((res) => {
-    if (res) {
-      const serverRole = message.guild.roles.get(res.modName);
-      if ((res.modName === serverRole.id && message.member.roles.has(serverRole.id)) || message.member.hasPermission('ADMINISTRATOR')) {
-        const bp = args.join(' ');
-        if (!bp) return message.reply(`Please add a word to be unbanned ${NaM}`);
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { BanPhrase } = this.bot.db;
 
-        BanPhrase.deleteOne({ serverID: message.guild.id, banphrase: bp }).then((bpRes) => {
-          if (bpRes.n >= 1) {
-            message.reply(`The ban phrase "${bp}" has been deleted ${NaM}`);
-          } else {
-            message.reply(`Ban phrase doesn't exist ${NaM}`);
-          }
-        });
+    const bp = args.join(' ');
+    if (!bp) return this.reply(`Please add a word to be unbanned ${nam}`);
+
+    BanPhrase.deleteOne({ serverID: message.guild.id, banphrase: bp }).then((bpRes) => {
+      if (bpRes.n >= 1) {
+        this.reply(`The ban phrase \`${bp}\` has been deleted ${nam}`);
       } else {
-        return message.reply(`You don't have permission for this command ${NaM}`);
+        this.reply(`Ban phrase doesn't exist ${nam}`);
       }
-    } else {
-      return message.reply(`You haven't set a mod in this server ${NaM}. To set a mod in this server do $setmod help.`);
-    }
-  }).catch(err => message.reply(`Error ${err}`));
-};
+    });
+  }
+}
 
-module.exports.help = {
-  name: 'delbanphrase',
-};
+module.exports = DelBanPhrase;

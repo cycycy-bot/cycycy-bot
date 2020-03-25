@@ -1,49 +1,50 @@
-const mongoose = require('mongoose');
-const Cmd = require('../../models/customCommandsDB');
-const Mods = require('../../models/modDBtest');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args, NaM) => {
-  if (args[0] === 'help') {
-    message.channel.send('```Usage: $addcmd <command name> <command response>```');
-    return;
+class AddCmd extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'addcmd',
+      description: 'Adds a custom command in the server',
+      usage: '$addcmd <command_name> <command_response>',
+      cooldown: 0,
+      permission: 'MODERATOR',
+      category: 'mod',
+    });
   }
 
-  Mods.findOne({ serverID: message.guild.id }).then((res) => {
-    if (res) {
-      const serverRole = message.guild.roles.get(res.modName);
-      if ((res.modName === serverRole.id && message.member.roles.has(serverRole.id)) || message.member.hasPermission('ADMINISTRATOR')) {
-        const cmdRes = args.slice(1);
-        const resJoined = cmdRes.join(' ');
-        if (!args[0]) return message.reply(`Please add a command name ${NaM}`);
-        if (!resJoined) return message.reply(`Please add a command response ${NaM}`);
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { mongoose, Cmd } = this.bot.db;
 
-        const cmd = new Cmd({
-          _id: mongoose.Types.ObjectId(),
-          serverID: message.guild.id,
-          serverName: message.guild.name,
-          commandName: args[0],
-          commandRes: resJoined,
-        });
+    const cmdRes = args.slice(1);
+    const resJoined = cmdRes.join(' ');
+    const commandName = args[0];
+    if (!commandName) return this.reply(`Please add a command name ${nam}`);
+    if (!resJoined) return this.reply(`Please add a command response ${nam}`);
 
-        const defaultCmds = ['avatar', 'stats', 'uptime', 'restart', 'addcmd', 'delcmd', 'editcmd', 'userinfo', 'advice', 'tempmute', 'translate', 'wiki', 'afk', 'notify', 'unmute', 'help', 'tuck', 'warn', 'serverinfo', 'botinfo', 'catfact', 'test', ''];
+    const cmd = new Cmd({
+      _id: mongoose.Types.ObjectId(),
+      serverID: message.guild.id,
+      serverName: message.guild.name,
+      commandName: args[0],
+      commandRes: resJoined,
+    });
 
-        Cmd.find({ serverID: message.guild.id, commandName: args[0] }).then((serverRes) => {
-          if (serverRes.length >= 1) {
-            return message.channel.send('Command already exists');
-          } if (defaultCmds.includes(args[0])) {
-            return message.channel.send(`Sorry can't add that ${NaM}`);
-          }
-          return cmd.save().then(message.channel.send('Command Added')).catch(err => message.reply(`Error ${err}`));
-        });
-      } else {
-        return message.reply(`You don't have permission for this command ${NaM}`);
-      }
+    // checks if command exists or not
+    const defaultCmd = this.bot.commands.get(commandName) || this.bot.aliases.get(commandName);
+    if (!defaultCmd) {
+      Cmd.find({ serverID: message.guild.id, commandName }).then((serverRes) => {
+        if (serverRes.length >= 1) {
+          return this.respond('Command already exists');
+        }
+        return cmd.save()
+          .then(this.respond('Command Added'))
+          .catch(err => this.reply(`Error ${err}`));
+      });
     } else {
-      return message.reply(`You haven't set a mod in this server ${NaM}. To set a mod in this server do $setmod help.`);
+      return this.respond(`The command name is a default command ${nam}`);
     }
-  }).catch(err => message.reply(`Error ${err}`));
-};
+  }
+}
 
-module.exports.help = {
-  name: 'addcmd',
-};
+module.exports = AddCmd;

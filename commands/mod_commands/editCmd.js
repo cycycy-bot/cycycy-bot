@@ -1,31 +1,39 @@
-const Cmd = require('../../models/customCommandsDB');
-const Mods = require('../../models/modDBtest');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args, NaM) => {
-  if (args[0] === 'help') {
-    message.channel.send('```Usage: $editcmd <command name>```');
-    return;
+class EditCmd extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'editcmd',
+      description: 'Edits a custom command in the server',
+      usage: '$editcmd <command_name> <command_response>',
+      cooldown: 0,
+      permission: 'MODERATOR',
+      category: 'mod',
+    });
   }
 
-  Mods.findOne({ serverID: message.guild.id }).then((res) => {
-    if (res) {
-      const serverRole = message.guild.roles.get(res.modName);
-      if ((res.modName === serverRole.id && message.member.roles.has(serverRole.id)) || message.member.hasPermission('ADMINISTRATOR')) {
-        const cmdRes = args.slice(1);
-        if (!args[0]) return message.reply(`Please add a command name ${NaM}`);
-        if (!cmdRes) return message.reply(`Please add a command response ${NaM}`);
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { Cmd } = this.bot.db;
 
-        Cmd.updateOne({ serverID: message.guild.id, commandName: args[0] },
-          { commandRes: cmdRes.join(' ') }).then(message.channel.send(`Command was changed ${NaM}`)).catch(err => message.reply(`Error ${err}`));
-      } else {
-        return message.reply(`You don't have permission for this command ${NaM}`);
-      }
-    } else {
-      return message.reply(`You haven't set a mod in this server ${NaM}. To set a mod in this server do $setmod help.`);
-    }
-  }).catch(err => message.reply(`Error ${err}`));
-};
+    const commandName = args[0];
+    const cmdRes = args.slice(1);
+    if (!commandName) return this.reply(`Please add a command name ${nam}`);
+    if (!cmdRes.length) return this.reply(`Please add a command response ${nam}`);
 
-module.exports.help = {
-  name: 'editcmd',
-};
+    Cmd.updateOne({ serverID: message.guild.id, commandName },
+      {
+        commandRes: cmdRes.join(' '),
+      })
+      .then((res) => {
+        const modified = res.n;
+        if (modified >= 1) {
+          return this.respond(`Command was changed ${nam}`);
+        }
+        return this.respond(`No command was found ${nam}`);
+      })
+      .catch(err => this.reply(`Error ${err}`));
+  }
+}
+
+module.exports = EditCmd;

@@ -1,32 +1,41 @@
-const mongoose = require('mongoose');
-const PedoMod = require('../../models/pedoModDB');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args, NaM) => {
-  if (!message.member.hasPermission('ADMINISTRATOR')) return message.reply(`Only administrator have permission for this command ${NaM}`);
-  if (args[0] === 'help') {
-    message.channel.send('```Usage: $setweebmod <user>```');
-    return;
+class SetWeebMod extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'setweebmod',
+      description: 'Sets the weeb mod role in guild',
+      usage: '$setweebmod <user>',
+      permission: 'ADMINISTRATOR',
+      cooldown: 1000,
+      category: 'admin',
+    });
   }
-  const weebMod = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-  if (!weebMod) return message.channel.send(`User not found ${NaM}`);
-  const DansGame = bot.emojis.find(emoji => emoji.name === 'DansGame');
 
-  const pedomod = new PedoMod({
-    _id: mongoose.Types.ObjectId(),
-    serverID: message.guild.id,
-    serverName: message.guild.name,
-    userID: weebMod.id,
-    userName: weebMod.user.username,
-  });
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { mongoose, Pedo } = this.bot.db;
 
-  PedoMod.find({ serverID: message.guild.id, userID: weebMod.id }).then((pedoRes) => {
-    if (pedoRes.length >= 1) {
-      return message.channel.send(`User ${weebMod.user.username} is already a weeb mod ${NaM}`);
-    }
-    return pedomod.save().then(message.channel.send(`Pedo master added ${DansGame}`)).catch(err => message.reply(`Error ${err}`));
-  }).catch(err => message.reply(`Error ${err}`));
-};
+    const weebMod = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+    if (!weebMod) return message.channel.send(`User not found ${nam}`);
+    const DansGame = this.bot.emojis.find(emoji => emoji.name === 'DansGame');
 
-module.exports.help = {
-  name: 'setweebmod',
-};
+    const pedomod = new Pedo({
+      _id: mongoose.Types.ObjectId(),
+      serverID: message.guild.id,
+      serverName: message.guild.name,
+      userID: weebMod.id,
+      userName: weebMod.user.username,
+    });
+
+    Pedo.find({ serverID: message.guild.id, userID: weebMod.id }).then((pedoRes) => {
+      if (pedoRes.length >= 1) {
+        return this.respond(`User ${weebMod.user.username} is already a weeb mod ${nam}`);
+      }
+      return pedomod.save()
+        .then(this.respond(`Pedo master added ${DansGame}`))
+        .catch(err => this.reply(`Error ${err}`));
+    }).catch(err => this.reply(`Error ${err}`));
+  }
+}
+module.exports = SetWeebMod;

@@ -1,16 +1,26 @@
 const process = require('process');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message) => {
-  if (message.member.id === '487797385691398145') {
-    const Pepege = bot.emojis.find(emoji => emoji.name === 'Pepege');
-    return message.channel.send(`Shutting down... ${Pepege}`)
-      .then(() => bot.destroy())
-      .then(() => process.exit())
-      .catch(err => message.reply(`Error ${err}`));
+class ShutDown extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'shutdown',
+      description: 'Shuts down the bot',
+      usage: '$shutdown',
+      ownerOnly: true,
+      cooldown: 0,
+      category: 'admin',
+    });
   }
-  return message.reply("You don't have a permission for this command.");
-};
 
-module.exports.help = {
-  name: 'shutdown',
-};
+  async run(message, args) {
+    const Pepege = this.bot.emojis.find(emoji => emoji.name === 'Pepege');
+
+    return message.channel.send(`Shutting down... ${Pepege}`)
+      .then(() => this.bot.destroy())
+      .then(() => process.exit())
+      .catch(err => this.reply(`Error ${err}`));
+  }
+}
+
+module.exports = ShutDown;

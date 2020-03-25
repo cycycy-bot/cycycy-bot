@@ -1,28 +1,29 @@
 const Discord = require('discord.js');
-const fetch = require('node-fetch');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args) => {
-  if (args[0] === 'help') {
-    message
-      .channel
-      .send('```Usage: $dogfact```');
-    return;
+class DogFact extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'dogfact',
+      description: 'Shows random doggo facts',
+      usage: '$dogfact',
+      cooldown: 1000,
+    });
   }
-  fetch('https://dog-api.kinduff.com/api/facts')
-    .then(res => res.json())
-    .then((fact) => {
-      const factEmbed = new Discord.RichEmbed()
-        .setColor('#1fca05')
-        .setDescription(fact.facts[0])
-        .setFooter('Powered by kinduff/dog-api');
 
-      return message
-        .channel
-        .send(factEmbed);
-    })
-    .catch(err => message.reply(`Error ${err}`));
-};
+  async run(message, args) {
+    this.bot.fetch('https://dog-api.kinduff.com/api/facts')
+      .then(res => res.json())
+      .then((fact) => {
+        const factEmbed = new Discord.RichEmbed()
+          .setColor('#1fca05')
+          .setDescription(fact.facts[0])
+          .setFooter('Powered by kinduff/dog-api');
 
-module.exports.help = {
-  name: 'dogfact',
-};
+        return this.respond(factEmbed);
+      })
+      .catch(err => this.reply(`Error ${err}`));
+  }
+}
+
+module.exports = DogFact;

@@ -1,35 +1,35 @@
 const Discord = require('discord.js');
-const fetch = require('node-fetch');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args) => {
-  if (args[0] === 'help') {
-    message
-      .channel
-      .send('```Usage: $catfact```');
-    return;
+class Cat extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'cat',
+      description: 'Shows random cat picture',
+      usage: '$cat',
+      cooldown: 1000,
+    });
   }
 
-  fetch('https://api.thecatapi.com/v1/images/search', {
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.CAT_KEY,
-    },
-  })
-    .then(res => res.json())
-    .then((cat) => {
-      const { url } = cat[0];
-      const catEmbed = new Discord.RichEmbed()
-        .setImage(url)
-        .setFooter('Powered by thecatpi');
-
-      return message
-        .channel
-        .send(catEmbed);
+  async run(message, args) {
+    this.bot.fetch('https://api.thecatapi.com/v1/images/search', {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.CAT_KEY,
+      },
     })
-    .catch(err => message.reply(`Error ${err}`));
-};
+      .then(res => res.json())
+      .then((cat) => {
+        const { url } = cat[0];
+        const catEmbed = new Discord.RichEmbed()
+          .setImage(url)
+          .setFooter('Powered by thecatpi');
 
-module.exports.help = {
-  name: 'cat',
-};
+        return this.respond(catEmbed);
+      })
+      .catch(err => this.reply(`Error ${err}`));
+  }
+}
+
+module.exports = Cat;

@@ -1,37 +1,30 @@
 const Discord = require('discord.js');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args, NaM) => {
-  const aUser = message
-    .guild
-    .member(message
-      .mentions
-      .users
-      .first() || message.author);
-  if (args[0] === 'help') {
-    message
-      .channel
-      .send('```Usage: $avatar <user/empty>```');
-    return;
-  }
-  bot.cooldown.add(message.author.id);
-  setTimeout(() => {
-    bot
-      .cooldown
-      .delete(message.author.id);
-  }, 15000);
-  if (!aUser) {
-    return message
-      .channel
-      .send(`User not found ${NaM}`);
+class Avatar extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'avatar',
+      description: 'Shows the user\'s avatar',
+      usage: '$avatar <user> (optional)',
+      aliases: ['atr'],
+      cooldown: 1000,
+    });
   }
 
-  const avatarEmbed = new Discord.RichEmbed()
-    .setImage(aUser.user.displayAvatarURL);
-  return message
-    .channel
-    .send(avatarEmbed);
-};
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
 
-module.exports.help = {
-  name: 'avatar',
-};
+    const aUser = message.guild.member(message.mentions.users.first() || message.author);
+
+    if (!aUser) {
+      return this.respond(`User not found ${nam}`);
+    }
+
+    const avatarEmbed = new Discord.RichEmbed()
+      .setImage(aUser.user.displayAvatarURL);
+    return this.respond(avatarEmbed);
+  }
+}
+
+module.exports = Avatar;

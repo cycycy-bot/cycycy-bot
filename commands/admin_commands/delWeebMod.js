@@ -1,22 +1,32 @@
-const PedoMod = require('../../models/pedoModDB');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args, NaM) => {
-  if (!message.member.hasPermission('ADMINISTRATOR')) return message.reply(`Only administrator have permission for this command ${NaM}`);
-  if (args[0] === 'help') {
-    return message.reply('```Usage: $delweebmod <user>```');
+class DelWeebMod extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'delweebmod',
+      description: 'Removes a weeb mod role from a user',
+      usage: '$delweebmod <user>',
+      aliases: ['dwm'],
+      permission: 'ADMINISTRATOR',
+      cooldown: 0,
+      category: 'admin',
+    });
   }
 
-  const weebMod = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-  if (!weebMod) return message.channel.send(`User not found ${NaM}`);
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { Pedo } = this.bot.db;
 
-  PedoMod.deleteOne({ serverID: message.guild.id, userID: weebMod.id }).then((pedoRes) => {
-    if (pedoRes.n >= 1) {
-      return message.reply(`Weeb mod ${weebMod.user.username} deleted ${NaM}`);
-    }
-    return message.reply('Weeb mod not found');
-  }).catch(err => message.reply(`Error ${err}`));
-};
+    const weebMod = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+    if (!weebMod) return this.respond(`User not found ${nam}`);
 
-module.exports.help = {
-  name: 'delweebmod',
-};
+    Pedo.deleteOne({ serverID: message.guild.id, userID: weebMod.id }).then((pedoRes) => {
+      if (pedoRes.n >= 1) {
+        return this.reply(`Weeb mod ${weebMod.user.username} deleted ${nam}`);
+      }
+      return this.reply('Weeb mod not found');
+    }).catch(err => this.reply(`Error ${err}`));
+  }
+}
+
+module.exports = DelWeebMod;

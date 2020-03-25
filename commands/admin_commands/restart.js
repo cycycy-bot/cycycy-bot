@@ -1,14 +1,26 @@
-module.exports.run = async (bot, message) => {
-  if (message.member.id === '487797385691398145') {
-    const Pepega = bot.emojis.find(emoji => emoji.name === 'Pepege');
-    return message.channel.send(`Restarting... ${Pepega}`)
-      .then(bot.destroy())
-      .then(() => bot.login(process.env.BOT_TOKEN))
-      .catch(err => message.reply(`Error ${err}`));
-  }
-  return message.reply("You don't have a permission for this command.");
-};
+const Command = require('../../base/Command');
 
-module.exports.help = {
-  name: 'restart',
-};
+class Restart extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'restart',
+      description: 'Restarts the bot',
+      usage: '$rolecount',
+      permission: 'ADMINISTRATOR',
+      ownerOnly: true,
+      cooldown: 1000,
+      category: 'admin',
+    });
+  }
+
+  async run(message, args) {
+    const pepege = this.bot.emojis.find(emoji => emoji.name === 'Pepege');
+
+    return this.respond(`Restarting... ${pepege}`)
+      .then(this.bot.destroy())
+      .then(() => this.bot.login(process.env.BOT_TOKEN))
+      .catch(err => this.reply(`Error ${err}`));
+  }
+}
+
+module.exports = Restart;

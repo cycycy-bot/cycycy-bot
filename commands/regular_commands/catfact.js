@@ -1,29 +1,29 @@
 const Discord = require('discord.js');
-const fetch = require('node-fetch');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args) => {
-  if (args[0] === 'help') {
-    message
-      .channel
-      .send('```Usage: $catfact```');
-    return;
+class CatFact extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'catfact',
+      description: 'Gives a random cat fact',
+      usage: '$catfact',
+      cooldown: 1000,
+    });
   }
 
-  fetch('https://cat-fact.herokuapp.com/facts/random')
-    .then(res => res.json())
-    .then((fact) => {
-      const factEmbed = new Discord.RichEmbed()
-        .setColor('#1fca05')
-        .setDescription(fact.text)
-        .setFooter('Powered by cat-fact api');
+  async run(message, args) {
+    this.bot.fetch('https://cat-fact.herokuapp.com/facts/random')
+      .then(res => res.json())
+      .then((fact) => {
+        const factEmbed = new Discord.RichEmbed()
+          .setColor('#1fca05')
+          .setDescription(fact.text)
+          .setFooter('Powered by cat-fact api');
 
-      return message
-        .channel
-        .send(factEmbed);
-    })
-    .catch(err => message.reply(`Error ${err}`));
-};
+        return this.respond(factEmbed);
+      })
+      .catch(err => this.reply(`Error ${err}`));
+  }
+}
 
-module.exports.help = {
-  name: 'catfact',
-};
+module.exports = CatFact;

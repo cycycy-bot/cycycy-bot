@@ -1,42 +1,41 @@
-const mongoose = require('mongoose');
-const BanPhrase = require('../../models/banPhraseDB');
-const Mods = require('../../models/modDBtest');
+const Command = require('../../base/Command');
 
-module.exports.run = async (bot, message, args, NaM) => {
-  if (args[0] === 'help') {
-    message.channel.send('```Usage: $addbanphrase <word>```');
-    return;
+class AddBanPhrase extends Command {
+  constructor(bot) {
+    super(bot, {
+      name: 'addbanphrase',
+      description: 'Adds a ban phrase in the server',
+      usage: '$addbanphrase <word>',
+      cooldown: 0,
+      permission: 'MODERATOR',
+      aliases: ['abp'],
+      category: 'mod',
+    });
   }
 
-  Mods.findOne({ serverID: message.guild.id }).then((res) => {
-    if (res) {
-      const serverRole = message.guild.roles.get(res.modName);
-      if ((res.modName === serverRole.id && message.member.roles.has(serverRole.id)) || message.member.hasPermission('ADMINISTRATOR')) {
-        const bp = args.join(' ');
-        if (!bp) return message.reply(`Please add a word to be banned ${NaM}`);
+  async run(message, args) {
+    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { mongoose, BanPhrase } = this.bot.db;
 
-        const banphrase = new BanPhrase({
-          _id: mongoose.Types.ObjectId(),
-          serverID: message.guild.id,
-          serverName: message.guild.name,
-          banphrase: bp,
-        });
+    const bp = args.join(' ');
+    if (!bp) return this.reply(`Please add a word to be banned ${nam}`);
 
-        BanPhrase.find({ serverID: message.guild.id, banphrase: bp }).then((serverRes) => {
-          if (serverRes.length >= 1) {
-            return message.channel.send('Banphrase already exists');
-          }
-          return banphrase.save().then(message.channel.send('Banphrase added')).catch(err => message.reply(`Error ${err}`));
-        });
-      } else {
-        return message.reply(`You don't have permission for this command ${NaM}`);
+    const banphrase = new BanPhrase({
+      _id: mongoose.Types.ObjectId(),
+      serverID: message.guild.id,
+      serverName: message.guild.name,
+      banphrase: bp,
+    });
+
+    BanPhrase.find({ serverID: message.guild.id, banphrase: bp }).then((serverRes) => {
+      if (serverRes.length >= 1) {
+        return this.respond('Banphrase already exists');
       }
-    } else {
-      return message.reply(`You haven't set a mod in this server ${NaM}. To set a mod in this server do $setmod help.`);
-    }
-  }).catch(err => message.reply(`Error ${err}`));
-};
+      return banphrase.save()
+        .then(this.respond('Banphrase added'))
+        .catch(err => this.reply(`Error ${err}`));
+    });
+  }
+}
 
-module.exports.help = {
-  name: 'addbanphrase',
-};
+module.exports = AddBanPhrase;
