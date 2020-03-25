@@ -33,7 +33,7 @@ class Exec extends Command {
         if (MAX_CHARS > 2000) {
           this.respond('Output exceeded 2000 characters. Sending as a file.', { files: [{ attachment: Buffer.from(clean), name: 'output.txt' }] });
         }
-        this.respond(`\`\`\`sh\n${clean}\n\`\`\``);
+        this.respond(`\`\`\`xl\n${clean}\n\`\`\``);
       });
     } catch (err) {
       this.respond(`\`ERROR\` \`\`\`xl\n${await this.bot.clean(err)}\n\`\`\``, { split: { maxLength: 2000, append: '```', prepend: '```' } });
