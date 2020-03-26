@@ -16,7 +16,7 @@ module.exports = (bot) => {
 
   client.on('message', (channel, tags, message, self) => {
     if (self) return;
-    bot.channels.get('692652832481869884').send(`${tags.username}: ${message}`);
+    bot.channels.get('692652832481869884').send(`\`${tags.username}\`: ${message}`);
   });
 
   client.connect();
