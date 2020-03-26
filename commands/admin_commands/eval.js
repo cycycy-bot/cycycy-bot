@@ -1,3 +1,4 @@
+/* eslint-disable no-eval */
 const Command = require('../../base/Command');
 
 class Eval extends Command {
@@ -13,7 +14,7 @@ class Eval extends Command {
     });
   }
 
-  async run(message, args) { // eslint-disable-line no-unused-vars
+  async run(message, args) {
     const code = args.join(' ');
     try {
       const evaled = eval(code);
@@ -26,7 +27,7 @@ class Eval extends Command {
       }
       this.respond(`\`\`\`js\n${clean}\n\`\`\``);
     } catch (err) {
-      this.respond(`\`ERROR\` \`\`\`xl\n${await this.bot.clean(this.bot, err)}\n\`\`\``, { split: { maxLength: 2000, append: '```', prepend: '```' } });
+      this.respond(`\`ERROR\` \`\`\`xl\n${await this.bot.clean(err)}\n\`\`\``, { split: { maxLength: 2000, append: '```', prepend: '```' } });
     }
   }
 }

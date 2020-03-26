@@ -19,16 +19,27 @@ class Exec extends Command {
     try {
       exec(code, async (error, stdout, stderr) => {
         if (error) {
-          console.log(`error: ${error.message}`);
+          const clean = await this.bot.clean(error);
+
+          const MAX_CHARS = 3 + 2 + clean.length + 3;
+          if (MAX_CHARS > 2000) {
+            this.respond('Output exceeded 2000 characters. Sending as a file.', { files: [{ attachment: Buffer.from(clean), name: 'output.txt' }] });
+          }
+          this.respond(`\`\`\`xl\n${clean}\n\`\`\``);
           return;
         }
         if (stderr) {
-          console.log(`stderr: ${stderr}`);
+          const clean = await this.bot.clean(stderr);
+
+          const MAX_CHARS = 3 + 2 + clean.length + 3;
+          if (MAX_CHARS > 2000) {
+            this.respond('Output exceeded 2000 characters. Sending as a file.', { files: [{ attachment: Buffer.from(clean), name: 'output.txt' }] });
+          }
+          this.respond(`\`\`\`xl\n${clean}\n\`\`\``);
           return;
         }
         const clean = await this.bot.clean(stdout);
-        // sends exec output as a file if it exceeds the maximum character limit
-        // 6 graves, and 2 characters for "js"
+
         const MAX_CHARS = 3 + 2 + clean.length + 3;
         if (MAX_CHARS > 2000) {
           this.respond('Output exceeded 2000 characters. Sending as a file.', { files: [{ attachment: Buffer.from(clean), name: 'output.txt' }] });
