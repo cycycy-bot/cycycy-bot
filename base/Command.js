@@ -74,7 +74,7 @@ class Command {
         if ((res.modName === serverRole.id && this.message.member.roles.has(serverRole.id)) || this.message.member.hasPermission('ADMINISTRATOR')) return true;
       }
       if (!res) return;
-      return true;
+      return false;
     });
   }
 

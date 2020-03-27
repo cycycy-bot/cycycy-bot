@@ -67,7 +67,7 @@ class Cybot extends Client {
    * @param {String} text the evaluated javascript code
    */
   async clean(text) {
-    if (text && text.constructor.name == 'Promise') { text = await text; }
+    if (text && text.constructor.name === 'Promise') { text = await text; }
     if (typeof text !== 'string') { text = require('util').inspect(text, { depth: 1 }); }
 
     text = text
@@ -231,7 +231,7 @@ class Cybot extends Client {
     this.loadCommands('./commands');
     this.loadEvents('./handlers');
     this.loadDb(process.env.DB_PASS);
-    this.login(process.env.BOT_TOKEN);
+    this.login(process.env.TEST_BOT);
   }
 }
 
