@@ -14,7 +14,7 @@ module.exports = (bot, message) => {
 
   // call command handler
   const cmdFile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length)));
-
+  console.log(cmdFile);
   // return if command is not found
   if (!cmdFile) return;
 

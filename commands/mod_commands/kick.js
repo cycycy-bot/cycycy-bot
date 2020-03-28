@@ -8,7 +8,6 @@ class Kick extends Command {
       usage: '$kick <member>',
       cooldown: 0,
       permission: 'MODERATOR',
-      aliases: ['k'],
       category: 'mod',
     });
   }
