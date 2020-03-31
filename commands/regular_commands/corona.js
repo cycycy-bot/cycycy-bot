@@ -16,7 +16,7 @@ class Corona extends Command {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
 
     const track = new NovelCovid();
-    const countryName = args[0];
+    const countryName = args.join(' ');
 
     if (!countryName) {
       track.all().then((cInfo) => {
