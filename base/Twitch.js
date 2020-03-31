@@ -2,7 +2,7 @@ const tmi = require('tmi.js');
 require('dotenv').config();
 
 module.exports = (bot) => {
-  const clean = message => message.replace(/@/, '');
+  const clean = message => message.replace(/@|#/g, '');
   const client = new tmi.Client({
     connection: {
       reconnect: true,
