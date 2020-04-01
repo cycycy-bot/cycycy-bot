@@ -31,6 +31,6 @@ module.exports = (bot, message) => {
     if (!perm) return message.reply(`You don't have permission for this command ${nam}`);
     if (cmdFile && cmd.startsWith(prefix)) cmdFile.run(message, args);
     if (cmdFile.conf.cooldown > 0) cmdFile.startCooldown(message.author.id);
-    console.log(`${cmdFile.help.name} used by ${message.author.tag} in ${message.guild}`);
+    console.log(`${new Date().toLocaleString()}: ${cmdFile.help.name} used by ${message.author.tag} in ${message.guild}`);
   });
 };
