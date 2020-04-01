@@ -16,6 +16,8 @@ module.exports = (bot, message) => {
   const cmdFile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length)));
   // return if command is not found
   if (!cmdFile) return;
+  // return if command doesnt start with prefix
+  if (!cmd.startsWith(prefix)) return;
 
   // checks if the user in on cooldown
   if (cmdFile.cooldown.has(message.author.id)) return;
@@ -29,5 +31,6 @@ module.exports = (bot, message) => {
     if (!perm) return message.reply(`You don't have permission for this command ${nam}`);
     if (cmdFile && cmd.startsWith(prefix)) cmdFile.run(message, args);
     if (cmdFile.conf.cooldown > 0) cmdFile.startCooldown(message.author.id);
+    console.log(`${cmdFile.help.name} used by ${message.author.tag} in ${message.guild}`);
   });
 };
