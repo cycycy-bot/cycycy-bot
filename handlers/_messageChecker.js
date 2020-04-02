@@ -51,7 +51,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
         .setColor(message.guild.member(message.author).highestRole.color);
       if (result.afkType === 'gn') backEmbed.setFooter(`tucked by ${result.tucker || 'no one PepeHands'}`);
 
-      message.channel.send(backEmbed);
+      message.channel.send(backEmbed, { split: { maxLength: 2000 } });
       return db.Afk.deleteOne({ userID: result.userID })
         .then(console.log(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`))
         .catch(console.log);
