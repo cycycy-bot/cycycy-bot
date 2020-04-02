@@ -15,6 +15,8 @@ class Gn extends Command {
     const reason = args.join(' ');
     const { Afk, mongoose } = this.bot.db;
 
+    if (reason.length >= 1024) return this.reply(`Your message is too long ${nam}`);
+
     const afk = new Afk({
       _id: mongoose.Types.ObjectId(),
       userID: message.author.id,
