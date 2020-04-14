@@ -205,7 +205,6 @@ class Cybot extends Client {
 
   async init() {
     super.on('disconnect', () => console.warn(`${chalk.yellow('Bot is disconnecting...')}`))
-      .on('reconnecting', () => console.log(`${chalk.green('Bot reconnecting...')}`))
       .on('error', e => console.error(chalk.red(e))
         .on('warn', info => console.warn(chalk.yellow(info))));
 

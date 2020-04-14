@@ -18,6 +18,27 @@ class Corona extends Command {
     const track = new NovelCovid();
     const countryName = args.join(' ');
 
+
+    if (args[0].toLowerCase() === 'state') {
+      const stateArg = args.slice(1).join(' ');
+      return track.states().then((stateArray) => {
+        stateArray.forEach((stateData) => {
+          if (stateData.state.toLowerCase() === stateArg.toLowerCase()) {
+            const {
+              cases, deaths, todayCases, todayDeaths, state,
+            } = stateData;
+            console.log(stateData);
+            const coronaEmbed = new Discord.RichEmbed()
+              .setTitle(state)
+              .addField('Confirmed Cases:', cases, true)
+              .addField('Cases Today:', todayCases, true)
+              .addField('Deaths:', deaths, true)
+              .addField('Deaths Today:', todayDeaths, true);
+            this.respond(coronaEmbed);
+          }
+        });
+      });
+    }
     if (!countryName) {
       track.all().then((cInfo) => {
         const { cases, deaths, recovered } = cInfo;
