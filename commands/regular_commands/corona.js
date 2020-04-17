@@ -19,7 +19,7 @@ class Corona extends Command {
     const countryName = args.join(' ');
 
 
-    if (args[0].toLowerCase() === 'state') {
+    if (args[0] && args[0].toLowerCase() === 'state') {
       const stateArg = args.slice(1).join(' ');
       return track.states().then((stateArray) => {
         stateArray.forEach((stateData) => {
