@@ -9,6 +9,7 @@ class Corona extends Command {
       description: 'Gives coronavirus information on a specific country or world cases of coronavirus',
       usage: '$corona <country>(optional)',
       cooldown: 1000,
+      aliases: ['cv'],
     });
   }
 
