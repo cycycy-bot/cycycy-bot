@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const db = require('../settings/databaseImport');
 
 module.exports = async (bot, guild, member) => {
-  await new Promise(r => setTimeout(r, 250));
+  await new Promise(r => setTimeout(r, 1000));
 
   await guild.fetchAuditLogs().then((audit) => {
     db.Logger.findOne({ serverID: guild.id }).then((logRes) => {

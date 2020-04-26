@@ -10,6 +10,5 @@ module.exports = (bot) => {
     if (status[parseInt(i + 1, 10)]) i++;
     else i = 0;
   }, 30000); // Every 30 seconds
-
   // bot.emit('guildBanAdd', bot.guilds.get('497154569873260585'), bot.guilds.get('497154569873260585').member('487797385691398145'));
 };

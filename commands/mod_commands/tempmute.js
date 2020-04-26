@@ -9,7 +9,7 @@ class TempMute extends Command {
       usage: '$tempmute <member> <length>',
       cooldown: 0,
       permission: 'MODERATOR',
-      aliases: ['mute', 'tm'],
+      aliases: ['mute', 'tm', 'timeout'],
       category: 'mod',
     });
   }
