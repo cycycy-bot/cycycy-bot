@@ -7,8 +7,6 @@ class Pedofy extends Command {
       description: 'Gives a member a Pedo(weeb) role',
       usage: '$pedofy <member>',
       cooldown: 0,
-      permission: 'MODERATOR',
-      category: 'mod',
     });
   }
 
