@@ -1,25 +1,21 @@
-const tmi = require('tmi.js');
+const { ChatClient } = require('dank-twitch-irc');
 require('dotenv').config();
 
 module.exports = (bot) => {
   const clean = message => message.replace(/@|#/g, '');
-  const client = new tmi.Client({
-    connection: {
-      reconnect: true,
-      secure: true,
-    },
-    identity: {
-      username: 'cycycybot',
-      password: `oauth:${process.env.TWITCH_AUTH}`,
-    },
-    channels: ['cycycy'],
+  const client = new ChatClient({
+    username: 'cycycybot',
+    password: process.env.TWITCH_AUTH,
   });
 
-  client.on('message', (channel, tags, message, self) => {
-    const twitchDiscordChannel = bot.channels.get('692652832481869884');
-    if (self) return;
-    twitchDiscordChannel.send(`\`${tags.username}\`: ${clean(message)}`);
+  client.on('message', (message) => {
+    console.log(message);
+  });
+
+  client.on('connect', () => {
+    console.log('Twitch client connected');
   });
 
   client.connect();
+  client.join('cycycy');
 };
