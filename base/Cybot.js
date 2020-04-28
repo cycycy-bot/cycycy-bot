@@ -197,7 +197,6 @@ class Cybot extends Client {
         }
       })
       .catch(err => console.error(`${chalk.red(err)}`));
-
     // Returning the client to allow chaning of function calls
     return this;
   }
