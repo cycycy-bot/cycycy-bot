@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const Command = require('../../base/Command');
 
 class Unmute extends Command {
@@ -15,6 +16,7 @@ class Unmute extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const { Logger } = this.bot.db;
 
     const unMute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
     const muteRole = message.guild.roles.find(x => x.name === 'muted');
@@ -23,7 +25,18 @@ class Unmute extends Command {
 
     if (unMute.roles.find(x => x.name === 'muted')) {
       unMute.removeRole(muteRole.id);
-      this.respond(`<@${unMute.id}> has been unmuted!`);
+
+      Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
+        const logChannel = this.bot.channels.get(logRes.logChannelID);
+
+        const logEmbed = new Discord.RichEmbed()
+          .setColor('#ff0000')
+          .setAuthor(`[UNMUTED] | ${unMute.user.username}#${unMute.user.discriminator}`)
+          .addField('Executor', message.author.tag, true)
+          .setFooter(`USER ID: ${unMute.user.id}`)
+          .setTimestamp();
+        logChannel.send(logEmbed);
+      });
     } else {
       this.respond(`<@${unMute.id}> is not muted!`);
     }
