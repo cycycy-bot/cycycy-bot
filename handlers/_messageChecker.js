@@ -96,7 +96,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
   // Notify checker
   db.Notify.find({ userID: message.author.id }).then((result) => {
     if (result.length >= 1) {
-      message.reply(`You have notifications ${nam}`);
+      message.reply(`You have notifications ${nam}. Please check your DMs`);
 
       result.forEach((resData) => {
         const newTime = new Date();
@@ -113,7 +113,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
           .setTitle('Click here for message link')
           .setURL(resData.msgUrl)
           .addField(`Message (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago): `, resData.notifyMsg);
-        return message.channel.send(notifyEmbed)
+        return message.author.send(notifyEmbed)
           .then(() => {
             db.Notify.deleteOne({ userID: resData.userID })
               .then(console.log('Message Deleted'))

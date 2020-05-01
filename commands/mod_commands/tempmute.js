@@ -64,14 +64,15 @@ class TempMute extends Command {
       const logEmbed = new Discord.RichEmbed()
         .setColor('#ff0000')
         .setAuthor(`[MUTED] | ${toMute.user.username}#${toMute.user.discriminator}`)
-        .addField('Executor', message.author.tag, true)
+        .addField('Executor', message.author.tag)
         .addField('Reason', muteReasonJoined || 'no reason', true)
+        .addField('Duration', muteTime, true)
         .setFooter(`USER ID: ${toMute.user.id}`)
         .setTimestamp();
       logChannel.send(logEmbed);
 
       const unmuteEmbed = new Discord.RichEmbed()
-        .setColor('#ff0000')
+        .setColor('#00ff00')
         .setAuthor(`[UNMUTED] | ${toMute.user.username}#${toMute.user.discriminator}`)
         .setFooter(`USER ID: ${toMute.user.id}`)
         .setTimestamp();

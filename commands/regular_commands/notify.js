@@ -36,7 +36,7 @@ class NotifyCommand extends Command {
     });
 
     Notify.find({ userID: notifyUser.id }).then((results) => {
-      if (results.length >= 5) { // message limiter
+      if (results.length >= 3) { // message limiter
         return this.reply(`${notifyUser} has already reached the limit of recieving messages ${nam}`);
       }
       notify.save()
