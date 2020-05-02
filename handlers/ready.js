@@ -1,9 +1,6 @@
-const TwitchClient = require('../base/Twitch');
-
 module.exports = (bot) => {
   console.log(`${bot.user.username} is online! on ${bot.guilds.size} servers!`);
   bot.channels.get('531967060306165796').send(`${bot.user.username} is online on ${bot.guilds.size} servers!`); // my discord's bot test channel
-  TwitchClient(bot);
   const { status } = require('../botconfig.json');
   const { version } = require('../package.json');
   let i = 0;

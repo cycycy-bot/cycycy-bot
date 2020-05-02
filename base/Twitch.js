@@ -1,34 +1,43 @@
 const { ChatClient } = require('dank-twitch-irc');
-require('dotenv').config();
+const chalk = require('chalk');
+const { mongoose, TwitchLog } = require('../settings/databaseImport');
 
-module.exports = (bot) => {
-  const clean = message => message.replace(/@|#/g, '');
-  const twitchDiscordChannel = bot.channels.get('692652832481869884');
-  const { mongoose, TwitchLog } = bot.db;
-  const client = new ChatClient({
-    username: 'cycycybot',
-    password: process.env.TWITCH_AUTH,
-  });
+/**
+ * Represents a Twitch client
+ * @extends ChatClient
+ */
+class TwitchClient extends ChatClient {
+  /**
+   * @param {Object} options The client options used by dank-twitch-irc
+   */
+  constructor(options) {
+    super(options || {});
+  }
 
-  client.on('PRIVMSG', (message) => {
-    twitchDiscordChannel.send(`\`${message.senderUsername}\`: ${clean(message.messageText)}`);
+  /**
+   * Initiatilzes events
+   */
+  init() {
+    this.on('PRIVMSG', (message) => {
+      const twitchMsg = new TwitchLog({
+        _id: mongoose.Types.ObjectId(),
+        userID: message.senderUserID,
+        userName: message.senderUsername,
+        channel: message.channelName,
+        message: message.messageText,
+        date: new Date(),
+      });
 
-    const twitchMsg = new TwitchLog({
-      _id: mongoose.Types.ObjectId(),
-      userID: message.senderUserID,
-      userName: message.senderUsername,
-      channel: message.channelName,
-      message: message.messageText,
-      date: new Date(),
+      return twitchMsg.save();
     });
 
-    return twitchMsg.save();
-  });
+    this.on('connect', () => {
+      console.log(chalk.green('Twitch client connected'));
+    });
 
-  client.on('connect', () => {
-    console.log('Twitch client connected');
-  });
+    this.connect();
+    this.join('cycycy');
+  }
+}
 
-  client.connect();
-  client.join('cycycy');
-};
+module.exports = TwitchClient;

@@ -117,7 +117,7 @@ class Cybot extends Client {
         props.conf.aliases.forEach(a => this.aliases.set(a, props.help.name));
       });
     });
-    // // read admin commands
+    // read admin commands
     readdir(`${path}/admin_commands/`, (err, files) => {
       if (err) console.error(chalk.red(err));
 
