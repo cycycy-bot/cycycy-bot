@@ -12,36 +12,49 @@ class RandomLine extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
-    const { mongoose, Notify } = this.bot.db;
+    const { TwitchLog } = this.bot.db;
 
-    const notifyUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-    const notifyMsg = args.join(' ').slice(22);
-    if (!notifyUser) {
-      return this.respond(`User not found in server ${nam}`);
+    const twitchUser = args[0];
+
+    if (!twitchUser) {
+      return TwitchLog.countDocuments().then((count) => {
+        const random = Math.floor(Math.random() * count);
+
+        TwitchLog.findOne().skip(random).exec((err, res) => {
+          const newTime = new Date();
+          const ms = newTime - res.date;
+          let totalSecs = (ms / 1000);
+          const days = Math.floor(totalSecs / 86400);
+          const hours = Math.floor(totalSecs / 3600);
+          totalSecs %= 3600;
+          const minutes = Math.floor(totalSecs / 60);
+          const seconds = totalSecs % 60;
+          Math.trunc(seconds);
+
+          this.respond(`${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago` : `${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago`} \`${res.userName}\`: ${res.message}`);
+        });
+      });
     }
-    if (!notifyMsg) {
-      return this.respond(`Please add a message ${nam}`);
-    }
 
-    const notify = new Notify({
-      _id: mongoose.Types.ObjectId(),
-      username: notifyUser.user.username,
-      userID: notifyUser.id,
-      senderName: message.author.username,
-      senderAvatar: message.member.user.avatarURL,
-      serverName: message.guild.name,
-      notifyMsg,
-      msgUrl: message.url,
-      date: new Date(),
-    });
 
-    Notify.find({ userID: notifyUser.id }).then((results) => {
-      if (results.length >= 3) { // message limiter
-        return this.reply(`${notifyUser} has already reached the limit of recieving messages ${nam}`);
-      }
-      notify.save()
-        .then(() => this.reply(`${notifyUser} will be notified: ${notifyMsg}`))
-        .catch(err => this.reply(`Error ${err}`));
+    TwitchLog.countDocuments({ userName: twitchUser }).then((count) => {
+      const random = Math.floor(Math.random() * count);
+
+      TwitchLog.findOne({ userName: twitchUser }).skip(random).exec((err, res) => {
+        if (!res) return this.respond(`Twitch user not found ${nam}`);
+        const newTime = new Date();
+        const ms = newTime - res.date;
+        let totalSecs = (ms / 1000);
+        const days = Math.floor(totalSecs / 86400);
+        const hours = Math.floor(totalSecs / 3600);
+        totalSecs %= 3600;
+        const minutes = Math.floor(totalSecs / 60);
+        const seconds = totalSecs % 60;
+        Math.trunc(seconds);
+        console.log(days, hours, minutes, seconds);
+
+        this.respond(`${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago` : `${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago`} \`${res.userName}\`: ${res.message}`);
+      });
     });
   }
 }
