@@ -30,7 +30,6 @@ class RandomLine extends Command {
           totalSecs %= 3600;
           const minutes = Math.floor(totalSecs / 60);
           const seconds = totalSecs % 60;
-          Math.trunc(seconds);
 
           this.respond(`${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago` : `${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago`} \`${res.userName}\`: ${clean(res.message)}`);
         });
@@ -51,8 +50,6 @@ class RandomLine extends Command {
         totalSecs %= 3600;
         const minutes = Math.floor(totalSecs / 60);
         const seconds = totalSecs % 60;
-        Math.trunc(seconds);
-        console.log(days, hours, minutes, seconds);
 
         this.respond(`${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago` : `${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago`} \`${res.userName}\`: ${clean(res.message)}`);
       });
