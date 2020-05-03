@@ -12,7 +12,7 @@ class RandomLine extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
-    const clean = message => message.replace(/@|#/g, '');
+    const clean = msg => msg.replace(/@|#/g, '');
     const { TwitchLog } = this.bot.db;
 
     const twitchUser = args[0];
