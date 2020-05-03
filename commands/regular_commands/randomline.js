@@ -12,6 +12,7 @@ class RandomLine extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const clean = message => message.replace(/@|#/g, '');
     const { TwitchLog } = this.bot.db;
 
     const twitchUser = args[0];
@@ -31,7 +32,7 @@ class RandomLine extends Command {
           const seconds = totalSecs % 60;
           Math.trunc(seconds);
 
-          this.respond(`${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago` : `${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago`} \`${res.userName}\`: ${res.message}`);
+          this.respond(`${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago` : `${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago`} \`${res.userName}\`: ${clean(res.message)}`);
         });
       });
     }
@@ -53,7 +54,7 @@ class RandomLine extends Command {
         Math.trunc(seconds);
         console.log(days, hours, minutes, seconds);
 
-        this.respond(`${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago` : `${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago`} \`${res.userName}\`: ${res.message}`);
+        this.respond(`${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago` : `${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago`} \`${res.userName}\`: ${clean(res.message)}`);
       });
     });
   }
