@@ -113,13 +113,19 @@ const handleMessage = (bot, message, cmd, prefix) => {
           .setTitle('Click here for message link')
           .setURL(resData.msgUrl)
           .addField(`Message (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago): `, resData.notifyMsg);
-        return message.author.send(notifyEmbed)
-          .then(() => {
-            db.Notify.deleteOne({ userID: resData.userID })
-              .then(console.log('Message Deleted'))
-              .catch(console.log);
-          })
-          .catch(console.log);
+        try {
+          message.author.send(notifyEmbed)
+            .then(() => {
+              db.Notify.deleteOne({ userID: resData.userID })
+                .then(console.log('Message Deleted'))
+                .catch(console.log);
+            })
+            .catch(console.log);
+        } catch (e) {
+          db.Notify.deleteOne({ userID: resData.userID })
+            .then(console.log('Message Deleted'))
+            .catch(console.log);
+        }
       });
     }
   });
