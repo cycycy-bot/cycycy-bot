@@ -120,7 +120,11 @@ const handleMessage = (bot, message, cmd, prefix) => {
                 .then(console.log('Message Deleted'))
                 .catch(console.log);
             })
-            .catch(console.log);
+            .catch(() => {
+              db.Notify.deleteOne({ userID: resData.userID })
+                .then(console.log('Message Deleted'))
+                .catch(console.log);
+            });
         } catch (e) {
           db.Notify.deleteOne({ userID: resData.userID })
             .then(console.log('Message Deleted'))
