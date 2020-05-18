@@ -14,7 +14,7 @@ class VoteEmote extends Command {
   constructor(bot) {
     super(bot, {
       name: 'voteemote',
-      description: 'Shows the user\'s information',
+      description: 'Vote for an emote to add/remove',
       usage: '$voteemote <link_with_image> <emote_name>',
       cooldown: 1000,
       aliases: ['ve'],

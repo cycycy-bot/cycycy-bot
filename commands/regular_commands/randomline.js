@@ -37,10 +37,10 @@ class RandomLine extends Command {
     }
 
 
-    TwitchLog.countDocuments({ userName: twitchUser }).then((count) => {
+    TwitchLog.countDocuments({ userName: twitchUser.toLowerCase() }).then((count) => {
       const random = Math.floor(Math.random() * count);
 
-      TwitchLog.findOne({ userName: twitchUser }).skip(random).exec((err, res) => {
+      TwitchLog.findOne({ userName: twitchUser.toLowerCase() }).skip(random).exec((err, res) => {
         if (!res) return this.respond(`Twitch user not found ${nam}`);
         const newTime = new Date();
         const ms = newTime - res.date;

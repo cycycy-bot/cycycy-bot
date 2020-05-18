@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const db = require('../settings/databaseImport');
 
 module.exports = (bot, message) => {
+  if (message.channel.type === 'dm') return;
   const logger = (logArgs) => {
     db.Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
       if (logRes.isEnabled && logRes.isEnabled === 'enable') {

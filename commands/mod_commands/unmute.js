@@ -30,7 +30,7 @@ class Unmute extends Command {
         const logChannel = this.bot.channels.get(logRes.logChannelID);
 
         const logEmbed = new Discord.RichEmbed()
-          .setColor('#ff0000')
+          .setColor('#00ff00')
           .setAuthor(`[UNMUTED] | ${unMute.user.username}#${unMute.user.discriminator}`)
           .addField('Executor', message.author.tag, true)
           .setFooter(`USER ID: ${unMute.user.id}`)
