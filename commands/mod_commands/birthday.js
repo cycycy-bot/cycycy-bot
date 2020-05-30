@@ -1,3 +1,4 @@
+const ms = require('ms');
 const Command = require('../../base/Command');
 
 class Birthday extends Command {
@@ -22,6 +23,10 @@ class Birthday extends Command {
     const birthdayRole = message.guild.roles.find(role => role.id === '702638849737621575');
     if (birthdayBoy.roles.has(birthdayRole.id)) return this.reply(`${birthdayBoy.user.username} already has the ${birthdayRole.name} role`);
     await birthdayBoy.addRole(birthdayRole);
+    this.respond(`<@${birthdayBoy.id}> happy birthday! ${nam}`);
+    setTimeout(() => {
+      birthdayBoy.removeRole(birthdayRole);
+    }, ms('24h'));
   }
 }
 

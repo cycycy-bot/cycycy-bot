@@ -229,7 +229,9 @@ class Cybot extends Client {
     this.loadCommands('./commands');
     this.loadEvents('./handlers');
     this.loadDb(process.env.DB_PASS);
-    this.login(process.env.BOT_TOKEN);
+    const npmArgs = process.argv.slice(2);
+    console.log(npmArgs);
+    this.login(npmArgs[0] === '--test' ? process.env.TEST_BOT : process.env.BOT_TOKEN);
   }
 }
 

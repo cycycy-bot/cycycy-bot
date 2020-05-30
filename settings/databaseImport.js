@@ -9,6 +9,7 @@ const AntiWeeb = require('../models/antiweebDB');
 const Mod = require('../models/modDBtest');
 const Pedo = require('../models/pedoModDB');
 const TwitchLog = require('../models/twitchLog');
+const Timeout = require('../models/timeoutDB');
 
 module.exports = {
   mongoose,
@@ -22,4 +23,5 @@ module.exports = {
   Mod,
   Pedo,
   TwitchLog,
+  Timeout,
 };

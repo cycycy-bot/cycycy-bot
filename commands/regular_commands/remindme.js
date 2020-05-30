@@ -17,6 +17,7 @@ class RemindMe extends Command {
 
     const time = args[0];
     const rmdMessage = args.slice(1).join(' ');
+    if (!rmdMessage) return this.respond('You didn`t set a reminder message');
 
     this.reply(`I will send you a message in ${time} ${nam}`);
 
