@@ -36,6 +36,7 @@ class Unmute extends Command {
           .setFooter(`USER ID: ${unMute.user.id}`)
           .setTimestamp();
         logChannel.send(logEmbed);
+        this.reply(`<@${unMute.id}> has been unmuted!`);
       });
     } else {
       this.respond(`<@${unMute.id}> is not muted!`);
