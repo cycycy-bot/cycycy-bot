@@ -10,7 +10,7 @@ class TempMute extends Command {
       usage: '$tempmute <member> <length>',
       cooldown: 0,
       permission: 'MODERATOR',
-      aliases: ['mute', 'tm', 'timeout'],
+      aliases: ['mute', 'tm', 'timeout', 'gulag'],
       category: 'mod',
     });
   }
@@ -29,11 +29,16 @@ class TempMute extends Command {
 
       if (toMute.id === '487797385691398145') {
         return message.reply(`Can't mute my master ${PepeS}`);
-      } if (toMute.hasPermission('ADMINISTRATOR')) {
+      }
+      if (toMute.hasPermission('ADMINISTRATOR')) {
         return message.reply(`Can't mute administrator ${nam}`);
-      } if ((res.modName === serverRole.id && message.member.roles.has(serverRole.id)) && toMute.roles.has(res.modName)) {
+      }
+      if (message.member.hasPermission('ADMINISTRATOR') && toMute.roles.has(res.modName)) {
+        console.log(`${new Date().toLocaleString()}: ${message.author.tag} muted a mod ${toMute.user.username}#${toMute.user.discriminator}`);
+      } else if ((res.modName === serverRole.id && message.member.roles.has(serverRole.id)) && toMute.roles.has(res.modName)) {
         return message.reply(`Mod can't mute a mod ${nam}`);
       }
+
 
       let muteRole = message.guild.roles.find(role => role.name === 'muted');
       if (!muteRole) {
