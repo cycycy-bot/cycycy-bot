@@ -60,6 +60,18 @@ class TwitchClient extends ChatClient {
         }, 10000);
       }
 
+      // pepege
+      const pepege = ['pepega', 'pepege'];
+      if (pepege.some(pepeg => message.messageText.toLowerCase().includes(pepeg.toLowerCase()))) {
+        if (this.cooldown.has(message.senderUserID)) return;
+        this.say(message.channelName, 'Pepege Clap');
+        this.cooldown.add(message.senderUserID);
+
+        setTimeout(() => {
+          this.cooldown.delete(message.senderUserID);
+        }, 10000);
+      }
+
       return twitchMsg.save();
     });
 
