@@ -49,7 +49,7 @@ class TwitchClient extends ChatClient {
       }
 
       // trihard
-      const trihards = ['tri', 'widehardo'];
+      const trihards = ['trihard', 'widehardo'];
       if (trihards.some(tri => message.messageText.toLowerCase().includes(tri.toLowerCase()))) {
         if (this.cooldown.has(message.senderUserID)) return;
         this.say(message.channelName, 'TriHard 7');
