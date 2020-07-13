@@ -26,6 +26,7 @@
     "novelcovid": "^1.2.4",
     "steam-user": "^4.14.0",
     "tmi.js": "^1.5.0",
+    "websocket": "^1.0.31",
     "wikijs": "^5.5.1",
     "ws": "^7.3.1"
   },

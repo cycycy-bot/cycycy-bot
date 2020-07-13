@@ -47,7 +47,7 @@
     }, 3000);
   }
 
-  const ws = new WebSocket('ws://localhost:5050');
+  const ws = new WebSocket('wss://155.138.222.61:8080');
   // event emmited when connected
   ws.onopen = () => {
     console.log('websocket is connected ...')
@@ -55,8 +55,9 @@
   // event emmited when receiving message 
   ws.onmessage = (ev) => {
     let json = JSON.parse(ev.data);
+    console.log(json)
     if (json.type === 'message') {
-      randomImg(json.data);
+      randomImg(json.data.utf8Data);
     }
   }
 </script>

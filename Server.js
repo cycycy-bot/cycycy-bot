@@ -1,10 +1,7 @@
 const express = require('express');
 const path = require('path');
-const WebSocketServer = require('ws').Server;
-
-const wss = new WebSocketServer({
-  port: 5050,
-});
+const WebSocketServer = require('websocket').server;
+const http = require('http');
 
 const app = express();
 
@@ -18,17 +15,25 @@ app.get('/showemote', (req, res) => {
 
 const clients = [];
 
-wss.on('connection', (ws) => {
-  const index = clients.push(ws) - 1;
+const server = http.createServer(app);
 
-  ws.on('message', (message) => {
+const wss = new WebSocketServer({
+  httpServer: server,
+});
+
+
+wss.on('request', (ws) => {
+  const connection = ws.accept(null, ws.origin);
+  console.log(`${new Date()} Connection accepted.`);
+  const index = clients.push(connection) - 1;
+
+  connection.on('message', (message) => {
     const json = JSON.stringify({ type: 'message', data: message });
     for (let i = 0; i < clients.length; i++) {
-      clients[i].send(json);
+      clients[i].sendUTF(json);
     }
   });
 });
 
-
-app.listen(8080);
+server.listen(8080);
 console.log('Server is loaded on port 8080');
