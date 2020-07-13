@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include ("../partials/head") %>
+</head>
+
+<body>
+  <div id="x"></div>
+</body>
+<script>
+  const randomStr = (len, arr) => {
+    let ans = '';
+    for (let i = len; i > 0; i--) {
+      ans += arr[Math.floor(Math.random() * arr.length)];
+    }
+    return ans;
+  };
+
+  const getRandomPosition = (element) => {
+    var x = document.body.offsetHeight - element.clientHeight;
+    var y = document.body.offsetWidth - element.clientWidth;
+    var randomX = Math.floor(Math.random() * x);
+    var randomY = Math.floor(Math.random() * y);
+    return [randomX, randomY];
+  }
+
+  const removeElement = (elementId) => {
+    // Removes an element from the document
+    const element = document.getElementById(elementId);
+    element.remove(element);
+  }
+
+  const randomImg = (imgUrl) => {
+    const id = randomStr(5, 'brug');
+    const img = document.createElement('img');
+    img.setAttribute("style", "position:absolute;");
+    img.setAttribute("src", imgUrl);
+    img.className = "fade-in-out";
+    img.id = id;
+    document.body.appendChild(img);
+    const xy = getRandomPosition(img);
+    img.style.top = xy[0] + 'px';
+    img.style.left = xy[1] + 'px';
+    setTimeout(() => {
+      removeElement(id);
+    }, 3000);
+  }
+
+  const ws = new WebSocket('ws://localhost:5050');
+  // event emmited when connected
+  ws.onopen = () => {
+    console.log('websocket is connected ...')
+  }
+  // event emmited when receiving message 
+  ws.onmessage = (ev) => {
+    let json = JSON.parse(ev.data);
+    if (json.type === 'message') {
+      randomImg(json.data);
+    }
+  }
+</script>
+
+</html>
