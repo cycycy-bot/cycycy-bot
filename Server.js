@@ -29,6 +29,7 @@ wss.on('request', (ws) => {
 
   connection.on('message', (message) => {
     const json = JSON.stringify({ type: 'message', data: message });
+    console.log(`${new Date()} ${json}`);
     for (let i = 0; i < clients.length; i++) {
       clients[i].sendUTF(json);
     }
