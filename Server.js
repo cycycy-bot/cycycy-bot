@@ -23,6 +23,7 @@ const wss = new WebSocketServer({
 
 
 wss.on('request', (ws) => {
+  console.log(ws.host, ws.key);
   const connection = ws.accept(null, ws.origin);
   console.log(`${new Date()} Connection accepted.`);
   const index = clients.push(connection) - 1;

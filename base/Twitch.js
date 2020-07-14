@@ -42,7 +42,7 @@ class TwitchClient extends ChatClient {
      * Websocket connection
      * @type {Function}
      */
-    this.ws = new WebSocket('ws://155.138.222.61:8080');
+    this.ws = new WebSocket('ws://localhost:8080');
 
     /**
      * Fetch Module
