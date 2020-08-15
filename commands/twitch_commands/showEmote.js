@@ -7,7 +7,7 @@ class ShowEmote extends Command {
       description: 'shows emote on stream',
       usage: '$showemote <emote_name>',
       aliases: ['se'],
-      cooldown: 1000,
+      cooldown: 2000,
     });
   }
 

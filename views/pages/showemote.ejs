@@ -38,16 +38,18 @@
     img.setAttribute("src", imgUrl);
     img.className = "fade-in-out";
     img.id = id;
+    img.style.height = 'auto';
+    img.style.width = '12%';
     document.body.appendChild(img);
     const xy = getRandomPosition(img);
     img.style.top = xy[0] + 'px';
     img.style.left = xy[1] + 'px';
     setTimeout(() => {
       removeElement(id);
-    }, 3000);
+    }, 6000);
   }
 
-  const ws = new WebSocket('ws://localhost:8080');
+  const ws = new WebSocket('wss://155.138.222.61/');
   // event emmited when connected
   ws.onopen = () => {
     console.log('websocket is connected ...')
@@ -55,7 +57,7 @@
   // event emmited when receiving message 
   ws.onmessage = (ev) => {
     let json = JSON.parse(ev.data);
-    console.log(json)
+    console.log(json.data)
     if (json.type === 'message') {
       randomImg(json.data.utf8Data);
     }

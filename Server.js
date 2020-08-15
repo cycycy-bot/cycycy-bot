@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
-const WebSocketServer = require('websocket').server;
+const WebSocketServer = require('ws').Server;
 const http = require('http');
+const url = require('url');
 
 const app = express();
 
@@ -18,13 +19,11 @@ const clients = [];
 const server = http.createServer(app);
 
 const wss = new WebSocketServer({
-  httpServer: server,
+  noServer: true,
 });
 
 
-wss.on('request', (ws) => {
-  console.log(ws.host, ws.key);
-  const connection = ws.accept(null, ws.origin);
+wss.on('connection', (connection) => {
   console.log(`${new Date()} Connection accepted.`);
   const index = clients.push(connection) - 1;
 
@@ -32,9 +31,19 @@ wss.on('request', (ws) => {
     const json = JSON.stringify({ type: 'message', data: message });
     console.log(`${new Date()} ${json}`);
     for (let i = 0; i < clients.length; i++) {
-      clients[i].sendUTF(json);
+      clients[i].send(json);
     }
   });
+});
+
+server.on('upgrade', (req, socket, head) => {
+  const { pathname } = url.parse(req.url);
+
+  if (pathname === '/') {
+    wss.handleUpgrade(req, socket, head, (ws) => {
+      wss.emit('connection', ws, req);
+    });
+  }
 });
 
 server.listen(8080);
