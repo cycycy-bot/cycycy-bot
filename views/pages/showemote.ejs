@@ -59,7 +59,7 @@
     let json = JSON.parse(ev.data);
     console.log(json.data)
     if (json.type === 'message') {
-      randomImg(json.data.utf8Data);
+      randomImg(json.data);
     }
   }
 </script>
