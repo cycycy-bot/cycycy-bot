@@ -59,7 +59,7 @@
     clearTimeout(tm);
   }
 
-  const ws = new WebSocket('ws://localhost:8080/');
+  const ws = new WebSocket('wss://ws.cycycy.me/');
   // event emmited when connected
   ws.onopen = () => {
     console.log('websocket is connected ...');
