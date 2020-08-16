@@ -31,6 +31,9 @@ wss.on('connection', (connection) => {
     const json = JSON.stringify({ type: 'message', data: message });
     console.log(`${new Date()} ${json}`);
     for (let i = 0; i < clients.length; i++) {
+      if(message === '__ping__') {
+        return clients[i].send('__pong__');
+      }
       clients[i].send(json);
     }
   });

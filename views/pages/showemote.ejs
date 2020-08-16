@@ -49,15 +49,28 @@
     }, 6000);
   }
 
-  const ws = new WebSocket('wss://ws.cycycy.me/');
+  const ping = () => {
+    ws.send('__ping__');
+    tm = setTimeout(() => {
+    },5000);
+  }
+
+  const pong = () => {
+    clearTimeout(tm);
+  }
+
+  const ws = new WebSocket('ws://localhost:8080/');
   // event emmited when connected
   ws.onopen = () => {
-    console.log('websocket is connected ...')
+    console.log('websocket is connected ...');
+    setInterval(ping, 30000);
   }
   // event emmited when receiving message 
   ws.onmessage = (ev) => {
     let json = JSON.parse(ev.data);
-    console.log(json.data)
+    console.log(json.data);
+    if (json.data === '__pong__') return pong();
+
     if (json.type === 'message') {
       randomImg(json.data);
     }
