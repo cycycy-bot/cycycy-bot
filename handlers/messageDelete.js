@@ -5,6 +5,7 @@ module.exports = (bot, message) => {
   if (message.channel.type === 'dm') return;
   const logger = (logArgs) => {
     db.Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
+      if (!logRes) return;
       if (logRes.isEnabled && logRes.isEnabled === 'enable') {
         const logEmbed = new Discord.RichEmbed()
           .setColor('#ff0000')

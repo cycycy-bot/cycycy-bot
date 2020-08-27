@@ -24,7 +24,7 @@ class Cat extends Command {
         const { url } = cat[0];
         const catEmbed = new Discord.RichEmbed()
           .setImage(url)
-          .setFooter('Powered by thecatpi');
+          .setFooter('Powered by thecatapi');
 
         return this.respond(catEmbed);
       })
