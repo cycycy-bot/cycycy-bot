@@ -104,7 +104,7 @@ class TwitchClient extends ChatClient {
     });
     const json = await response.json();
     const { emoticons } = json.sets['259311'];
-    return emoticons;
+    return this.ffz = emoticons;
   }
 
   /**
@@ -121,7 +121,7 @@ class TwitchClient extends ChatClient {
     const emoticons1 = json.sets['4330'].emoticons;
 
     const concatenated = emoticons.concat(emoticons1);
-    return concatenated;
+    return this.ffzGlobal = concatenated;
   }
 
   /**
@@ -145,7 +145,7 @@ class TwitchClient extends ChatClient {
     const globalEmotes = json2.emotes;
 
     const concatenated = channelEmotes.concat(globalEmotes);
-    return concatenated;
+    return this.bttv = concatenated;
   }
 
   /**
@@ -156,7 +156,6 @@ class TwitchClient extends ChatClient {
 
     this.on('PRIVMSG', (message) => {
       if (message.senderUsername === this.configuration.username) return;
-
       const twitchMsg = new TwitchLog({
         _id: mongoose.Types.ObjectId(),
         userID: message.senderUserID,
@@ -226,12 +225,9 @@ class TwitchClient extends ChatClient {
 
     this.on('connect', async () => {
       console.log(chalk.green('Twitch client connected'));
-      const fetchedFFZ = await this.fetchFFZ();
-      const fetchedFFZGlobal = await this.fetchFFZGlobal();
-      const fetchedBTTV = await this.fetchBTTV();
-      this.ffzGlobal = fetchedFFZGlobal;
-      this.ffz = fetchedFFZ;
-      this.bttv = fetchedBTTV;
+      await this.fetchFFZ();
+      await this.fetchFFZGlobal();
+      await this.fetchBTTV();
       this.say('cycycy', 'Twitch client connected');
     });
 

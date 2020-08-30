@@ -64,7 +64,7 @@ class Command {
    */
   async hasPermission() {
     if (this.message.author.id === this.bot.config.owner) return true;
-    if (this.conf.ownerOnly && this.message.author.id !== this.bot.config.owner) return false;
+    if (this.conf.ownerOnly && this.message.author.id !== this.bot.config.owner ) return false;
     if (this.conf.permission === 'SEND_MESSAGES') return true;
     if (this.conf.permission === 'ADMINISTRATOR' && this.message.member.hasPermission('ADMINISTRATOR')) return true;
     if (this.conf.permission === 'ADMINISTRATOR' && !this.message.member.hasPermission('ADMINISTRATOR')) return false;

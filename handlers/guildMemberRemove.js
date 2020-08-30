@@ -8,6 +8,8 @@ module.exports = async (bot, member) => {
 
   await member.guild.fetchAuditLogs().then((audit) => {
     db.Logger.findOne({ serverID: member.guild.id }).then((logRes) => {
+      if (!logRes) return;
+      
       if (logRes.isEnabled && logRes.isEnabled === 'enable') {
         const auditKickedId = audit.entries.first().target.id;
         const memberKickedId = member.user.id;
