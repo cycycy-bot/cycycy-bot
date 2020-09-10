@@ -8,12 +8,13 @@ class ShowEmote extends Command {
       usage: '$reloademote',
       aliases: ['re'],
       cooldown: 2000,
-      
+
     });
   }
 
   async run(message, args) {
-    if(message.senderUserID !== this.bot.config.twitchowner) return;
+    if (message.senderUserID !== this.bot.config.twitchowner) return;
+    if (!message.channelName === 'cycycy') return;
 
     await this.bot.fetchFFZ();
     await this.bot.fetchFFZGlobal();

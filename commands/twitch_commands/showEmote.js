@@ -13,7 +13,7 @@ class ShowEmote extends Command {
 
   async run(message, args) {
     if (!args) return;
-
+    if (!message.channelName === 'cycycy') return;
     const emoteName = args[0];
 
     const isBTTVEmote = this.bot.bttv.some(bttvE => bttvE.code === emoteName);

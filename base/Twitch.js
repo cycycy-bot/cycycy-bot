@@ -21,6 +21,12 @@ class TwitchClient extends ChatClient {
     this.cooldown = new Set();
 
     /**
+     * A set of IDs of the users on cooldown
+     * @type {Set}
+     */
+    this.cookieCD = new Map();
+
+    /**
      * Collection of commands
      * @type {Set}
      */
@@ -67,6 +73,12 @@ class TwitchClient extends ChatClient {
      * @type {Array}
      */
     this.bttv = null;
+
+    /**
+     * Mongoose dependency
+     * @type {Object}
+     */
+    this.db = require('../settings/databaseImport');
   }
 
   /**
@@ -164,41 +176,43 @@ class TwitchClient extends ChatClient {
         message: message.messageText,
         date: new Date(),
       });
-
+      twitchMsg.save();
       // donker
-      const donks = ['donk', 'feelsdankman', 'feelsdonkman'];
-      if (donks.some(donk => message.messageText.toLowerCase().includes(donk.toLowerCase()))) {
-        if (this.cooldown.has(message.senderUserID)) return;
-        this.say(message.channelName, 'FeelsDonkMan 👍 ');
-        this.cooldown.add(message.senderUserID);
+      if (message.channelName === 'cycycy') {
+        const donks = ['donk', 'feelsdankman', 'feelsdonkman'];
+        if (donks.some(donk => message.messageText.toLowerCase().includes(donk.toLowerCase()))) {
+          if (this.cooldown.has(message.senderUserID)) return;
+          this.say(message.channelName, 'FeelsDonkMan 👍 ');
+          this.cooldown.add(message.senderUserID);
 
-        setTimeout(() => {
-          this.cooldown.delete(message.senderUserID);
-        }, 10000);
-      }
+          setTimeout(() => {
+            this.cooldown.delete(message.senderUserID);
+          }, 10000);
+        }
 
-      // trihard
-      const trihards = ['trihard', 'widehardo'];
-      if (trihards.some(tri => message.messageText.toLowerCase().includes(tri.toLowerCase()))) {
-        if (this.cooldown.has(message.senderUserID)) return;
-        this.say(message.channelName, 'TriHard 7');
-        this.cooldown.add(message.senderUserID);
+        // trihard
+        const trihards = ['trihard', 'widehardo'];
+        if (trihards.some(tri => message.messageText.toLowerCase().includes(tri.toLowerCase()))) {
+          if (this.cooldown.has(message.senderUserID)) return;
+          this.say(message.channelName, 'TriHard 7');
+          this.cooldown.add(message.senderUserID);
 
-        setTimeout(() => {
-          this.cooldown.delete(message.senderUserID);
-        }, 10000);
-      }
+          setTimeout(() => {
+            this.cooldown.delete(message.senderUserID);
+          }, 10000);
+        }
 
-      // pepege
-      const pepege = ['pepega', 'pepege'];
-      if (pepege.some(pepeg => message.messageText.toLowerCase().includes(pepeg.toLowerCase()))) {
-        if (this.cooldown.has(message.senderUserID)) return;
-        this.say(message.channelName, 'Pepege Clap');
-        this.cooldown.add(message.senderUserID);
+        // pepege
+        const pepege = ['pepega', 'pepege'];
+        if (pepege.some(pepeg => message.messageText.toLowerCase().includes(pepeg.toLowerCase()))) {
+          if (this.cooldown.has(message.senderUserID)) return;
+          this.say(message.channelName, 'Pepege Clap');
+          this.cooldown.add(message.senderUserID);
 
-        setTimeout(() => {
-          this.cooldown.delete(message.senderUserID);
-        }, 10000);
+          setTimeout(() => {
+            this.cooldown.delete(message.senderUserID);
+          }, 10000);
+        }
       }
 
       // COMMANDS
@@ -220,7 +234,6 @@ class TwitchClient extends ChatClient {
 
       if (cmdFile && cmd.startsWith(prefix))cmdFile.run(message, args);
       if (cmdFile.conf.cooldown > 0) cmdFile.startCooldown(message.senderUserID);
-      return twitchMsg.save();
     });
 
     this.on('connect', async () => {
@@ -231,8 +244,12 @@ class TwitchClient extends ChatClient {
       this.say('cycycy', 'Twitch client connected');
     });
 
+    this.on('error', async (err) => {
+      console.error(`${chalk.red(err)}`);
+    });
+
     this.connect();
-    this.join('cycycy');
+    this.joinAll(['cycycy', 'lacari', 'xalhs']);
   }
 }
 
