@@ -22,7 +22,7 @@
     "mongoose": "^5.10.2",
     "ms": "^2.1.2",
     "newsapi": "^2.4.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "novelcovid": "^1.2.7",
     "steam-user": "^4.17.1",
     "tmi.js": "^1.5.0",
