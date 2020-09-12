@@ -31,11 +31,6 @@ class Cybot extends Client {
      */
     this.aliases = new Collection();
 
-    /**
-     * Collection of users in cookie command cooldown
-     * @type {Discord.Collection}
-     */
-    this.cookieCD = new Collection();
 
     // Bot variables
 
