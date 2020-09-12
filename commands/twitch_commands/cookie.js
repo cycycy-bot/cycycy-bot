@@ -44,7 +44,9 @@ class Cookie extends Command {
 
       if (hours >= 24) {
         return CookieDB.deleteOne({ userID: message.senderUserID }).then(() => {
-          this.getCookie(message);
+          cookie.save().then(() => {
+            this.getCookie(message);
+          });
         }).catch(err => console.error(err));
       }
 
