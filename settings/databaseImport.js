@@ -10,6 +10,7 @@ const Mod = require('../models/modDBtest');
 const Pedo = require('../models/pedoModDB');
 const TwitchLog = require('../models/twitchLog');
 const Timeout = require('../models/timeoutDB');
+const CookieDB = require('../models/cookieDB');
 
 module.exports = {
   mongoose,
@@ -24,4 +25,5 @@ module.exports = {
   Pedo,
   TwitchLog,
   Timeout,
+  CookieDB,
 };

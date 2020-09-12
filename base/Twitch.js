@@ -21,12 +21,6 @@ class TwitchClient extends ChatClient {
     this.cooldown = new Set();
 
     /**
-     * A set of IDs of the users on cooldown
-     * @type {Set}
-     */
-    this.cookieCD = new Map();
-
-    /**
      * Collection of commands
      * @type {Set}
      */
