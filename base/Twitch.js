@@ -2,7 +2,7 @@ const { ChatClient } = require('dank-twitch-irc');
 const chalk = require('chalk');
 const { readdir } = require('fs');
 const WebSocket = require('ws');
-const { mongoose, TwitchLog } = require('../settings/databaseImport');
+const { mongoose, TwitchLog, Afk } = require('../settings/databaseImport');
 /**
  * Represents a Twitch client
  * @extends ChatClient
@@ -209,6 +209,23 @@ class TwitchClient extends ChatClient {
         }
       }
 
+      // AFK handler
+      Afk.findOne({ userID: message.senderUserID }).then((result) => {
+        if (!result) return;
+        const newTime = new Date();
+        const ms = newTime - result.date;
+        let totalSecs = (ms / 1000);
+        const hours = Math.floor(totalSecs / 3600);
+        totalSecs %= 3600;
+        const minutes = Math.floor(totalSecs / 60);
+        const seconds = totalSecs % 60;
+
+        this.say(message.channelName, `${message.senderUsername} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)${result.reason ? `: ${result.reason}` : null}`);
+        return Afk.deleteOne({ userID: result.userID })
+          .then(console.log(`${message.senderUsername} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`))
+          .catch(console.log);
+      });
+
       // COMMANDS
       const { prefix } = this.config;
       const messageArray = message.messageText.split(' ');
@@ -235,7 +252,7 @@ class TwitchClient extends ChatClient {
       await this.fetchFFZ();
       await this.fetchFFZGlobal();
       await this.fetchBTTV();
-      this.say('cycycy', 'Twitch client connected');
+      this.say('cycycy', 'TWITCHCLIENTCONNECTED bUrself');
     });
 
     this.on('error', async (err) => {

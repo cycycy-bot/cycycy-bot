@@ -38,7 +38,7 @@ class Cookie extends Command {
 
     CookieDB.findOne({ userID: message.author.id }).then((res) => {
       if (!res) {
-        cookie.save().then(() => {
+        return cookie.save().then(() => {
           this.getCookie(message);
         });
       }
