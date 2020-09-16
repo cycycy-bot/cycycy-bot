@@ -14,7 +14,7 @@ class RandomLine extends Command {
     const nam = 'NaM';
     const clean = msg => msg.replace(/@|#/g, '');
     const { TwitchLog } = this.bot.db;
-    const twitchUser = args[0];
+    const twitchUser = clean(args[0]);
 
     if (!twitchUser) {
       return TwitchLog.countDocuments({ channel: message.channelName }).then((count) => {
