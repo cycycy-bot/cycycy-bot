@@ -260,7 +260,7 @@ class TwitchClient extends ChatClient {
     });
 
     this.connect();
-    this.joinAll(['cycycy', 'lacari', 'xalhs', 'ambulung']);
+    this.joinAll(['cycycy', 'lacari', 'xalhs', 'ambulung', 'shangles']);
   }
 }
 
