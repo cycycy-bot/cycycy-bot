@@ -27,7 +27,7 @@ class Corona extends Command {
               cases, deaths, todayCases, todayDeaths, state,
             } = stateData;
             const coronaStringResult = `${state}'s Corona Virus Information: ${cases} Confirmed Cases, ${deaths} Deaths, ${todayCases} Cases Today, ${todayDeaths} Deaths Today`;
-            return this.bot.say(message.channelName, coronaStringResult);
+            return this.bot.me(message.channelName, coronaStringResult);
           }
         });
       });
@@ -39,12 +39,12 @@ class Corona extends Command {
       });
     } else {
       track.countries(countryName).then((cInfo) => {
-        if (cInfo.message) return this.bot.say(message.channelName, `${cInfo.message} ${nam}`);
+        if (cInfo.message) return this.bot.me(message.channelName, `${cInfo.message} ${nam}`);
         const {
           country, cases, deaths, recovered,
         } = cInfo;
         const coronaStringResult = `${country} has a total of ${cases} Confirmed Cases, ${deaths} Deaths and ${recovered} Recovered`;
-        this.bot.say(message.channelName, coronaStringResult);
+        this.bot.me(message.channelName, coronaStringResult);
       });
     }
   }

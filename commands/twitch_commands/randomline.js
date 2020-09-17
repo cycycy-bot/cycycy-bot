@@ -14,7 +14,7 @@ class RandomLine extends Command {
     const nam = 'NaM';
     const clean = msg => msg.replace(/@|#/g, '');
     const { TwitchLog } = this.bot.db;
-    const twitchUser = clean(args[0]);
+    const twitchUser = args[0];
 
     if (!twitchUser) {
       return TwitchLog.countDocuments({ channel: message.channelName }).then((count) => {
@@ -29,16 +29,16 @@ class RandomLine extends Command {
           const minutes = Math.floor(totalSecs / 60);
           const seconds = totalSecs % 60;
 
-          this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${clean(res.message)}`);
+          this.bot.me(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${clean(res.message)}`);
         });
       });
     }
 
 
-    TwitchLog.countDocuments({ channel: message.channelName, userName: twitchUser.toLowerCase() }).then((count) => {
+    TwitchLog.countDocuments({ channel: message.channelName, userName: clean(twitchUser.toLowerCase()) }).then((count) => {
       const random = Math.floor(Math.random() * count);
 
-      TwitchLog.findOne({ channel: message.channelName, userName: twitchUser.toLowerCase() }).skip(random).exec((err, res) => {
+      TwitchLog.findOne({ channel: message.channelName, userName: clean(twitchUser.toLowerCase()) }).skip(random).exec((err, res) => {
         if (!res) return this.bot.say(message.channelName, `Twitch user not found in my DB ${nam}`);
         const newTime = new Date();
         const ms = newTime - res.date;
@@ -49,7 +49,7 @@ class RandomLine extends Command {
         const minutes = Math.floor(totalSecs / 60);
         const seconds = totalSecs % 60;
 
-        this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${clean(res.message)}`);
+        this.bot.me(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${clean(res.message)}`);
       });
     });
   }

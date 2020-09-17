@@ -16,9 +16,9 @@ class Cookie extends Command {
       .then(res => res.json())
       .then((res) => {
         const cookieString = `${message.senderUsername} here is your cookie for the day 🍪: ${res[0].fortune.message}`;
-        this.bot.say(message.channelName, cookieString);
+        this.bot.me(message.channelName, cookieString);
       })
-      .catch(err => this.bot.say(message.channelName, `Error ${err}`));
+      .catch(err => console.error(err));
   }
 
   async run(message, args) {
@@ -60,7 +60,7 @@ class Cookie extends Command {
       const timeRemainingMins = Math.floor(totalSecs / 60);
       const timeRemainingSecs = totalSecs % 60;
 
-      return this.bot.say(message.channelName, `@${message.senderUsername}, You can only use this command once per 24hrs (${timeRemainingHrs}hrs, ${timeRemainingMins}m and ${Math.trunc(timeRemainingSecs)}s)`);
+      return this.bot.me(message.channelName, `@${message.senderUsername}, You can only use this command once per 24hrs (${timeRemainingHrs}hrs, ${timeRemainingMins}m and ${Math.trunc(timeRemainingSecs)}s)`);
     });
   }
 }
