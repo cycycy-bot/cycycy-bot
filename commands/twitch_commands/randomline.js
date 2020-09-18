@@ -29,7 +29,7 @@ class RandomLine extends Command {
           const minutes = Math.floor(totalSecs / 60);
           const seconds = totalSecs % 60;
 
-          this.bot.me(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${clean(res.message)}`);
+          this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${clean(res.message)}`);
         });
       });
     }
@@ -49,7 +49,7 @@ class RandomLine extends Command {
         const minutes = Math.floor(totalSecs / 60);
         const seconds = totalSecs % 60;
 
-        this.bot.me(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${clean(res.message)}`);
+        this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${clean(res.message)}`);
       });
     });
   }

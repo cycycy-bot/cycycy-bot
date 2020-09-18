@@ -226,6 +226,10 @@ class TwitchClient extends ChatClient {
           .catch(console.log);
       });
 
+      // Raffle joiner
+      if (message.messageText.includes('Type !join to join the raffle!')) {
+        this.say(message.channelName, '!join MrDestructoid');
+      }
       // COMMANDS
       const { prefix } = this.config;
       const messageArray = message.messageText.split(' ');
