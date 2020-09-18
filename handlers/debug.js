@@ -1,3 +1,3 @@
 module.exports = (bot, info) => {
-  console.error(`Debug: ${info}`);
+  console.info(`Debug: ${info}`);
 };

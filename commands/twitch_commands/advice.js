@@ -17,7 +17,7 @@ class Advice extends Command {
     this.bot.fetch('https://api.adviceslip.com/advice')
       .then(res => res.json())
       .then((res) => {
-        this.bot.me(message.channelName, `@${message.channelName} here is your advice ${omgScoots}: ${res.slip.advice}`);
+        this.bot.me(message.channelName, `@${message.senderUsername} here is your advice ${omgScoots}: ${res.slip.advice}`);
       })
       .catch(err => console.error(err));
   }
