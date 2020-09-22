@@ -32,7 +32,7 @@ class Gn extends Command {
         return this.reply(`You are already AFK ${nam}`);
       }
       return afk.save()
-        .then(this.bot.me(message.channelName, `is now sleeping: ${reason || '🛏 💤'}`))
+        .then(this.bot.me(message.channelName, `${message.senderUsername} is now sleeping: ${reason || '🛏 💤'}`))
         .catch(err => console.error(err));
     });
   }
