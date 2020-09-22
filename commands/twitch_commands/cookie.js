@@ -15,7 +15,7 @@ class Cookie extends Command {
     this.bot.fetch('http://fortunecookieapi.herokuapp.com/v1/cookie')
       .then(res => res.json())
       .then((res) => {
-        const cookieString = `${message.senderUsername} here is your cookie for the day 🍪: ${res[0].fortune.message}`;
+        const cookieString = `${message.senderUsername} here is your cookie for the day: ${res[0].fortune.message} 🍪`;
         this.bot.me(message.channelName, cookieString);
       })
       .catch(err => console.error(err));

@@ -15,7 +15,7 @@ class Advice extends Command {
     this.bot.fetch(url)
       .then(res => res.json())
       .then((res) => {
-        this.bot.say(message.channelName, `Random Useless Fact 4Head : ${res.text}`);
+        this.bot.say(message.channelName, `Random Useless Fact: ${res.text} 4Head`);
       })
       .catch(err => console.error(err));
   }

@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const Command = require('../../base/Command');
 
 class Advice extends Command {
@@ -17,7 +16,7 @@ class Advice extends Command {
     this.bot.fetch('https://api.adviceslip.com/advice')
       .then(res => res.json())
       .then((res) => {
-        this.bot.me(message.channelName, `@${message.senderUsername} here is your advice ${omgScoots} : ${res.slip.advice}`);
+        this.bot.me(message.channelName, `@${message.senderUsername} here is your advice: ${res.slip.advice} ${omgScoots}`);
       })
       .catch(err => console.error(err));
   }
