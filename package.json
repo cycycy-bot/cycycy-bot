@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@vitalets/google-translate-api": "^4.0.0",
+    "bad-words": "^3.0.3",
     "canvas": "^2.6.1",
     "chalk": "^3.0.0",
     "dank-twitch-irc": "^3.3.0",

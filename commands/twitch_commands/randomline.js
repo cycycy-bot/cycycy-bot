@@ -1,4 +1,7 @@
+const Filter = require('bad-words');
 const Command = require('../../base/Command');
+
+const filter = new Filter({ placeHolder: '*' });
 
 class RandomLine extends Command {
   constructor(bot) {
@@ -15,7 +18,6 @@ class RandomLine extends Command {
     const clean = msg => msg.replace(/@|#/g, '');
     const { TwitchLog } = this.bot.db;
     const twitchUser = args[0];
-
     if (!twitchUser) {
       return TwitchLog.countDocuments({ channel: message.channelName }).then((count) => {
         const random = Math.floor(Math.random() * count);
@@ -29,7 +31,12 @@ class RandomLine extends Command {
           const minutes = Math.floor(totalSecs / 60);
           const seconds = totalSecs % 60;
 
-          this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${clean(res.message)}`);
+          const resMessage = res.message;
+          const cleanedStr = resMessage.replace(/[^\w\s]/gi, '');
+
+          console.log(resMessage);
+
+          this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${filter.clean(cleanedStr)}`);
         });
       });
     }
@@ -49,7 +56,10 @@ class RandomLine extends Command {
         const minutes = Math.floor(totalSecs / 60);
         const seconds = totalSecs % 60;
 
-        this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${clean(res.message)}`);
+        const resMessage = res.message;
+        const cleanedStr = resMessage.replace(/[^\w\s]/gi, '');
+
+        this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${filter.clean(cleanedStr)}`);
       });
     });
   }
