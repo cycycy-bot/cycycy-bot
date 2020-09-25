@@ -59,12 +59,12 @@ class Command {
   }
 
   /**
-   * Checks whether the user has a permission to fire the command
+   * Checks whether the user has a discord permission to fire the command
    * @function
    */
   async hasPermission() {
     if (this.message.author.id === this.bot.config.owner) return true;
-    if (this.conf.ownerOnly && this.message.author.id !== this.bot.config.owner ) return false;
+    if (this.conf.ownerOnly && this.message.author.id !== this.bot.config.owner) return false;
     if (this.conf.permission === 'SEND_MESSAGES') return true;
     if (this.conf.permission === 'ADMINISTRATOR' && this.message.member.hasPermission('ADMINISTRATOR')) return true;
     if (this.conf.permission === 'ADMINISTRATOR' && !this.message.member.hasPermission('ADMINISTRATOR')) return false;
@@ -76,6 +76,17 @@ class Command {
       if (!res) return;
       return false;
     });
+  }
+
+  /**
+   * Checks whether the user has a twitch permission to fire the command
+   * @function
+   */
+  async hasTwitchPermission() {
+    if (this.bot.config.twitchowner === this.message.senderUserID) return true;
+    if (this.conf.permission === 'mod' && this.message.isMod) return true;
+    if (this.conf.permission === 'SEND_MESSAGES') return true;
+    return false;
   }
 
   /**

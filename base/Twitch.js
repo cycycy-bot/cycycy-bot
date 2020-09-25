@@ -171,6 +171,7 @@ class TwitchClient extends ChatClient {
         date: new Date(),
       });
       twitchMsg.save();
+
       // donker
       if (message.channelName === 'cycycy') {
         const donks = ['donk', 'feelsdankman', 'feelsdonkman'];
@@ -243,8 +244,13 @@ class TwitchClient extends ChatClient {
 
       if (cmdFile.cooldown.has(message.senderUserID)) return;
 
-      if (cmdFile && cmd.startsWith(prefix))cmdFile.run(message, args);
-      if (cmdFile.conf.cooldown > 0) cmdFile.startCooldown(message.senderUserID);
+      cmdFile.setMessage(message);
+      cmdFile.hasTwitchPermission().then((perm) => {
+        if (!perm) return;
+        if (cmdFile && cmd.startsWith(prefix))cmdFile.run(message, args);
+        if (cmdFile.conf.cooldown > 0) cmdFile.startCooldown(message.senderUserID);
+        console.log(`${new Date().toLocaleString()}: ${cmdFile.help.name} used by ${message.senderUsername} in ${message.channelName}`);
+      });
     });
 
     this.on('connect', async () => {

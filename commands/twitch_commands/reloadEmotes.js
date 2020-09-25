@@ -1,7 +1,6 @@
-const Filter = require('bad-words');
+
 const Command = require('../../base/Command');
 
-const filter = new Filter({ placeHolder: '*' });
 
 class ShowEmote extends Command {
   constructor(bot) {

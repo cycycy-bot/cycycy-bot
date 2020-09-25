@@ -7,7 +7,7 @@ class Advice extends Command {
       description: 'Gives advice',
       usage: '$advice',
       aliases: ['adv'],
-      cooldown: 1000,
+      cooldown: 15000,
     });
   }
 

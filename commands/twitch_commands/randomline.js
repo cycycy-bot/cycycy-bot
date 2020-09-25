@@ -32,7 +32,7 @@ class RandomLine extends Command {
           const seconds = totalSecs % 60;
 
           const resMessage = res.message;
-          const cleanedStr = resMessage.replace(/[^\w\s]/gi, '');
+          const cleanedStr = resMessage.replace(/[^\x20-\x7E]/g, '');
 
           console.log(resMessage);
 
@@ -57,7 +57,7 @@ class RandomLine extends Command {
         const seconds = totalSecs % 60;
 
         const resMessage = res.message;
-        const cleanedStr = resMessage.replace(/[^\w\s]/gi, '');
+        const cleanedStr = resMessage.replace(/[^\x20-\x7E]/g, '');
 
         this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${filter.clean(cleanedStr)}`);
       });
