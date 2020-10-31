@@ -24,7 +24,9 @@ class Tuck extends Command {
       if (res.length >= 1) {
         if (res[0].isTucked) {
           return this.reply(`Tucking the tucked ${weirdChamp}`);
-        } if (!res[0].isTucked) {
+        } else if (res[0].afkType === 'afk') {
+	    return this.reply(`${tucked.displayName} is AFK, not sleeping... ${weirdChamp}`);
+	} else if (!res[0].isTucked) {
           return Afk.updateOne({ userID: tucked.id }, { isTucked: true, tucker: message.author.username })
             .then(() => {
               this.respond(`<@${message.author.id}> trucked ${tucked.displayName} to bed ${kkozy} 👉 🛏️ HELL YEAH BROTHER`);
