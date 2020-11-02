@@ -11,7 +11,7 @@ class AfkCommand extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
     const { mongoose, Afk } = this.bot.db;
 
     const reason = args.join(' ');

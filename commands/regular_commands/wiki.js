@@ -15,15 +15,15 @@ class Wiki extends Command {
 
   async run(message, args) {
     if (args[0] === 'search') {
-      const pepeLaugh = this.bot.emojis.find(emoji => emoji.name === 'pepeLaugh');
+      const pepeLaugh = this.bot.emojis.cache.find(emoji => emoji.name === 'pepeLaugh');
       const query = args.slice(1).join(' ');
       return wiki()
         .search(query)
         .then((data) => {
           const dataLimit = data.results.slice(0, 14);
           if (data.results.length >= 1) {
-            const wikiEmbed = new Discord.RichEmbed()
-              .setAuthor(message.author.username, message.author.displayAvatarURL)
+            const wikiEmbed = new Discord.MessageEmbed()
+              .setAuthor(message.author.username, message.author.displayAvatarURL())
               .addField('Results', dataLimit.join(' \n'))
               .setColor('#db6c42')
               .setFooter('Select an article by typing one of the results in your next message');
@@ -41,7 +41,7 @@ class Wiki extends Command {
                   if (result === selected) {
                     return wiki().page(selected)
                       .then((page) => {
-                        const resultsEmbed = new Discord.RichEmbed();
+                        const resultsEmbed = new Discord.MessageEmbed();
                         page.summary()
                           .then((pRes) => {
                             page.mainImage()
@@ -71,7 +71,7 @@ class Wiki extends Command {
     const joinedArgs = args.join(' ');
     wiki().page(joinedArgs)
       .then((page) => {
-        const resultsEmbed = new Discord.RichEmbed();
+        const resultsEmbed = new Discord.MessageEmbed();
         page.summary()
           .then((results) => {
             page.mainImage()

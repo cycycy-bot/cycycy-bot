@@ -11,7 +11,7 @@ module.exports = (bot, member) => {
 
     const user = welcomeMsg.replace('{user}', `<@${member.id}>`);
     if (isEnabled) {
-      bot.channels.get(welcomeChannel).send(user);
+      bot.channels.cache.get(welcomeChannel).send(user);
     }
   });
 };

@@ -14,7 +14,7 @@ class ShutDown extends Command {
   }
 
   async run(message, args) {
-    const Pepege = this.bot.emojis.find(emoji => emoji.name === 'Pepege');
+    const Pepege = this.bot.emojis.cache.find(emoji => emoji.name === 'Pepege');
 
     return message.channel.send(`Shutting down... ${Pepege}`)
       .then(() => this.bot.destroy())

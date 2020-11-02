@@ -11,7 +11,7 @@ class Gn extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
     const reason = args.join(' ');
     const { Afk, mongoose } = this.bot.db;
 

@@ -14,7 +14,7 @@ class Restart extends Command {
   }
 
   async run(message, args) {
-    const pepege = this.bot.emojis.find(emoji => emoji.name === 'Pepege');
+    const pepege = this.bot.emojis.cache.find(emoji => emoji.name === 'Pepege');
 
     return this.respond(`Restarting... ${pepege}`)
       .then(this.bot.destroy())

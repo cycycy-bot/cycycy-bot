@@ -2,9 +2,9 @@ const Discord = require('discord.js');
 const db = require('../settings/databaseImport');
 
 const handleMessage = (bot, message, cmd, prefix) => {
-  const nam = bot.emojis.find(emoji => emoji.name === 'NaM');
+  const nam = bot.emojis.cache.find(emoji => emoji.name === 'NaM');
   const omgScoots = '<:OMGScoots:669029552495788082>';
-  const weirdChamp = bot.emojis.find(emoji => emoji.name === 'WeirdChamp');
+  const weirdChamp = bot.emojis.cache.find(emoji => emoji.name === 'WeirdChamp');
 
   // Custom command checker
   if (cmd.startsWith(prefix)) {
@@ -45,10 +45,10 @@ const handleMessage = (bot, message, cmd, prefix) => {
       const minutes = Math.floor(totalSecs / 60);
       const seconds = totalSecs % 60;
 
-      const backEmbed = new Discord.RichEmbed()
+      const backEmbed = new Discord.MessageEmbed()
         .setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
         .addField('Message: ', result.reason || 'null')
-        .setColor(message.guild.member(message.author).highestRole.color);
+        .setColor(message.guild.member(message.author).roles.highest.color);
       if (result.afkType === 'gn') backEmbed.setFooter(`tucked by ${result.tucker || 'no one PepeHands'}`);
 
       message.channel.send(backEmbed);
@@ -61,16 +61,16 @@ const handleMessage = (bot, message, cmd, prefix) => {
   // AFK Tagged checker
   db.Afk.find({}).then((afkRes) => {
     afkRes.forEach((res) => {
-      if (message.isMentioned(res.userID)) {
+      if (message.mentions.has(res.userID)) {
         if (cmd.startsWith(prefix)) return;
-        const notifyUser = message.mentions.users.find(user => user.id === res.userID);
+        const notifyUser = message.mentions.users.cache.find(user => user.id === res.userID);
 
         const notify = new db.Notify({
           _id: db.mongoose.Types.ObjectId(),
           username: notifyUser.username,
           userID: res.userID,
           senderName: message.author.username,
-          senderAvatar: message.member.user.avatarURL,
+          senderAvatar: message.member.user.avatarURL(),
           serverName: message.guild.name,
           notifyMsg: message.content,
           msgUrl: message.url,
@@ -107,7 +107,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
         const minutes = Math.floor(totalSecs / 60);
         const seconds = totalSecs % 60;
 
-        const notifyEmbed = new Discord.RichEmbed()
+        const notifyEmbed = new Discord.MessageEmbed()
           .setColor('#4e1df2')
           .setAuthor(`${resData.senderName} sent you a message from ${resData.serverName} server:`, resData.senderAvatar)
           .setTitle('Click here for message link')
@@ -141,7 +141,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
         if (message.content.toUpperCase().includes('AYAYA')) {
           // weeb dungeon
           if (message.channel.id === '500399188627161109' || message.channel.id === '579333258999889981' || message.content.includes('cycycyAYAYA')) return;
-          const DansGame = bot.emojis.find(emoji => emoji.name === 'DansGame');
+          const DansGame = bot.emojis.cache.find(emoji => emoji.name === 'DansGame');
           message.channel.send(`${DansGame.toString()} :point_right: :door:`);
           message.channel.send('WEEBS OUT');
           message.react(DansGame.id)
@@ -157,7 +157,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
   });
 
   // type
-  if (message.isMentioned(bot.user)) {
+  if (message.mentions.has(bot.user)) {
     const msgArr = [
       `What ${weirdChamp} ❓`,
       `Stop tagging me ${weirdChamp}`,

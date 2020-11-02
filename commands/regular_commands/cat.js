@@ -22,7 +22,7 @@ class Cat extends Command {
       .then(res => res.json())
       .then((cat) => {
         const { url } = cat[0];
-        const catEmbed = new Discord.RichEmbed()
+        const catEmbed = new Discord.MessageEmbed()
           .setImage(url)
           .setFooter('Powered by thecatapi');
 

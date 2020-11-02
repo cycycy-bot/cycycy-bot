@@ -13,9 +13,9 @@ class Ping extends Command {
   }
 
   async run(message, args) {
-    const KEKW = this.bot.emojis.find(emoji => emoji.name === 'KEKW');
+    const KEKW = this.bot.emojis.cache.find(emoji => emoji.name === 'KEKW');
 
-    return this.respond(`PINGING ${KEKW} took ${Math.round(this.bot.ping)}ms`);
+    return this.respond(`PINGING ${KEKW} took ${Math.round(this.bot.ws.ping)}ms`);
   }
 }
 

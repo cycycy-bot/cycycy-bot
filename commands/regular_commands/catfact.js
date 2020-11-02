@@ -15,7 +15,7 @@ class CatFact extends Command {
     this.bot.fetch('https://cat-fact.herokuapp.com/facts/random')
       .then(res => res.json())
       .then((fact) => {
-        const factEmbed = new Discord.RichEmbed()
+        const factEmbed = new Discord.MessageEmbed()
           .setColor('#1fca05')
           .setDescription(fact.text)
           .setFooter('Powered by cat-fact api');
