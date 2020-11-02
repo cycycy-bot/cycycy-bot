@@ -15,7 +15,7 @@ class DogFact extends Command {
     this.bot.fetch('https://dog-api.kinduff.com/api/facts')
       .then(res => res.json())
       .then((fact) => {
-        const factEmbed = new Discord.RichEmbed()
+        const factEmbed = new Discord.MessageEmbed()
           .setColor('#1fca05')
           .setDescription(fact.facts[0])
           .setFooter('Powered by kinduff/dog-api');

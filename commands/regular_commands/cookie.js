@@ -16,7 +16,7 @@ class Cookie extends Command {
     this.bot.fetch('http://fortunecookieapi.herokuapp.com/v1/cookie')
       .then(res => res.json())
       .then((res) => {
-        const cookieEmbed = new Discord.RichEmbed()
+        const cookieEmbed = new Discord.MessageEmbed()
           .setColor(3447009)
           .addField(`${message.author.username} here is your cookie for the day 🍪`, res[0].fortune.message);
         this.respond(cookieEmbed);

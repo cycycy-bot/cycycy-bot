@@ -13,11 +13,11 @@ class Advice extends Command {
   }
 
   async run(message, args) {
-    const omgScoots = this.bot.emojis.find(emoji => emoji.name === 'OMGScoots');
+    const omgScoots = this.bot.emojis.cache.find(emoji => emoji.name === 'OMGScoots');
     this.bot.fetch('https://api.adviceslip.com/advice')
       .then(res => res.json())
       .then((res) => {
-        const cookieEmbed = new Discord.RichEmbed()
+        const cookieEmbed = new Discord.MessageEmbed()
           .setColor(3447003)
           .addField(`${message.author.username} here is your advice ${omgScoots}`, res.slip.advice);
         this.respond(cookieEmbed);

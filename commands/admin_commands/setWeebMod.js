@@ -13,12 +13,12 @@ class SetWeebMod extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
     const { mongoose, Pedo } = this.bot.db;
 
-    const weebMod = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+    const weebMod = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
     if (!weebMod) return message.channel.send(`User not found ${nam}`);
-    const DansGame = this.bot.emojis.find(emoji => emoji.name === 'DansGame');
+    const DansGame = this.bot.emojis.cache.find(emoji => emoji.name === 'DansGame');
 
     const pedomod = new Pedo({
       _id: mongoose.Types.ObjectId(),

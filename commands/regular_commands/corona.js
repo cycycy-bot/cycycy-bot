@@ -14,7 +14,7 @@ class Corona extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
 
     const track = new NovelCovid();
     const countryName = args.join(' ');
@@ -28,7 +28,7 @@ class Corona extends Command {
             const {
               cases, deaths, todayCases, todayDeaths, state,
             } = stateData;
-            const coronaEmbed = new Discord.RichEmbed()
+            const coronaEmbed = new Discord.MessageEmbed()
               .setTitle(state)
               .addField('Confirmed Cases:', cases, true)
               .addField('Cases Today:', todayCases, true)
@@ -51,7 +51,7 @@ class Corona extends Command {
           country, countryInfo: { flag }, cases, todayCases, deaths, todayDeaths, recovered,
         } = cInfo;
 
-        const coronaEmbed = new Discord.RichEmbed()
+        const coronaEmbed = new Discord.MessageEmbed()
           .setTitle(country)
           .setThumbnail(flag)
           .addField('Confirmed Cases:', cases, true)

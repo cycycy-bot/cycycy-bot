@@ -11,7 +11,7 @@ class Pedofy extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
     const { Pedo } = this.bot.db;
 
     Pedo.findOne({ serverID: message.guild.id, userID: message.member.id }).then((pedoRes) => {
@@ -22,23 +22,24 @@ class Pedofy extends Command {
         return this.respond('```Usage: $pedofy <user>```');
       }
 
-      const pedo = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-      const weirdChamp = this.bot.emojis.find(emoji => emoji.name === 'WeirdChamp');
+      const pedo = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
+      const weirdChamp = this.bot.emojis.cache.find(emoji => emoji.name === 'WeirdChamp');
       if (!pedo) return this.respond(`User not found ${nam}`);
       if (pedo.id === '487797385691398145') return this.respond(`My master is not a pedo ${weirdChamp}`);
 
-      let pedoRole = message.guild.roles.find(role => role.name === 'Pedo');
+      let pedoRole = message.guild.roles.cache.find(role => role.name === 'Pedo');
       if (!pedoRole) {
-        pedoRole = message.guild.createRole({
+        const roleData = {
           name: 'Pedo',
           color: '#ff11b0',
           permissions: ['SEND_MESSAGES'],
-        })
-          .then(prole => pedo.addRole(prole.id))
+        };
+        pedoRole = message.guild.roles.create({ data: roleData, reason: 'No Pedo Role' })
+          .then(prole => pedo.roles.cache.add(prole.id))
           .then(this.respond(`${pedo.user.username} is now a Pedo`))
           .catch(err => this.reply(`Error ${err}`));
       } else {
-        return pedo.addRole(pedoRole)
+        return pedo.roles.cache.add(pedoRole)
           .then(this.respond(`${pedo.user.username} is now a Pedo`))
           .catch(err => this.reply(`Error ${err}`));
       }

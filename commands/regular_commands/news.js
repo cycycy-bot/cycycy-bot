@@ -16,12 +16,12 @@ class News extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
     const omgScoots = '<:OMGScoots:669029552495788082>';
 
     if (args[0] === 'help') {
-      const help = new Discord.RichEmbed()
-        .setAuthor('News Help Menu', this.bot.user.displayAvatarURL)
+      const help = new Discord.MessageEmbed()
+        .setAuthor('News Help Menu', this.bot.user.displayAvatarURL())
         .setDescription(`**Note:** Atleast one of the parameters **\`country\`**,**\`category\`**, **\`sources\`**, and **\`search\`** are required(**\`res\`** parameter will give you the number of results and defaults to 1, max results is 3). \n The **\`sources\`** parameter can't be combined with **\`country\`** or **\`category\`** parameter. \n **Country codes, sources, and categories can be found here** [https://newsapi.org/sources](https://newsapi.org/sources) ${NaM}`)
         .addBlankField()
         .addField('(IMPORTANT) Second parameter', '$news **top**', true)
@@ -79,7 +79,7 @@ class News extends Command {
               publishedAt,
             } = article;
 
-            const articleEmbed = new Discord.RichEmbed()
+            const articleEmbed = new Discord.MessageEmbed()
               .setTitle(title)
               .setURL(url)
               .setDescription(description)

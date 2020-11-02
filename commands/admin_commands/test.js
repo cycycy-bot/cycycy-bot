@@ -13,7 +13,7 @@ class Test extends Command {
   }
 
   async run(message, args) {
-    const pepegaPls = this.bot.emojis.find(emoji => emoji.name === 'PepegaPls');
+    const pepegaPls = this.bot.emojis.cache.find(emoji => emoji.name === 'PepegaPls');
 
     return this.respond(`RUNNING ${pepegaPls}`);
   }

@@ -17,7 +17,7 @@ class Dog extends Command {
         .then(res => res.json())
         .then((dog) => {
           const doggo = dog.message;
-          const dogEmbed = new Discord.RichEmbed()
+          const dogEmbed = new Discord.MessageEmbed()
             .setImage(doggo)
             .setFooter('Powered by dog.ceo');
 
@@ -29,7 +29,7 @@ class Dog extends Command {
       .then(res => res.json())
       .then((dog) => {
         const doggo = dog.message;
-        const dogEmbed = new Discord.RichEmbed()
+        const dogEmbed = new Discord.MessageEmbed()
           .setImage(doggo)
           .setFooter('Powered by dog.ceo');
 

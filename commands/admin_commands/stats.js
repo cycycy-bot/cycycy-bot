@@ -23,22 +23,16 @@ class Stats extends Command {
 
     const upTime = `${days} days(${hours} hours, ${minutes} minutes and ${Math.trunc(seconds)} seconds)`;
 
-    return this.respond('Pinging...')
-      .then((m) => {
-        const ping = m.createdTimestamp - message.createdTimestamp;
-
-        m.edit(`=== STATISTICS ===
-        \`Mem Usage:\` ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB
-        \`Bot Latency:\` ${ping}ms 
-        \`API Latency:\` ${Math.round(this.bot.ping)}ms 
-        \`Server Region:\` ${message.guild.region}
-        \`Uptime:\` ${upTime}
-        \`Servers:\` ${this.bot.guilds.size.toLocaleString()}
-        \`Cybot:\` v${require('../../package.json').version}
-        \`Discord.js:\` v${version}
-        \`Node:\` ${process.version}
-        `);
-      }).catch(err => message.reply(err));
+    return this.respond(`=== STATISTICS ===
+    \`Mem Usage:\` ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB
+    \`API Latency:\` ${Math.round(this.bot.ws.ping)}ms 
+    \`Server Region:\` ${message.guild.region}
+    \`Uptime:\` ${upTime}
+    \`Servers:\` ${this.bot.guilds.cache.size.toLocaleString()}
+    \`Cybot:\` v${require('../../package.json').version}
+    \`Discord.js:\` v${version}
+    \`Node:\` ${process.version}
+    `);
   }
 }
 

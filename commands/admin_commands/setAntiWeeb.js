@@ -13,8 +13,8 @@ class SetAntiWeeb extends Command {
   }
 
   async run(message, args) {
-    const okayChamp = this.bot.emojis.find(emoji => emoji.name === 'OkayChamp');
-    const dansGame = this.bot.emojis.find(emoji => emoji.name === 'DansGame');
+    const okayChamp = this.bot.emojis.cache.find(emoji => emoji.name === 'OkayChamp');
+    const dansGame = this.bot.emojis.cache.find(emoji => emoji.name === 'DansGame');
     const { mongoose, AntiWeeb } = this.bot.db;
     const isEnabled = args[0];
 

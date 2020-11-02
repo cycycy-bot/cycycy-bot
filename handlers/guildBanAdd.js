@@ -9,7 +9,7 @@ module.exports = async (bot, guild, member) => {
       const { reason } = audit.entries.first();
       const executor = audit.entries.first().executor.username;
       const avartarURL = `https://cdn.discordapp.com/avatars/${member.id}/${member.avartar}.png`;
-      const logEmbed = new Discord.RichEmbed()
+      const logEmbed = new Discord.MessageEmbed()
         .setColor('#ff0000')
         .setAuthor(`[${audit.entries.first().action}] | ${member.username}#${member.discriminator}`, avartarURL)
         .addField('User', `<@${member.id}>`, true)
@@ -18,7 +18,7 @@ module.exports = async (bot, guild, member) => {
         .setFooter(`ID: ${member.id}`)
         .setTimestamp();
 
-      return bot.channels.get(logRes.logChannelID).send(logEmbed);
+      return bot.channels.cache.get(logRes.logChannelID).send(logEmbed);
     });
   });
 };

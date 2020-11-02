@@ -15,7 +15,7 @@ class Weather extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
 
     const joinedArgs = args.join(' ');
 
@@ -35,7 +35,7 @@ class Weather extends Command {
             const weatherDesc = weather.weather[0].description;
             const weatherDescCapitalized = weatherDesc.charAt(0).toUpperCase() + weatherDesc.slice(1);
 
-            const weatherEmbed = new Discord.RichEmbed()
+            const weatherEmbed = new Discord.MessageEmbed()
               .setAuthor(`Live Weather Forecast for ${name}, ${country}`)
               .setThumbnail(`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`)
               .setTitle('Weather')
