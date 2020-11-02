@@ -13,7 +13,7 @@ class Avatar extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.cache.cache.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
 
     const aUser = message.guild.member(message.mentions.users.first() || message.author);
 
