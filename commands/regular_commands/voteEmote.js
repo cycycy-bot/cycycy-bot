@@ -58,7 +58,7 @@ class VoteEmote extends Command {
             }
 
             if (thumbsupCount > thumbsdownCount) {
-              return message.guild.createEmoji(emoteUrl, emoteName)
+              return message.guild.emojis.create(emoteUrl, emoteName)
                 .then(emoji => this.respond(`The brugs have voted to add the \`${emoji.name}\` emote!`))
                 .catch(err => this.respond(`Error adding the \`${emoteName}\` emote: ${err.message}`));
             }
