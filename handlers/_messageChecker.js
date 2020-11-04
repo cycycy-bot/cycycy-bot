@@ -45,13 +45,26 @@ const handleMessage = (bot, message, cmd, prefix) => {
       const minutes = Math.floor(totalSecs / 60);
       const seconds = totalSecs % 60;
 
-      const backEmbed = new Discord.MessageEmbed()
+      const notifyEmbed = new Discord.MessageEmbed()
         .setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
-        .addField('Message: ', result.reason || 'null')
-        .setColor(message.guild.member(message.author).roles.highest.color);
-      if (result.afkType === 'gn') backEmbed.setFooter(`tucked by ${result.tucker || 'no one PepeHands'}`);
+        .setColor('#4e1df2');
 
-      message.channel.send(backEmbed);
+      db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
+        if (notifyResult.length >= 1) {
+          notifyResult.forEach((resData) => {
+            const { msgUrl } = resData;
+            notifyEmbed
+              .addFields({ name: `${resData.senderName}'s message from ${resData.serverName} server:`, value: `[Click here](${msgUrl})`, inline: true });
+            db.Notify.deleteOne({ userID: resData.userID })
+              .then(console.log('Message Deleted'))
+              .catch(console.log);
+          });
+        }
+      });
+
+      if (result.afkType === 'gn') notifyEmbed.setFooter(`tucked by ${result.tucker || 'no one PepeHands'}`);
+
+      message.channel.send(notifyEmbed);
       return db.Afk.deleteOne({ userID: result.userID })
         .then(console.log(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`))
         .catch(console.log);
@@ -63,11 +76,11 @@ const handleMessage = (bot, message, cmd, prefix) => {
     afkRes.forEach((res) => {
       if (message.mentions.has(res.userID)) {
         if (cmd.startsWith(prefix)) return;
-        const notifyUser = message.mentions.users.cache.find(user => user.id === res.userID);
+        const notifyUser = message.guild.members.cache.get(res.userID);
 
         const notify = new db.Notify({
           _id: db.mongoose.Types.ObjectId(),
-          username: notifyUser.username,
+          username: notifyUser.user.username,
           userID: res.userID,
           senderName: message.author.username,
           senderAvatar: message.member.user.avatarURL(),
@@ -80,59 +93,17 @@ const handleMessage = (bot, message, cmd, prefix) => {
         db.Notify.find({ userID: res.userID }).then((notifyRes) => {
           // message limiter
           if (notifyRes.length >= 3) {
-            return message.reply(`${notifyUser.username} has already reached the limit of recieving messages ${nam}`);
+            return message.reply(`${notifyUser.user.username} has already reached the limit of recieving messages ${nam}`);
           }
           return notify.save()
             .then(() => {
-              message.reply(`${notifyUser.username} is afk but i will send them that message when they type in any server im on ${omgScoots} 👍`);
+              message.reply(`${notifyUser.user.username} is afk but i will send them that message when they type in any server im on ${omgScoots} 👍`);
             })
             .catch(console.log);
         });
       }
     });
   }).catch(console.log);
-
-
-  // Notify checker
-  db.Notify.find({ userID: message.author.id }).then((result) => {
-    if (result.length >= 1) {
-      message.reply(`You have notifications ${nam}. Please check your DMs`);
-
-      result.forEach((resData) => {
-        const newTime = new Date();
-        const ms = newTime - resData.date;
-        let totalSecs = (ms / 1000);
-        const hours = Math.floor(totalSecs / 3600);
-        totalSecs %= 3600;
-        const minutes = Math.floor(totalSecs / 60);
-        const seconds = totalSecs % 60;
-
-        const notifyEmbed = new Discord.MessageEmbed()
-          .setColor('#4e1df2')
-          .setAuthor(`${resData.senderName} sent you a message from ${resData.serverName} server:`, resData.senderAvatar)
-          .setTitle('Click here for message link')
-          .setURL(resData.msgUrl)
-          .addField(`Message (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago): `, resData.notifyMsg);
-        try {
-          message.author.send(notifyEmbed)
-            .then(() => {
-              db.Notify.deleteOne({ userID: resData.userID })
-                .then(console.log('Message Deleted'))
-                .catch(console.log);
-            })
-            .catch(() => {
-              db.Notify.deleteOne({ userID: resData.userID })
-                .then(console.log('Message Deleted'))
-                .catch(console.log);
-            });
-        } catch (e) {
-          db.Notify.deleteOne({ userID: resData.userID })
-            .then(console.log('Message Deleted'))
-            .catch(console.log);
-        }
-      });
-    }
-  });
 
   // get rid of weebs NaM
   db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {

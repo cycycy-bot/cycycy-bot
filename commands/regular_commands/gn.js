@@ -32,8 +32,7 @@ class Gn extends Command {
         return this.reply(`You are already AFK ${nam}`);
       }
       return afk.save()
-        .then(this.reply(`is now sleeping: ${reason}`))
-        .then(this.respond(`Somebody tuck them ${nam}`))
+        .then(this.respond(`${message.author.username} is now sleeping: ${reason || '🛏️'}, Somebody tuck them ${nam}`))
         .catch(err => this.reply(`Error ${err}`));
     });
   }
