@@ -19,7 +19,7 @@ class RandomLine extends Command {
     const { TwitchLog } = this.bot.db;
     const twitchUser = args[0];
     if (!twitchUser) {
-      return TwitchLog.aggregate([
+      TwitchLog.aggregate([
         { $match: { channel: message.channelName } },
         { $sample: { size: 1 } },
       ]).then((res) => {
@@ -39,6 +39,7 @@ class RandomLine extends Command {
 
         this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res[0].userName}: ${filter.clean(cleanedStr)}`);
       });
+      return;
     }
 
 
