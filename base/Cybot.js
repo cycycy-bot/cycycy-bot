@@ -160,6 +160,7 @@ class Cybot extends Client {
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        useCreateIndex: true,
       });
 
     this.db.mongoose.connection.on('connected', () => {
