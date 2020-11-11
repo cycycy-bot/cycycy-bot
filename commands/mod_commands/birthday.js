@@ -22,10 +22,10 @@ class Birthday extends Command {
 
     const birthdayRole = message.guild.roles.cache.find(role => role.id === '702638849737621575');
     if (birthdayBoy.roles.cache.has(birthdayRole.id)) return this.reply(`${birthdayBoy.user.username} already has the ${birthdayRole.name} role`);
-    await birthdayBoy.roles.cache.add(birthdayRole);
+    await birthdayBoy.roles.add(birthdayRole);
     this.respond(`<@${birthdayBoy.id}> happy birthday! ${nam}`);
     setTimeout(() => {
-      birthdayBoy.roles.cache.remove(birthdayRole);
+      birthdayBoy.roles.remove(birthdayRole);
     }, ms('24h'));
   }
 }
