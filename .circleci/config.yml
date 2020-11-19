@@ -40,11 +40,11 @@ jobs:
      steps:
         - add_ssh_keys:
             fingerprints:
-              - "e2:be:25:d3:7e:9c:b4:d6:f9:c5:b9:f2:14:e3:f4:60"
+              - "b3:01:4b:c2:c0:18:fb:07:d8:80:50:41:59:c5:e1:0f"
         - run:
            name: Deploy Over SSH
            command: |
-             ssh $SSH_USER@$SSH_HOST "cd bot-folder/cycycy-bot/ && git pull && npm install && pm2 restart bot"
+             ssh $SSH_USER@$SSH_HOST "cd cycycybot/ && git pull && npm install && pm2 restart bot"
 workflows:
   version: 2
   build-and-deploy:
