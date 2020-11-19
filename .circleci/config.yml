@@ -44,7 +44,7 @@ jobs:
         - run:
            name: Deploy Over SSH
            command: |
-             ssh $SSH_USER@$SSH_HOST "cd /home/cycycy/cycycybot/ && git pull && npm install && pm2 restart bot"
+             ssh $SSH_USER@$SSH_HOST "cd /home/cycycy/cycycybot/ && git pull && npm install && pm2 restart bot.js"
 workflows:
   version: 2
   build-and-deploy:
