@@ -13,7 +13,7 @@ class RemindMe extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
 
     const time = args[0];
     const rmdMessage = args.slice(1).join(' ');
@@ -21,7 +21,7 @@ class RemindMe extends Command {
 
     this.reply(`I will send you a message in ${time} ${nam}`);
 
-    const remindEmbed = new Discord.RichEmbed()
+    const remindEmbed = new Discord.MessageEmbed()
       .addField(`A reminder from you ${time} ago`, rmdMessage);
     setTimeout(() => {
       try {

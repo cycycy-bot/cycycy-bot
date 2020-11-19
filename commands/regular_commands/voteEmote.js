@@ -22,7 +22,7 @@ class VoteEmote extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
 
     const emoteUrl = args[0];
     const emoteName = args[1];
@@ -31,11 +31,11 @@ class VoteEmote extends Command {
     checkImage(emoteUrl, () => {
       const forHead = '<:4HEad:499105501280469002>';
       const kekega = '<:KEKEGA:647259545676021780>';
-      const YEP = this.bot.emojis.find(emoji => emoji.name === 'YEP');
-      const NOP = this.bot.emojis.find(emoji => emoji.name === 'NOP');
+      const YEP = this.bot.emojis.cache.find(emoji => emoji.name === 'YEP');
+      const NOP = this.bot.emojis.cache.find(emoji => emoji.name === 'NOP');
       this.respond(`A vote for emote \`${emoteName}\` has started! Vote will end in 30mins.`);
 
-      const emoteEmbed = new Discord.RichEmbed()
+      const emoteEmbed = new Discord.MessageEmbed()
         .setImage(emoteUrl);
       this.respond(emoteEmbed)
         .then((m) => {
@@ -51,14 +51,14 @@ class VoteEmote extends Command {
             console.log(collected);
             const thumbsup = collected.get(YEP.id);
             const thumbsdown = collected.get(NOP.id);
-            const thumbsupCount = thumbsup.users.get(message.author.id) ? thumbsup.count - 1 : thumbsup.count;
-            const thumbsdownCount = thumbsdown.users.get(message.author.id) ? thumbsdown.count - 1 : thumbsdown.count;
+            const thumbsupCount = thumbsup.users.cache.get(message.author.id) ? thumbsup.count - 1 : thumbsup.count;
+            const thumbsdownCount = thumbsdown.users.cache.get(message.author.id) ? thumbsdown.count - 1 : thumbsdown.count;
             if (thumbsupCount === thumbsdownCount) {
               return this.respond(`The vote is tied! Therefore the \`${emoteName}\` emote won't be added LOOOOL ${forHead}`);
             }
 
             if (thumbsupCount > thumbsdownCount) {
-              return message.guild.createEmoji(emoteUrl, emoteName)
+              return message.guild.emojis.create(emoteUrl, emoteName)
                 .then(emoji => this.respond(`The brugs have voted to add the \`${emoji.name}\` emote!`))
                 .catch(err => this.respond(`Error adding the \`${emoteName}\` emote: ${err.message}`));
             }

@@ -33,7 +33,7 @@ class Help extends Commands {
     const commandName = args[0];
 
     Mod.findOne({ serverID: message.guild.id }).then((res) => {
-      const serverRole = message.guild.roles.get(res.modName);
+      const serverRole = message.guild.roles.cache.get(res.modName);
       if (!commandName) {
         let output = `= Command List = \n\n[Use ${this.bot.config.prefix}help <commandname> for details]\n`;
         regularCommands.forEach((c) => {
@@ -42,7 +42,7 @@ class Help extends Commands {
         this.respond(output, { code: 'asciidoc', split: { char: '\u200b' } });
 
         // send mod commands if member is a mod
-        if (message.member.roles.has(serverRole.id) || message.member.hasPermission('ADMINISTRATOR')) {
+        if (message.member.roles.cache.has(serverRole.id) || message.member.hasPermission('ADMINISTRATOR')) {
           output = `= Mod Commands List = \n\n[Use ${this.bot.config.prefix}help <commandname> for details]\n`;
           modCommands.forEach((c) => {
             output += `${this.bot.config.prefix}${c.commandInfo.name} :: ${c.commandInfo.description}\n`;

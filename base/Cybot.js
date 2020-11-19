@@ -160,6 +160,7 @@ class Cybot extends Client {
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        useCreateIndex: true,
       });
 
     this.db.mongoose.connection.on('connected', () => {
@@ -205,9 +206,9 @@ class Cybot extends Client {
       process.exit(1);
     });
 
-    process.on('unhandledRejection', (err) => {
-      console.error(`${chalk.red('Uncaught Promise Error: ')} ${err}`);
-    });
+    // process.on('unhandledRejection', (err) => {
+    //   console.error(`${chalk.red('Uncaught Promise Error: ')} ${err}`);
+    // });
 
     // close db connection on closed process
     process.on('SIGINT', () => {

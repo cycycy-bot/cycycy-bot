@@ -14,7 +14,7 @@ class DelBanPhrase extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
     const { BanPhrase } = this.bot.db;
 
     const bp = args.join(' ');

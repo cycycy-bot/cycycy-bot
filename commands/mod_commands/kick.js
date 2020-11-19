@@ -13,10 +13,10 @@ class Kick extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
-    const pepeS = this.bot.emojis.find(emoji => emoji.name === 'PepeS');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
+    const pepeS = this.bot.emojis.cache.find(emoji => emoji.name === 'PepeS');
 
-    const toKick = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+    const toKick = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
     const joinedArgs = args.slice(1).join(' ');
 
     if (!toKick) return this.reply(`User not found ${nam}`);

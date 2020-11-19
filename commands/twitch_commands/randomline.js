@@ -19,36 +19,12 @@ class RandomLine extends Command {
     const { TwitchLog } = this.bot.db;
     const twitchUser = args[0];
     if (!twitchUser) {
-      return TwitchLog.countDocuments({ channel: message.channelName }).then((count) => {
-        const random = Math.floor(Math.random() * count);
-        TwitchLog.findOne({ channel: message.channelName }).skip(random).exec((err, res) => {
-          const newTime = new Date();
-          const ms = newTime - res.date;
-          let totalSecs = (ms / 1000);
-          const days = Math.floor(totalSecs / 86400);
-          const hours = Math.floor(totalSecs / 3600);
-          totalSecs %= 3600;
-          const minutes = Math.floor(totalSecs / 60);
-          const seconds = totalSecs % 60;
-
-          const resMessage = res.message;
-          const cleanedStr = resMessage.replace(/[^\x20-\x7E]/g, '');
-
-          console.log(resMessage);
-
-          this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${filter.clean(cleanedStr)}`);
-        });
-      });
-    }
-
-
-    TwitchLog.countDocuments({ channel: message.channelName, userName: clean(twitchUser.toLowerCase()) }).then((count) => {
-      const random = Math.floor(Math.random() * count);
-
-      TwitchLog.findOne({ channel: message.channelName, userName: clean(twitchUser.toLowerCase()) }).skip(random).exec((err, res) => {
-        if (!res) return this.bot.say(message.channelName, `Twitch user not found in my DB ${nam}`);
+      TwitchLog.aggregate([
+        { $match: { channel: message.channelName } },
+        { $sample: { size: 1 } },
+      ]).then((res) => {
         const newTime = new Date();
-        const ms = newTime - res.date;
+        const ms = newTime - res[0].date;
         let totalSecs = (ms / 1000);
         const days = Math.floor(totalSecs / 86400);
         const hours = Math.floor(totalSecs / 3600);
@@ -56,11 +32,35 @@ class RandomLine extends Command {
         const minutes = Math.floor(totalSecs / 60);
         const seconds = totalSecs % 60;
 
-        const resMessage = res.message;
+        const resMessage = res[0].message;
         const cleanedStr = resMessage.replace(/[^\x20-\x7E]/g, '');
 
-        this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res.userName}: ${filter.clean(cleanedStr)}`);
+        console.log(resMessage);
+
+        this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res[0].userName}: ${filter.clean(cleanedStr)}`);
       });
+      return;
+    }
+
+
+    TwitchLog.aggregate([
+      { $match: { channel: message.channelName, userName: clean(twitchUser.toLowerCase()) } },
+      { $sample: { size: 1 } },
+    ]).then((res) => {
+      if (!res) return this.bot.say(message.channelName, `Twitch user not found in my DB ${nam}`);
+      const newTime = new Date();
+      const ms = newTime - res[0].date;
+      let totalSecs = (ms / 1000);
+      const days = Math.floor(totalSecs / 86400);
+      const hours = Math.floor(totalSecs / 3600);
+      totalSecs %= 3600;
+      const minutes = Math.floor(totalSecs / 60);
+      const seconds = totalSecs % 60;
+
+      const resMessage = res[0].message;
+      const cleanedStr = resMessage.replace(/[^\x20-\x7E]/g, '');
+
+      this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res[0].userName}: ${filter.clean(cleanedStr)}`);
     });
   }
 }

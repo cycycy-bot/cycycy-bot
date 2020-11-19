@@ -13,7 +13,7 @@ class Avatar extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
 
     const aUser = message.guild.member(message.mentions.users.first() || message.author);
 
@@ -21,8 +21,8 @@ class Avatar extends Command {
       return this.respond(`User not found ${nam}`);
     }
 
-    const avatarEmbed = new Discord.RichEmbed()
-      .setImage(aUser.user.displayAvatarURL);
+    const avatarEmbed = new Discord.MessageEmbed()
+      .setImage(aUser.user.displayAvatarURL());
     return this.respond(avatarEmbed);
   }
 }

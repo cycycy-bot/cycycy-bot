@@ -13,12 +13,13 @@ class Cookie extends Command {
   }
 
   async getCookie(message) {
-    this.bot.fetch('http://fortunecookieapi.herokuapp.com/v1/cookie')
+    const URL = 'https://www.muppetlabs.de/api/?lang=en&category=cookie';
+    this.bot.fetch(URL)
       .then(res => res.json())
       .then((res) => {
-        const cookieEmbed = new Discord.RichEmbed()
+        const cookieEmbed = new Discord.MessageEmbed()
           .setColor(3447009)
-          .addField(`${message.author.username} here is your cookie for the day 🍪`, res[0].fortune.message);
+          .addField(`${message.author.username} here is your cookie for the day 🍪`, res.fortune);
         this.respond(cookieEmbed);
       })
       .catch(err => this.reply(`Error ${err}`));

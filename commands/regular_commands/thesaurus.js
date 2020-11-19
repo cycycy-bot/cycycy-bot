@@ -18,7 +18,7 @@ class Thesaurus extends Command {
       .then(res => res.json())
       .then((definition) => {
         if (!definition || !definition[0].meta) {
-          const wordEmbed = new Discord.RichEmbed()
+          const wordEmbed = new Discord.MessageEmbed()
             .setColor('#ff0000')
             .setTitle('Can\'t find the word you are looking for')
             .setThumbnail('https://www.flaticon.com/premium-icon/icons/svg/78/78924.svg')
@@ -33,7 +33,7 @@ class Thesaurus extends Command {
           // join args
           const joinedSyns = defs.meta.syns[0] ? defs.meta.syns[0].join(', ') : null;
 
-          const wordEmbed = new Discord.RichEmbed()
+          const wordEmbed = new Discord.MessageEmbed()
             .setColor('#004bc4')
             .setTitle(`Word: ${word.charAt(0).toUpperCase()}${word.slice(1)}`)
             .addField('Synonyms: ', joinedSyns)

@@ -12,11 +12,11 @@ class BotInfo extends Command {
   }
 
   async run(message, args) {
-    const forHEad = this.bot.emojis.find(emoji => emoji.name === '4HEad');
-    const botEmbed = new Discord.RichEmbed()
+    const forHEad = this.bot.emojis.cache.find(emoji => emoji.name === '4HEad');
+    const botEmbed = new Discord.MessageEmbed()
       .setDescription('Bot Information')
       .setColor('#00b22c')
-      .setThumbnail(this.bot.user.displayAvatarURL)
+      .setThumbnail(this.bot.user.displayAvatarURL())
       .addField(this.bot.user.username, `Multi-purpose bot for discord ${forHEad}`)
       .addField('Created On', this.bot.user.createdAt)
       .setFooter('Bot made by cycycy | github repo: github.com/galoncyryll/cycycy-bot', this.bot.user.displayAvatarURL);

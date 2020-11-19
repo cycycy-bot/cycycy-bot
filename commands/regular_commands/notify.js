@@ -11,10 +11,10 @@ class NotifyCommand extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
     const { mongoose, Notify } = this.bot.db;
 
-    const notifyUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+    const notifyUser = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
     const notifyMsg = args.join(' ').slice(22);
     if (!notifyUser) {
       return this.respond(`User not found in server ${nam}`);
@@ -28,7 +28,7 @@ class NotifyCommand extends Command {
       username: notifyUser.user.username,
       userID: notifyUser.id,
       senderName: message.author.username,
-      senderAvatar: message.member.user.avatarURL,
+      senderAvatar: message.member.user.avatarURL(),
       serverName: message.guild.name,
       notifyMsg,
       msgUrl: message.url,

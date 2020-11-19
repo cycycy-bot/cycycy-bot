@@ -29,7 +29,7 @@ class Commands extends Command {
       cmdArr.push(cmdArrInner);
       // const joined = cmdArr.join(' \n');
 
-      const serverCmdEmbed = new Discord.RichEmbed()
+      const serverCmdEmbed = new Discord.MessageEmbed()
         .setDescription('Server Commands')
         .setColor('#23ff74');
 

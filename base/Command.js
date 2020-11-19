@@ -70,8 +70,8 @@ class Command {
     if (this.conf.permission === 'ADMINISTRATOR' && !this.message.member.hasPermission('ADMINISTRATOR')) return false;
     return this.bot.db.Mod.findOne({ serverID: this.message.guild.id }).then((res) => {
       if (this.conf.permission === 'MODERATOR' && res) {
-        const serverRole = this.message.guild.roles.get(res.modName);
-        if ((res.modName === serverRole.id && this.message.member.roles.has(serverRole.id)) || this.message.member.hasPermission('ADMINISTRATOR')) return true;
+        const serverRole = this.message.guild.roles.cache.get(res.modName);
+        if ((res.modName === serverRole.id && this.message.member.roles.cache.has(serverRole.id)) || this.message.member.hasPermission('ADMINISTRATOR')) return true;
       }
       if (!res) return;
       return false;

@@ -1,4 +1,4 @@
-const messageChecker = require('./_messageChecker');
+const messageChecker = require('../utils/messageChecker');
 
 module.exports = (bot, message) => {
   if (message.author.bot) return;
@@ -25,7 +25,7 @@ module.exports = (bot, message) => {
   // permission checker
   cmdFile.setMessage(message);
   cmdFile.hasPermission().then((perm) => {
-    const nam = bot.emojis.find(emoji => emoji.name === 'NaM');
+    const nam = bot.emojis.cache.find(emoji => emoji.name === 'NaM');
 
     if (perm === undefined) return message.reply(`You haven't set a mod in this server ${nam}. To set a mod in this server do $help setmod.`);
     if (!perm) return message.reply(`You don't have permission for this command ${nam}`);

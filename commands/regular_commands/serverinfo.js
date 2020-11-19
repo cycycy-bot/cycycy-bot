@@ -12,8 +12,8 @@ class ServerInfo extends Command {
   }
 
   async run(message, args) {
-    const serverIcon = message.guild.iconURL;
-    const serverEmbed = new Discord.RichEmbed()
+    const serverIcon = message.guild.iconURL();
+    const serverEmbed = new Discord.MessageEmbed()
       .setDescription(message.guild.name)
       .setColor('#00b22c')
       .setThumbnail(serverIcon)

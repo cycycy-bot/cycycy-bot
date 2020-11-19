@@ -15,21 +15,22 @@ class Unmute extends Command {
   }
 
   async run(message, args) {
-    const nam = this.bot.emojis.find(emoji => emoji.name === 'NaM');
-    const { Logger } = this.bot.db;
+    const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
+    const { Mod, Logger } = this.bot.db;
 
-    const unMute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-    const muteRole = message.guild.roles.find(x => x.name === 'muted');
+    const unMute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
+    const muteRole = message.guild.roles.cache.find(role => role.name === 'muted');
     if (!unMute) return message.channel.send(`User not found ${nam}`);
-    if (!message.member.roles.find(role => role.name === 'Mod cucks')) return message.reply(`You don't have permission for this command ${nam}`);
+    Mod.findOne({ serverID: message.guild.id }).then(async (res) => {
+      const serverRole = message.guild.roles.cache.get(res.modName);
+      if (!message.member.roles.cache.get(serverRole.id)) return message.reply(`You don't have permission for this command ${nam}`);
 
-    if (unMute.roles.find(x => x.name === 'muted')) {
-      unMute.removeRole(muteRole.id);
+      await unMute.roles.remove(muteRole.id);
 
       Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
-        const logChannel = this.bot.channels.get(logRes.logChannelID);
+        const logChannel = this.bot.channels.cache.get(logRes.logChannelID);
 
-        const logEmbed = new Discord.RichEmbed()
+        const logEmbed = new Discord.MessageEmbed()
           .setColor('#00ff00')
           .setAuthor(`[UNMUTED] | ${unMute.user.username}#${unMute.user.discriminator}`)
           .addField('Executor', message.author.tag, true)
@@ -38,9 +39,7 @@ class Unmute extends Command {
         logChannel.send(logEmbed);
         this.reply(`<@${unMute.id}> has been unmuted!`);
       });
-    } else {
-      this.respond(`<@${unMute.id}> is not muted!`);
-    }
+    });
   }
 }
 
