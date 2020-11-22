@@ -74,6 +74,24 @@ class Cybot extends Client {
   }
 
   /**
+   *
+   * @param {String} mention the user mentioned in the message.
+   */
+  getUserFromMention(mention) {
+    if (!mention) return;
+
+    if (mention.startsWith('<@') && mention.endsWith('>')) {
+      mention = mention.slice(2, -1);
+
+      if (mention.startsWith('!')) {
+        mention = mention.slice(1);
+      }
+
+      return this.users.cache.get(mention);
+    }
+  }
+
+  /**
    * Loads all commands in the directory specified
    * @param {String} path The path where the commands are located
    */
@@ -218,7 +236,7 @@ class Cybot extends Client {
       });
     });
 
-    const mongoURI = 'mongodb://127.0.0.1:27017';
+    const mongoURI = 'mongodb://127.0.0.1:27017/cybot';
 
     this.loadCommands('./commands');
     this.loadEvents('./handlers');
