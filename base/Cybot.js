@@ -240,7 +240,7 @@ class Cybot extends Client {
 
     this.loadCommands('./commands');
     this.loadEvents('./handlers');
-    this.loadDb(mongoURI || process.env.DB_PASS);
+    this.loadDb(process.env.DB_PASS);
     const npmArgs = process.argv.slice(2);
     this.login(npmArgs[0] === '--test' ? process.env.TEST_BOT : process.env.BOT_TOKEN);
   }
