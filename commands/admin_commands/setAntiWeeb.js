@@ -15,7 +15,7 @@ class SetAntiWeeb extends Command {
   async run(message, args) {
     const okayChamp = this.bot.emojis.cache.find(emoji => emoji.name === 'OkayChamp');
     const dansGame = this.bot.emojis.cache.find(emoji => emoji.name === 'DansGame');
-    const { mongoose, AntiWeeb } = this.bot.db;
+    const { mongoose, AntiWeeb } = cb.db;
     const isEnabled = args[0];
 
     if (!isEnabled) return this.reply('Please add `enable` or `disable` as 3rd argument. Use `$help setantiweeb` for setting the anti weeb channel.');

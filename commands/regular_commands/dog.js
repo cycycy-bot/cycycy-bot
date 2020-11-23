@@ -13,7 +13,7 @@ class Dog extends Command {
 
   async run(message, args) {
     if (!args[0]) {
-      return this.bot.fetch('https://dog.ceo/api/breeds/image/random')
+      return cb.fetch('https://dog.ceo/api/breeds/image/random')
         .then(res => res.json())
         .then((dog) => {
           const doggo = dog.message;
@@ -25,7 +25,7 @@ class Dog extends Command {
         })
         .catch(err => this.reply(`Error ${err}`));
     }
-    return this.bot.fetch(`https://dog.ceo/api/breed/${args[0]}/images/random`)
+    return cb.fetch(`https://dog.ceo/api/breed/${args[0]}/images/random`)
       .then(res => res.json())
       .then((dog) => {
         const doggo = dog.message;

@@ -15,7 +15,7 @@ class DelBanPhrase extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { BanPhrase } = this.bot.db;
+    const { BanPhrase } = cb.db;
 
     const bp = args.join(' ');
     if (!bp) return this.reply(`Please add a word to be unbanned ${nam}`);

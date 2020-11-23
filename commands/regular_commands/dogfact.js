@@ -12,7 +12,7 @@ class DogFact extends Command {
   }
 
   async run(message, args) {
-    this.bot.fetch('https://dog-api.kinduff.com/api/facts')
+    cb.fetch('https://dog-api.kinduff.com/api/facts')
       .then(res => res.json())
       .then((fact) => {
         const factEmbed = new Discord.MessageEmbed()

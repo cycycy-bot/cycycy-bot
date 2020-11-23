@@ -12,7 +12,7 @@ class Pedofy extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { Pedo } = this.bot.db;
+    const { Pedo } = cb.db;
 
     Pedo.findOne({ serverID: message.guild.id, userID: message.member.id }).then((pedoRes) => {
       if (!pedoRes) {

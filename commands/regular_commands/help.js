@@ -15,7 +15,7 @@ class Help extends Commands {
     const regularCommands = [];
     const modCommands = [];
     const adminCommands = [];
-    const { Mod } = this.bot.db;
+    const { Mod } = cb.db;
 
     await this.bot.commands.forEach((c) => {
       const { category } = c.help;

@@ -14,7 +14,7 @@ class Tuck extends Command {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
     const kkozy = this.bot.emojis.cache.find(emoji => emoji.name === 'KKozy');
     const weirdChamp = this.bot.emojis.cache.find(emoji => emoji.name === 'WeirdChamp');
-    const { Afk } = this.bot.db;
+    const { Afk } = cb.db;
 
     const tucked = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
     if (!tucked) return this.respond(`User not found ${nam}`);
@@ -24,9 +24,9 @@ class Tuck extends Command {
       if (res.length >= 1) {
         if (res[0].isTucked) {
           return this.reply(`Tucking the tucked ${weirdChamp}`);
-        } else if (res[0].afkType === 'afk') {
+        } if (res[0].afkType === 'afk') {
 	    return this.reply(`${tucked.displayName} is AFK, not sleeping... ${weirdChamp}`);
-	} else if (!res[0].isTucked) {
+        } if (!res[0].isTucked) {
           return Afk.updateOne({ userID: tucked.id }, { isTucked: true, tucker: message.author.username })
             .then(() => {
               this.respond(`<@${message.author.id}> trucked ${tucked.displayName} to bed ${kkozy} 👉 🛏️ HELL YEAH BROTHER`);

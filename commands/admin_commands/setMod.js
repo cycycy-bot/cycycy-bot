@@ -14,7 +14,7 @@ class SetMod extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { mongoose, Mod } = this.bot.db;
+    const { mongoose, Mod } = cb.db;
 
     const role = args.join(' ');
     const roleFinder = message.guild.roles.cache.find(r => r.name === role);

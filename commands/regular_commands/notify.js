@@ -12,7 +12,7 @@ class NotifyCommand extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { mongoose, Notify } = this.bot.db;
+    const { mongoose, Notify } = cb.db;
 
     const getUserFromMention = await this.bot.getUserFromMention(args[0]);
 

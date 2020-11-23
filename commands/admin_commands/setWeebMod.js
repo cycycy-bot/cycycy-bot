@@ -14,7 +14,7 @@ class SetWeebMod extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { mongoose, Pedo } = this.bot.db;
+    const { mongoose, Pedo } = cb.db;
 
     const weebMod = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
     if (!weebMod) return message.channel.send(`User not found ${nam}`);

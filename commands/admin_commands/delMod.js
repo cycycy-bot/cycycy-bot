@@ -15,7 +15,7 @@ class DelMod extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { Mod } = this.bot.db;
+    const { Mod } = cb.db;
 
     Mod.deleteOne({ serverID: message.guild.id }).then((res) => {
       if (res.n >= 1) {

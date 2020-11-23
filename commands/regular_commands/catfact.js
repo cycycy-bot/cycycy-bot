@@ -12,7 +12,7 @@ class CatFact extends Command {
   }
 
   async run(message, args) {
-    this.bot.fetch('https://cat-fact.herokuapp.com/facts/random')
+    cb.fetch('https://cat-fact.herokuapp.com/facts/random')
       .then(res => res.json())
       .then((fact) => {
         const factEmbed = new Discord.MessageEmbed()

@@ -14,7 +14,7 @@ class Thesaurus extends Command {
   async run(message, args) {
     const word = args.join(' ');
 
-    this.bot.fetch(`https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.DICTIONARY_KEY}`)
+    cb.fetch(`https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.DICTIONARY_KEY}`)
       .then(res => res.json())
       .then((definition) => {
         if (!definition || !definition[0].meta) {

@@ -14,7 +14,7 @@ class Cookie extends Command {
 
   async getCookie(message) {
     const URL = 'https://www.muppetlabs.de/api/?lang=en&category=cookie';
-    this.bot.fetch(URL)
+    cb.fetch(URL)
       .then(res => res.json())
       .then((res) => {
         const cookieEmbed = new Discord.MessageEmbed()
@@ -26,7 +26,7 @@ class Cookie extends Command {
   }
 
   async run(message, args) {
-    const { mongoose, CookieDB } = this.bot.db;
+    const { mongoose, CookieDB } = cb.db;
 
     const cookie = new CookieDB({
       _id: mongoose.Types.ObjectId(),

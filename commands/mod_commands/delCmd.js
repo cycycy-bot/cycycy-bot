@@ -14,7 +14,7 @@ class DelCmd extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { Cmd } = this.bot.db;
+    const { Cmd } = cb.db;
 
     const commandName = args[0];
     if (!commandName) return this.reply(`Please add a command name ${nam}`);

@@ -16,7 +16,7 @@ class RandomLine extends Command {
   async run(message, args) {
     const nam = 'NaM';
     const clean = msg => msg.replace(/@|#/g, '');
-    const { TwitchLog } = this.bot.db;
+    const { TwitchLog } = cb.db;
     const twitchUser = args[0];
     if (!twitchUser) {
       TwitchLog.aggregate([

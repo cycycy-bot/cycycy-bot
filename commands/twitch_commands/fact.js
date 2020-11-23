@@ -12,7 +12,7 @@ class Advice extends Command {
 
   async run(message, args) {
     const url = 'https://uselessfacts.jsph.pl/random.json?language=en';
-    this.bot.fetch(url)
+    cb.fetch(url)
       .then(res => res.json())
       .then((res) => {
         this.bot.say(message.channelName, `Random Useless Fact: ${res.text} 4Head`);
