@@ -12,7 +12,7 @@ class Cookie extends Command {
   }
 
   async getCookie(message) {
-    this.bot.fetch('http://fortunecookieapi.herokuapp.com/v1/cookie')
+    cb.fetch('http://fortunecookieapi.herokuapp.com/v1/cookie')
       .then(res => res.json())
       .then((res) => {
         const cookieString = `${message.senderUsername} here is your cookie for the day: ${res[0].fortune.message} 🍪`;
@@ -22,7 +22,7 @@ class Cookie extends Command {
   }
 
   async run(message, args) {
-    const { mongoose, CookieDB } = this.bot.db;
+    const { mongoose, CookieDB } = cb.db;
 
     const cookie = new CookieDB({
       _id: mongoose.Types.ObjectId(),

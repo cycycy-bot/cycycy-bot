@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable no-param-reassign */
 const { Client, Collection } = require('discord.js');
 const chalk = require('chalk');
@@ -39,18 +40,6 @@ class Cybot extends Client {
      * @type {Object}
      */
     this.config = options.config ? require(`${options.config}`) : {};
-
-    /**
-     * Mongoose dependency
-     * @type {Object}
-     */
-    this.db = require('../settings/databaseImport');
-
-    /**
-     * Fetch Module
-     * @type {Object}
-     */
-    this.fetch = require('node-fetch');
   }
 
   /**
@@ -174,22 +163,22 @@ class Cybot extends Client {
    * @param {String} dbPass The connection string for mongoDB
    */
   loadDb(dbPass) {
-    this.db.mongoose.connect(dbPass,
+    cb.db.mongoose.connect(dbPass,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
       });
 
-    this.db.mongoose.connection.on('connected', () => {
+    cb.db.mongoose.connection.on('connected', () => {
       console.log(`${chalk.green('MongoDB Connected!')}`);
     });
 
-    this.db.mongoose.connection.on('error', (err) => {
+    cb.db.mongoose.connection.on('error', (err) => {
       console.error(`${chalk.red(err)}`);
     });
 
-    this.db.mongoose.connection.on('disconnected', () => {
+    cb.db.mongoose.connection.on('disconnected', () => {
       console.info(`${chalk.yellow('Mongoose default connection is disconnected')}`);
     });
   }
@@ -230,7 +219,7 @@ class Cybot extends Client {
 
     // close db connection on closed process
     process.on('SIGINT', () => {
-      this.db.mongoose.connection.close(() => {
+      cb.db.mongoose.connection.close(() => {
         console.info(`${chalk.yellow('Mongoose default connection is disconnected due to application termination')}`);
         process.exit(0);
       });

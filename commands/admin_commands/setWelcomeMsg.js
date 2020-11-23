@@ -14,7 +14,7 @@ class SetWelcomeMsg extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { Welcome } = this.bot.db;
+    const { Welcome } = cb.db;
 
     const logChannelName = args[1];
     const channelFinder = message.guild.channels.find(channel => channel.name === logChannelName);

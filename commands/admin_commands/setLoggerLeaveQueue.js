@@ -14,7 +14,7 @@ class SetLeaveQueue extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { Logger } = this.bot.db;
+    const { Logger } = cb.db;
 
     const leaveLimit = args[0];
 

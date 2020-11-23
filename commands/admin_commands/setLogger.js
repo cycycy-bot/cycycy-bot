@@ -14,7 +14,7 @@ class SetLogger extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { mongoose, Logger } = this.bot.db;
+    const { mongoose, Logger } = cb.db;
 
     const logChannelName = args[1];
     const channelFinder = message.guild.channels.find(channel => channel.name === logChannelName);

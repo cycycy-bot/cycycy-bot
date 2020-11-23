@@ -12,9 +12,10 @@ class Commands extends Command {
   }
 
   async run(message, args) {
-    const { Cmd } = this.bot.db;
+    const { Cmd } = cb.db;
 
     Cmd.find({ serverID: message.guild.id }).then((res) => {
+      if (!res.length) return this.respond('No custom commands found in this server. Try `$help` for bot commands.');
       const cmdArr = [];
       let cmdArrInner = [];
       // res.forEach(serverCmd => cmdArr.push(serverCmd.commandName));
@@ -27,7 +28,12 @@ class Commands extends Command {
         }
       }
       cmdArr.push(cmdArrInner);
-      // const joined = cmdArr.join(' \n');
+      const joined = cmdArr.join('\r\n');
+      const MAX_CHARS = 3 + 2 + joined.length + 3;
+
+      if (MAX_CHARS > 1200) {
+        return this.respond('Output exceeded 2000 characters. Sending as a file.', { files: [{ attachment: Buffer.from(joined), name: 'output.txt' }] });
+      }
 
       const serverCmdEmbed = new Discord.MessageEmbed()
         .setDescription('Server Commands')

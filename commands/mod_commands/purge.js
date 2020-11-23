@@ -16,7 +16,7 @@ class Purge extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { Logger } = this.bot.db;
+    const { Logger } = cb.db;
 
     if (!args[0]) return this.reply(`Please add number of messages ${nam}`);
     if (isNaN(args[0])) return this.reply(`Please use number as arguments. ${nam}`);

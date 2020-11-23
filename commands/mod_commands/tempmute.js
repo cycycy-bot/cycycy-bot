@@ -17,7 +17,7 @@ class TempMute extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { Mod, Logger } = this.bot.db;
+    const { Mod, Logger } = cb.db;
 
     const toMute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
     const PepeS = this.bot.emojis.cache.find(emoji => emoji.name === 'PepeS');

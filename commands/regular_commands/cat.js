@@ -12,7 +12,7 @@ class Cat extends Command {
   }
 
   async run(message, args) {
-    this.bot.fetch('https://api.thecatapi.com/v1/images/search', {
+    cb.fetch('https://api.thecatapi.com/v1/images/search', {
       method: 'get',
       headers: {
         'Content-Type': 'application/json',

@@ -13,7 +13,7 @@ class Tuck extends Command {
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
     const weirdChamp = this.bot.emojis.cache.find(emoji => emoji.name === 'WeirdChamp');
-    const { Afk } = this.bot.db;
+    const { Afk } = cb.db;
 
     const tucked = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
     if (!tucked) return this.respond(`User not found ${nam}`);

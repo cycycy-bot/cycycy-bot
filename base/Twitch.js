@@ -45,12 +45,6 @@ class TwitchClient extends ChatClient {
     this.ws = new WebSocket('ws://localhost:8080');
 
     /**
-     * Fetch Module
-     * @type {Object}
-     */
-    this.fetch = require('node-fetch');
-
-    /**
      * Array of the channel's FFZ emotes
      * @type {Array}
      */
@@ -67,12 +61,6 @@ class TwitchClient extends ChatClient {
      * @type {Array}
      */
     this.bttv = null;
-
-    /**
-     * Mongoose dependency
-     * @type {Object}
-     */
-    this.db = require('../settings/databaseImport');
   }
 
   /**

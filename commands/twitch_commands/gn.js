@@ -13,7 +13,7 @@ class Gn extends Command {
   async run(message, args) {
     const nam = 'NaM';
     const reason = args.join(' ');
-    const { Afk, mongoose } = this.bot.db;
+    const { Afk, mongoose } = cb.db;
 
     if (reason.length >= 1024) return this.reply(`Your message is too long ${nam}`);
 

@@ -14,7 +14,7 @@ class AddCmd extends Command {
 
   async run(message, args) {
     const nam = this.bot.emojis.cache.find(emoji => emoji.name === 'NaM');
-    const { mongoose, Cmd } = this.bot.db;
+    const { mongoose, Cmd } = cb.db;
 
     const cmdRes = args.slice(1);
     const resJoined = cmdRes.join(' ');

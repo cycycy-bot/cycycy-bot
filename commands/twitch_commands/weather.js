@@ -16,7 +16,7 @@ class Weather extends Command {
 
     const joinedArgs = args.join(' ');
 
-    this.bot.fetch(`https://api.openweathermap.org/data/2.5/weather?q=${joinedArgs}&units=metric&appid=8d1a465793567f602b025c310a5d8c13`, {
+    cb.fetch(`https://api.openweathermap.org/data/2.5/weather?q=${joinedArgs}&units=metric&appid=8d1a465793567f602b025c310a5d8c13`, {
       method: 'get',
       headers: { 'content-type': 'application/json' },
     })
