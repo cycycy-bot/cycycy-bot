@@ -10,4 +10,7 @@ const bot = new Cybot({ config: '../botconfig.json' });
 const twitch = new TwitchClient({ username: 'cycycybot', password: process.env.TWITCH_AUTH, config: '../botconfig.json' });
 
 bot.init();
-twitch.init();
+const npmArgs = process.argv.slice(2);
+if (!npmArgs.includes('--notwitch')) {
+  twitch.init();
+}

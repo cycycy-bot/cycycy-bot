@@ -1,15 +1,14 @@
 const Discord = require('discord.js');
-const db = require('../settings/databaseImport');
 
 module.exports = (bot, message) => {
   if (message.channel.type === 'dm') return;
   const logger = (logArgs) => {
-    db.Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
+    cb.db.Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
       if (!logRes) return;
       if (logRes.isEnabled && logRes.isEnabled === 'enable') {
         const logEmbed = new Discord.MessageEmbed()
           .setColor('#ff0000')
-          .setAuthor(`[MESSAGE_DELETE] | ${message.author.username}`, message.author.avatarURL())
+          .setAuthor(`[MESSAGE_DELETE] | ${message.author.username}#${message.author.discriminator}`, message.author.avatarURL())
           .addField('User', `<@${message.author.id}>`, true)
           .addField('Reason', logArgs, true)
           .addField('Channel', `<#${message.channel.id}>`, true)
@@ -22,10 +21,10 @@ module.exports = (bot, message) => {
         }
         return bot.channels.cache.get(logRes.logChannelID).send(logEmbed);
       }
-    }).catch(console.log);
+    }).catch(console.error);
   };
 
-  db.BanPhrase.find({ serverID: message.guild.id }).then((banPhrase) => {
+  cb.db.BanPhrase.find({ serverID: message.guild.id }).then((banPhrase) => {
     let bpIdentifier = false;
     banPhrase.forEach((banPhraseItems) => {
       if (message.content.toUpperCase().includes(banPhraseItems.banphrase.toUpperCase())) {

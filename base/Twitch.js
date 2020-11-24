@@ -92,7 +92,7 @@ class TwitchClient extends ChatClient {
    */
   async fetchFFZ() {
     const baseURL = 'https://api.frankerfacez.com/v1/room';
-    const response = await this.fetch(`${baseURL}/cycycy`, {
+    const response = await cb.fetch(`${baseURL}/cycycy`, {
       method: 'get',
       headers: { 'content-type': 'application/json' },
     });
@@ -106,7 +106,7 @@ class TwitchClient extends ChatClient {
    */
   async fetchFFZGlobal() {
     const baseURL = 'https://api.frankerfacez.com/v1/set/global';
-    const response = await this.fetch(`${baseURL}`, {
+    const response = await cb.fetch(`${baseURL}`, {
       method: 'get',
       headers: { 'content-type': 'application/json' },
     });
@@ -124,14 +124,14 @@ class TwitchClient extends ChatClient {
   async fetchBTTV() {
     const channelbaseURL = 'https://api.betterttv.net/2/channels/cycycy';
     const globalbaseURL = 'https://api.betterttv.net/2/emotes';
-    const response = await this.fetch(`${channelbaseURL}`, {
+    const response = await cb.fetch(`${channelbaseURL}`, {
       method: 'get',
       headers: { 'content-type': 'application/json' },
     });
     const json1 = await response.json();
     const channelEmotes = json1.emotes;
 
-    const response2 = await this.fetch(`${globalbaseURL}`, {
+    const response2 = await cb.fetch(`${globalbaseURL}`, {
       method: 'get',
       headers: { 'content-type': 'application/json' },
     });
