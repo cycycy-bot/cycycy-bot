@@ -4,6 +4,7 @@ module.exports = (bot, oldMessage, newMessage) => {
   cb.db.Logger.findOne({ serverID: oldMessage.guild.id }).then((logRes) => {
     if (!logRes) return;
     if (!newMessage.content) return;
+    if (oldMessage.content === newMessage.content) return;
     if (logRes.isEnabled && logRes.isEnabled === 'enable') {
       const logEmbed = new Discord.MessageEmbed()
         .setColor('#fffb0a')
