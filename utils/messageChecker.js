@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const db = require('../settings/databaseImport');
+const cleverbot = require('cleverbot-free');
 
 const handleMessage = (bot, message, cmd, prefix) => {
   const nam = bot.emojis.cache.find(emoji => emoji.name === 'NaM');
@@ -9,7 +9,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
   // Custom command checker
   if (cmd.startsWith(prefix)) {
     const cmdChk = cmd.slice(prefix.length);
-    db.Cmd.findOne({
+    cb.db.Cmd.findOne({
       serverID: message.guild.id,
       commandName: {
         $regex: new RegExp(`^${cmdChk.toLowerCase()}$`, 'i'),
@@ -22,7 +22,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
   }
 
   // Banphrase checker
-  db.BanPhrase.find({ serverID: message.guild.id }).then((res) => {
+  cb.db.BanPhrase.find({ serverID: message.guild.id }).then((res) => {
     if (cmd === `${prefix}addbanphrase` || cmd === `${prefix}delbanphrase`) return;
     res.forEach((bp) => {
       if (message.content.toLowerCase().includes(bp.banphrase.toLowerCase())) {
@@ -35,7 +35,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
   }).catch(console.log);
 
   // AFK checker
-  db.Afk.findOne({ userID: message.author.id }).then(async (result) => {
+  cb.db.Afk.findOne({ userID: message.author.id }).then(async (result) => {
     if (result) {
       const newTime = new Date();
       const ms = newTime - result.date;
@@ -49,13 +49,13 @@ const handleMessage = (bot, message, cmd, prefix) => {
         .setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
         .setColor('#4e1df2');
 
-      await db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
+      await cb.db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
         if (notifyResult.length >= 1) {
           notifyResult.forEach((resData) => {
             const { msgUrl } = resData;
             notifyEmbed
               .addFields({ name: `${resData.senderName}'s message from ${resData.serverName} server:`, value: `[Click here](${msgUrl})`, inline: true });
-            db.Notify.deleteOne({ userID: resData.userID })
+            cb.db.Notify.deleteOne({ userID: resData.userID })
               .then(console.log('Message Deleted'))
               .catch(console.log);
           });
@@ -65,21 +65,22 @@ const handleMessage = (bot, message, cmd, prefix) => {
       if (result.afkType === 'gn') notifyEmbed.setFooter(`tucked by ${result.tucker || 'no one PepeHands'}`);
 
       message.channel.send(notifyEmbed);
-      return db.Afk.deleteOne({ userID: result.userID })
+      return cb.db.Afk.deleteOne({ userID: result.userID })
         .then(console.log(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`))
         .catch(console.log);
     }
   });
 
   // AFK Tagged checker
-  db.Afk.find({}).then((afkRes) => {
+  cb.db.Afk.find({}).then((afkRes) => {
     afkRes.forEach((res) => {
       if (message.mentions.has(res.userID)) {
+        console.log(res);
         if (cmd.startsWith(prefix)) return;
         const notifyUser = message.guild.members.cache.get(res.userID);
 
-        const notify = new db.Notify({
-          _id: db.mongoose.Types.ObjectId(),
+        const notify = new cb.db.Notify({
+          _id: cb.db.mongoose.Types.ObjectId(),
           username: notifyUser.user.username,
           userID: res.userID,
           senderName: message.author.username,
@@ -90,7 +91,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
           date: new Date(),
         });
 
-        db.Notify.find({ userID: res.userID }).then((notifyRes) => {
+        cb.db.Notify.find({ userID: res.userID }).then((notifyRes) => {
           // message limiter
           if (notifyRes.length >= 3) {
             return message.reply(`${notifyUser.user.username} has already reached the limit of recieving messages ${nam}`);
@@ -104,6 +105,20 @@ const handleMessage = (bot, message, cmd, prefix) => {
       }
     });
   }).catch(console.log);
+
+  // if bot is mentioned
+  if (message.mentions.has(bot.user, { ignoreDirect: false, ignoreRoles: false, ignoreEveryone: true })) {
+    const messageArray = message.content.split(' ');
+    const args = messageArray.slice(1);
+    const joinedArgs = args.join(' ');
+
+    if (!joinedArgs) {
+      return message.reply('<:ForsenLookingAtYou:746755500229787778>');
+    }
+    return cleverbot(joinedArgs).then((res) => {
+      message.reply(res);
+    });
+  }
 };
 
 module.exports = {
