@@ -45,31 +45,28 @@ const handleMessage = (bot, message, cmd, prefix) => {
       const minutes = Math.floor(totalSecs / 60);
       const seconds = totalSecs % 60;
 
-      const notifyEmbed = new Discord.MessageEmbed()
-        .setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
-        .setColor('#4e1df2');
-
-      await cb.db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
-        if (notifyResult.length >= 1) {
-          notifyResult.forEach((resData) => {
-            const { msgUrl } = resData;
-            notifyEmbed
-              .addFields({ name: `${resData.senderName}'s message from ${resData.serverName} server:`, value: `[Click here](${msgUrl})`, inline: true });
-            cb.db.Notify.deleteOne({ userID: resData.userID })
-              .then(console.log('Message Deleted'))
-              .catch(console.log);
-          });
-        }
+      if (hours === 0 && minutes < 30 && result.tucker) {
+          return db.Afk.deleteOne({ userID: result.userID })
+	      .then(console.log(`${message.author.username} was tucked by ${result.tucker} and came back ${minutes} minutes later ${weirdChamp}`))
+	      .catch(console.log);
+      } else {
+	  const notifyEmbed = new Discord.MessageEmbed()
+		.setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
+	        .setColor('#4e1df2');
+	  await db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
+	      if (notifyResult.length >= 1) {
+		  notifyResult.forEach((resData) => {
+		      const { msgUrl } = resData;
+		      notifyEmbed
+			  .addFields({ name: `${resData.senderName}'s message from ${resData.serverName} server:`, value: `[Click here](${msgUrl})`, inline: true });
+		      db.Notify.deleteOne({ userID: resData.userID })
+			  .then(console.log('Message Deleted'))
+			  .catch(console.log);
+		  });
+              }
+	  });
       });
-
-      if (result.afkType === 'gn') notifyEmbed.setFooter(`tucked by ${result.tucker || 'no one PepeHands'}`);
-
-      message.channel.send(notifyEmbed);
-      return cb.db.Afk.deleteOne({ userID: result.userID })
-        .then(console.log(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`))
-        .catch(console.log);
-    }
-  });
+    };
 
   // AFK Tagged checker
   cb.db.Afk.find({}).then((afkRes) => {
@@ -77,14 +74,14 @@ const handleMessage = (bot, message, cmd, prefix) => {
       if (message.mentions.has(res.userID)) {
         console.log(res);
         if (cmd.startsWith(prefix)) return;
-        const notifyUser = message.guild.members.cache.get(res.userID);
+        const notifyUser = message.mentions.users.find(user => user.id === res.userID);
 
         const notify = new cb.db.Notify({
           _id: cb.db.mongoose.Types.ObjectId(),
           username: notifyUser.user.username,
           userID: res.userID,
           senderName: message.author.username,
-          senderAvatar: message.member.user.avatarURL(),
+          senderAvatar: message.member.user.avatarURL,
           serverName: message.guild.name,
           notifyMsg: message.content,
           msgUrl: message.url,
@@ -94,11 +91,11 @@ const handleMessage = (bot, message, cmd, prefix) => {
         cb.db.Notify.find({ userID: res.userID }).then((notifyRes) => {
           // message limiter
           if (notifyRes.length >= 3) {
-            return message.reply(`${notifyUser.user.username} has already reached the limit of recieving messages ${nam}`);
+            return message.reply(`${notifyUser.username} has already reached the limit of recieving messages ${nam}`);
           }
           return notify.save()
             .then(() => {
-              message.reply(`${notifyUser.user.username} is afk but i will send them that message when they type in any server im on ${omgScoots} 👍`);
+              message.reply(`${notifyUser.username} is afk but i will send them that message when they type in any server im on ${omgScoots} 👍`);
             })
             .catch(console.log);
         });
