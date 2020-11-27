@@ -71,6 +71,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
   // AFK Tagged checker
   cb.db.Afk.find({}).then((afkRes) => {
     afkRes.forEach((res) => {
+
       if (message.mentions.has(res.userID)) {
         console.log(res);
         if (cmd.startsWith(prefix)) return;
@@ -115,6 +116,83 @@ const handleMessage = (bot, message, cmd, prefix) => {
     return cleverbot(joinedArgs).then((res) => {
       message.reply(res);
     });
+
+  // Notify checker
+  db.Notify.find({ userID: message.author.id }).then((result) => {
+    if (result.length >= 1) {
+      message.reply(`You have notifications ${nam}. Please check your DMs`);
+
+      result.forEach((resData) => {
+        const newTime = new Date();
+        const ms = newTime - resData.date;
+        let totalSecs = (ms / 1000);
+        const hours = Math.floor(totalSecs / 3600);
+        totalSecs %= 3600;
+        const minutes = Math.floor(totalSecs / 60);
+        const seconds = totalSecs % 60;
+
+        const notifyEmbed = new Discord.RichEmbed()
+          .setColor('#4e1df2')
+          .setAuthor(`${resData.senderName} sent you a message from ${resData.serverName} server:`, resData.senderAvatar)
+          .setTitle('Click here for message link')
+          .setURL(resData.msgUrl)
+          .addField(`Message (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago): `, resData.notifyMsg);
+        try {
+          message.author.send(notifyEmbed)
+            .then(() => {
+              db.Notify.deleteOne({ userID: resData.userID })
+                .then(console.log('Message Deleted'))
+                .catch(console.log);
+            })
+            .catch(() => {
+              db.Notify.deleteOne({ userID: resData.userID })
+                .then(console.log('Message Deleted'))
+                .catch(console.log);
+            });
+        } catch (e) {
+          db.Notify.deleteOne({ userID: resData.userID })
+            .then(console.log('Message Deleted'))
+            .catch(console.log);
+        }
+      });
+    }
+  });
+
+  // get rid of weebs NaM
+  db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
+    if (res) {
+      if (res.isEnabled) {
+        if (message.content.toUpperCase().includes('AYAYA')) {
+          // weeb dungeon
+          if (message.channel.id === '500399188627161109' || message.channel.id === '579333258999889981' || message.content.includes('cycycyAYAYA')) return;
+          const DansGame = bot.emojis.find(emoji => emoji.name === 'DansGame');
+          message.channel.send(`${DansGame.toString()} :point_right: :door:`);
+          message.channel.send('WEEBS OUT');
+          message.react(DansGame.id)
+            .then(() => {
+              message.react('👉')
+                .then(() => {
+                  message.react('🚪').catch(console.log);
+                }).catch(console.log);
+            }).catch(console.log);
+        }
+      }
+    }
+  });
+
+  // type
+  if (message.isMentioned(bot.user)) {
+    const msgArr = [
+      `What ${weirdChamp} ❓`,
+      `Stop tagging me ${weirdChamp}`,
+      `What do you want ${weirdChamp}`,
+      `Are you actually tagging me ${weirdChamp}`,
+    ];
+    message.channel.startTyping(100);
+    setTimeout(() => {
+      message.reply(msgArr[Math.floor(Math.random() * msgArr.length)]);
+      return message.channel.stopTyping(true);
+    }, 2000);
   }
 };
 
