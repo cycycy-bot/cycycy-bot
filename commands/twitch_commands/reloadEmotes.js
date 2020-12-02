@@ -18,9 +18,9 @@ class ShowEmote extends Command {
     if (message.senderUserID !== this.bot.config.twitchowner) return;
     if (!message.channelName === 'cycycy') return;
 
-    await this.fetchFFZ();
-    await this.fetchFFZGlobal();
-    await this.fetchBTTV();
+    await this.bot.fetchFFZ();
+    await this.bot.fetchFFZGlobal();
+    await this.bot.fetchBTTV();
 
     return this.bot.say(message.channelName, 'Emotes Reloaded KKona');
   }
