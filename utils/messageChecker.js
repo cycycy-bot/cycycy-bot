@@ -75,14 +75,14 @@ const handleMessage = (bot, message, cmd, prefix) => {
       if (message.mentions.has(res.userID)) {
         console.log(res);
         if (cmd.startsWith(prefix)) return;
-        const notifyUser = message.mentions.users.find(user => user.id === res.userID);
+        const notifyUser = message.guild.members.cache.get(res.userID);
 
         const notify = new cb.db.Notify({
           _id: cb.db.mongoose.Types.ObjectId(),
           username: notifyUser.user.username,
           userID: res.userID,
           senderName: message.author.username,
-          senderAvatar: message.member.user.avatarURL,
+          senderAvatar: message.member.user.avatarURL(),
           serverName: message.guild.name,
           notifyMsg: message.content,
           msgUrl: message.url,
@@ -92,11 +92,11 @@ const handleMessage = (bot, message, cmd, prefix) => {
         cb.db.Notify.find({ userID: res.userID }).then((notifyRes) => {
           // message limiter
           if (notifyRes.length >= 3) {
-            return message.reply(`${notifyUser.username} has already reached the limit of recieving messages ${nam}`);
+            return message.reply(`${notifyUser.user.username} has already reached the limit of recieving messages ${nam}`);
           }
           return notify.save()
             .then(() => {
-              message.reply(`${notifyUser.username} is afk but i will send them that message when they type in any server im on ${omgScoots} 👍`);
+              message.reply(`${notifyUser.user.username} is afk but i will send them that message when they type in any server im on ${omgScoots} 👍`);
             })
             .catch(console.log);
         });
@@ -116,47 +116,6 @@ const handleMessage = (bot, message, cmd, prefix) => {
     return cleverbot(joinedArgs).then((res) => {
       message.reply(res);
     });
-
-  // Notify checker
-  db.Notify.find({ userID: message.author.id }).then((result) => {
-    if (result.length >= 1) {
-      message.reply(`You have notifications ${nam}. Please check your DMs`);
-
-      result.forEach((resData) => {
-        const newTime = new Date();
-        const ms = newTime - resData.date;
-        let totalSecs = (ms / 1000);
-        const hours = Math.floor(totalSecs / 3600);
-        totalSecs %= 3600;
-        const minutes = Math.floor(totalSecs / 60);
-        const seconds = totalSecs % 60;
-
-        const notifyEmbed = new Discord.RichEmbed()
-          .setColor('#4e1df2')
-          .setAuthor(`${resData.senderName} sent you a message from ${resData.serverName} server:`, resData.senderAvatar)
-          .setTitle('Click here for message link')
-          .setURL(resData.msgUrl)
-          .addField(`Message (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago): `, resData.notifyMsg);
-        try {
-          message.author.send(notifyEmbed)
-            .then(() => {
-              db.Notify.deleteOne({ userID: resData.userID })
-                .then(console.log('Message Deleted'))
-                .catch(console.log);
-            })
-            .catch(() => {
-              db.Notify.deleteOne({ userID: resData.userID })
-                .then(console.log('Message Deleted'))
-                .catch(console.log);
-            });
-        } catch (e) {
-          db.Notify.deleteOne({ userID: resData.userID })
-            .then(console.log('Message Deleted'))
-            .catch(console.log);
-        }
-      });
-    }
-  });
 
   // get rid of weebs NaM
   db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
