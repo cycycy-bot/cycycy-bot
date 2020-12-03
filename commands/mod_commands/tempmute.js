@@ -68,9 +68,10 @@ class TempMute extends Command {
 
       await toMute.roles.add(muteRole);
       this.reply(`<@${toMute.id}> has been muted for ${muteTime}`);
+
       Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
         const logChannel = this.bot.channels.cache.get(logRes.logChannelID);
-
+        if (!logChannel) return;
 
         const logEmbed = new Discord.MessageEmbed()
           .setColor('#ff0000')

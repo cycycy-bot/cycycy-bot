@@ -23,12 +23,18 @@ class Unmute extends Command {
     if (!unMute) return message.channel.send(`User not found ${nam}`);
     Mod.findOne({ serverID: message.guild.id }).then(async (res) => {
       const serverRole = message.guild.roles.cache.get(res.modName);
-      if (!message.member.roles.cache.get(serverRole.id)) return message.reply(`You don't have permission for this command ${nam}`);
+
+      if (message.member.hasPermission('ADMINISTRATOR')) {
+        console.log(`${new Date().toLocaleString()}: ${message.author.tag} unmuted a user ${unMute.user.username}#${unMute.user.discriminator} in ${message.guild}`);
+      } else if (!message.member.roles.cache.get(serverRole.id)) return message.reply(`You don't have permission for this command ${nam}`);
+      if (!unMute.roles.cache.has(muteRole.id)) return message.channel.send(`User is not muted ${nam}`);
 
       await unMute.roles.remove(muteRole.id);
+      this.reply(`<@${unMute.id}> has been unmuted!`);
 
       Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
         const logChannel = this.bot.channels.cache.get(logRes.logChannelID);
+        if (!logChannel) return;
 
         const logEmbed = new Discord.MessageEmbed()
           .setColor('#00ff00')
@@ -37,7 +43,6 @@ class Unmute extends Command {
           .setFooter(`USER ID: ${unMute.user.id}`)
           .setTimestamp();
         logChannel.send(logEmbed);
-        this.reply(`<@${unMute.id}> has been unmuted!`);
       });
     });
   }
