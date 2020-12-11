@@ -46,20 +46,20 @@ const handleMessage = (bot, message, cmd, prefix) => {
       const seconds = totalSecs % 60;
 
       if (hours === 0 && minutes < 30 && result.tucker) {
-        return db.Afk.deleteOne({ userID: result.userID })
+        return cb.db.Afk.deleteOne({ userID: result.userID })
           .then(console.log(`${message.author.username} was tucked by ${result.tucker} and came back ${minutes} minutes later ${weirdChamp}`))
           .catch(console.log);
       }
       const notifyEmbed = new Discord.MessageEmbed()
         .setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
         .setColor('#4e1df2');
-      await db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
+      await cb.db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
         if (notifyResult.length >= 1) {
           notifyResult.forEach((resData) => {
             const { msgUrl } = resData;
             notifyEmbed
               .addFields({ name: `${resData.senderName}'s message from ${resData.serverName} server:`, value: `[Click here](${msgUrl})`, inline: true });
-            db.Notify.deleteOne({ userID: resData.userID })
+            cb.db.Notify.deleteOne({ userID: resData.userID })
               .then(console.log('Message Deleted'))
               .catch(console.log);
           });
@@ -117,7 +117,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
     });
   }
   // get rid of weebs NaM
-  db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
+  cb.db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
     if (res) {
       if (res.isEnabled) {
         if (message.content.toUpperCase().includes('AYAYA')) {
