@@ -41,6 +41,8 @@ class TempMute extends Command {
 
 
       let muteRole = message.guild.roles.cache.find(role => role.name === 'muted');
+      const muteReason = args.slice(2);
+      const muteReasonJoined = muteReason.join(' ');
       if (!muteRole) {
         const roleData = {
           name: 'muted',
@@ -49,11 +51,13 @@ class TempMute extends Command {
         };
         try {
           muteRole = await message.guild.roles.create({ data: roleData, reason: 'No Muted Role' });
-          message.guild.channels.forEach(async (channel) => {
-            await channel.overwritePermissions(muteRole, {
-              SEND_MESSAGES: false,
-              ADD_REACTIONS: false,
-            });
+          message.guild.channels.cache.forEach(async (channel) => {
+            await channel.overwritePermissions([
+              {
+                id: muteRole.id,
+                deny: ['SEND_MESSAGES', 'ADD_REACTIONS'],
+              },
+            ], muteReasonJoined);
           });
         } catch (e) {
           console.log(e.stack);
@@ -61,8 +65,6 @@ class TempMute extends Command {
       }
 
       const muteTime = args[1];
-      const muteReason = args.slice(2);
-      const muteReasonJoined = muteReason.join(' ');
       if (!muteTime || ms(muteTime) === undefined) return this.reply("You didn't specify a time!");
       if (toMute.roles.cache.get(muteRole.id)) return this.reply(`${toMute.user.username} is already muted`);
 
@@ -83,13 +85,13 @@ class TempMute extends Command {
           .setTimestamp();
         logChannel.send(logEmbed);
 
-        const unmuteEmbed = new Discord.MessageEmbed()
-          .setColor('#00ff00')
-          .setAuthor(`[UNMUTED] | ${toMute.user.username}#${toMute.user.discriminator}`)
-          .setFooter(`USER ID: ${toMute.user.id}`)
-          .setTimestamp();
-
         setTimeout(() => {
+          const unmuteEmbed = new Discord.MessageEmbed()
+            .setColor('#00ff00')
+            .setAuthor(`[UNMUTED] | ${toMute.user.username}#${toMute.user.discriminator}`)
+            .setFooter(`USER ID: ${toMute.user.id}`)
+            .setTimestamp();
+
           toMute.roles.remove(muteRole.id);
           logChannel.send(unmuteEmbed);
         }, ms(muteTime));
