@@ -45,14 +45,10 @@ const handleMessage = (bot, message, cmd, prefix) => {
       const minutes = Math.floor(totalSecs / 60);
       const seconds = totalSecs % 60;
 
-      if (hours === 0 && minutes < 30 && result.tucker) {
-        return cb.db.Afk.deleteOne({ userID: result.userID })
-          .then(console.log(`${message.author.username} was tucked by ${result.tucker} and came back ${minutes} minutes later ${weirdChamp}`))
-          .catch(console.log);
-      }
       const notifyEmbed = new Discord.MessageEmbed()
         .setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
         .setColor('#4e1df2');
+
       await cb.db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
         if (notifyResult.length >= 1) {
           notifyResult.forEach((resData) => {
@@ -65,6 +61,13 @@ const handleMessage = (bot, message, cmd, prefix) => {
           });
         }
       });
+
+      if (result.afkType === 'gn') notifyEmbed.setFooter(`tucked by ${result.tucker || 'no one PepeHands'}`);
+
+      message.channel.send(notifyEmbed);
+      return cb.db.Afk.deleteOne({ userID: result.userID })
+        .then(console.log(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`))
+        .catch(console.log);
     }
   });
 
@@ -116,28 +119,6 @@ const handleMessage = (bot, message, cmd, prefix) => {
       message.reply(res);
     });
   }
-
-  // get rid of weebs NaM
-  cb.db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
-    if (res) {
-      if (res.isEnabled) {
-        if (message.content.toUpperCase().includes('AYAYA')) {
-          // weeb dungeon
-          if (message.channel.id === '500399188627161109' || message.channel.id === '579333258999889981' || message.content.includes('cycycyAYAYA')) return;
-          const DansGame = bot.emojis.find(emoji => emoji.name === 'DansGame');
-          message.channel.send(`${DansGame.toString()} :point_right: :door:`);
-          message.channel.send('WEEBS OUT');
-          message.react(DansGame.id)
-            .then(() => {
-              message.react('👉')
-                .then(() => {
-                  message.react('🚪').catch(console.log);
-                }).catch(console.log);
-            }).catch(console.log);
-        }
-      }
-    }
-  });
 };
 
 module.exports = {
