@@ -46,32 +46,31 @@ const handleMessage = (bot, message, cmd, prefix) => {
       const seconds = totalSecs % 60;
 
       if (hours === 0 && minutes < 30 && result.tucker) {
-          return db.Afk.deleteOne({ userID: result.userID })
-	      .then(console.log(`${message.author.username} was tucked by ${result.tucker} and came back ${minutes} minutes later ${weirdChamp}`))
-	      .catch(console.log);
-      } else {
-	  const notifyEmbed = new Discord.MessageEmbed()
-		.setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
-	        .setColor('#4e1df2');
-	  await db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
-	      if (notifyResult.length >= 1) {
-		  notifyResult.forEach((resData) => {
-		      const { msgUrl } = resData;
-		      notifyEmbed
-			  .addFields({ name: `${resData.senderName}'s message from ${resData.serverName} server:`, value: `[Click here](${msgUrl})`, inline: true });
-		      db.Notify.deleteOne({ userID: resData.userID })
-			  .then(console.log('Message Deleted'))
-			  .catch(console.log);
-		  });
-              }
-	  });
+        return db.Afk.deleteOne({ userID: result.userID })
+          .then(console.log(`${message.author.username} was tucked by ${result.tucker} and came back ${minutes} minutes later ${weirdChamp}`))
+          .catch(console.log);
+      }
+      const notifyEmbed = new Discord.MessageEmbed()
+        .setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
+        .setColor('#4e1df2');
+      await db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
+        if (notifyResult.length >= 1) {
+          notifyResult.forEach((resData) => {
+            const { msgUrl } = resData;
+            notifyEmbed
+              .addFields({ name: `${resData.senderName}'s message from ${resData.serverName} server:`, value: `[Click here](${msgUrl})`, inline: true });
+            db.Notify.deleteOne({ userID: resData.userID })
+              .then(console.log('Message Deleted'))
+              .catch(console.log);
+          });
+        }
       });
-    };
+    }
+  });
 
   // AFK Tagged checker
   cb.db.Afk.find({}).then((afkRes) => {
     afkRes.forEach((res) => {
-
       if (message.mentions.has(res.userID)) {
         console.log(res);
         if (cmd.startsWith(prefix)) return;
@@ -116,7 +115,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
     return cleverbot(joinedArgs).then((res) => {
       message.reply(res);
     });
-
+  }
   // get rid of weebs NaM
   db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
     if (res) {
