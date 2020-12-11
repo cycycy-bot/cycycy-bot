@@ -45,35 +45,33 @@ const handleMessage = (bot, message, cmd, prefix) => {
       const minutes = Math.floor(totalSecs / 60);
       const seconds = totalSecs % 60;
 
-      const notifyEmbed = new Discord.MessageEmbed()
-        .setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
-        .setColor('#4e1df2');
-
-      await cb.db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
-        if (notifyResult.length >= 1) {
-          notifyResult.forEach((resData) => {
-            const { msgUrl } = resData;
-            notifyEmbed
-              .addFields({ name: `${resData.senderName}'s message from ${resData.serverName} server:`, value: `[Click here](${msgUrl})`, inline: true });
-            cb.db.Notify.deleteOne({ userID: resData.userID })
-              .then(console.log('Message Deleted'))
-              .catch(console.log);
-          });
-        }
+      if (hours === 0 && minutes < 30 && result.tucker) {
+          return db.Afk.deleteOne({ userID: result.userID })
+	      .then(console.log(`${message.author.username} was tucked by ${result.tucker} and came back ${minutes} minutes later ${weirdChamp}`))
+	      .catch(console.log);
+      } else {
+	  const notifyEmbed = new Discord.MessageEmbed()
+		.setTitle(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`)
+	        .setColor('#4e1df2');
+	  await db.Notify.find({ userID: message.author.id }).then((notifyResult) => {
+	      if (notifyResult.length >= 1) {
+		  notifyResult.forEach((resData) => {
+		      const { msgUrl } = resData;
+		      notifyEmbed
+			  .addFields({ name: `${resData.senderName}'s message from ${resData.serverName} server:`, value: `[Click here](${msgUrl})`, inline: true });
+		      db.Notify.deleteOne({ userID: resData.userID })
+			  .then(console.log('Message Deleted'))
+			  .catch(console.log);
+		  });
+              }
+	  });
       });
-
-      if (result.afkType === 'gn') notifyEmbed.setFooter(`tucked by ${result.tucker || 'no one PepeHands'}`);
-
-      message.channel.send(notifyEmbed);
-      return cb.db.Afk.deleteOne({ userID: result.userID })
-        .then(console.log(`${message.author.username} is back (${hours}h, ${minutes}m and ${Math.trunc(seconds)}s ago)`))
-        .catch(console.log);
-    }
-  });
+    };
 
   // AFK Tagged checker
   cb.db.Afk.find({}).then((afkRes) => {
     afkRes.forEach((res) => {
+
       if (message.mentions.has(res.userID)) {
         console.log(res);
         if (cmd.startsWith(prefix)) return;
@@ -118,6 +116,42 @@ const handleMessage = (bot, message, cmd, prefix) => {
     return cleverbot(joinedArgs).then((res) => {
       message.reply(res);
     });
+
+  // get rid of weebs NaM
+  db.AntiWeeb.findOne({ serverID: message.guild.id }).then((res) => {
+    if (res) {
+      if (res.isEnabled) {
+        if (message.content.toUpperCase().includes('AYAYA')) {
+          // weeb dungeon
+          if (message.channel.id === '500399188627161109' || message.channel.id === '579333258999889981' || message.content.includes('cycycyAYAYA')) return;
+          const DansGame = bot.emojis.find(emoji => emoji.name === 'DansGame');
+          message.channel.send(`${DansGame.toString()} :point_right: :door:`);
+          message.channel.send('WEEBS OUT');
+          message.react(DansGame.id)
+            .then(() => {
+              message.react('👉')
+                .then(() => {
+                  message.react('🚪').catch(console.log);
+                }).catch(console.log);
+            }).catch(console.log);
+        }
+      }
+    }
+  });
+
+  // type
+  if (message.isMentioned(bot.user)) {
+    const msgArr = [
+      `What ${weirdChamp} ❓`,
+      `Stop tagging me ${weirdChamp}`,
+      `What do you want ${weirdChamp}`,
+      `Are you actually tagging me ${weirdChamp}`,
+    ];
+    message.channel.startTyping(100);
+    setTimeout(() => {
+      message.reply(msgArr[Math.floor(Math.random() * msgArr.length)]);
+      return message.channel.stopTyping(true);
+    }, 2000);
   }
 };
 
