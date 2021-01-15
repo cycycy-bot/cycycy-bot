@@ -22,7 +22,7 @@ class Commands extends Command {
         if (cmdArrInner.length >= 5) {
           cmdArr.push(cmdArrInner);
           cmdArrInner = [];
-          console.log(cmdArr);
+          cmdArrInner.push(res[i].commandName);
         } else {
           cmdArrInner.push(res[i].commandName);
         }
