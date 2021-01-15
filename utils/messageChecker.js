@@ -74,7 +74,7 @@ const handleMessage = (bot, message, cmd, prefix) => {
   // AFK Tagged checker
   cb.db.Afk.find({}).then((afkRes) => {
     afkRes.forEach((res) => {
-      if (message.mentions.has(res.userID)) {
+      if (message.mentions.has(res.userID, { ignoreDirect: false, ignoreRoles: false, ignoreEveryone: true })) {
         console.log(res);
         if (cmd.startsWith(prefix)) return;
         const notifyUser = message.guild.members.cache.get(res.userID);

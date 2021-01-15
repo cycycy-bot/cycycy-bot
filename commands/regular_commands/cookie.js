@@ -48,7 +48,7 @@ class Cookie extends Command {
 
       const hours = moment().diff(moment(res.date), 'hours');
 
-      if (hours >= 24) {
+      if (hours >= 12) {
         return CookieDB.deleteOne({ userID: message.author.id }).then(() => {
           cookie.save().then(() => {
             const cookieEmbed = new Discord.MessageEmbed()
@@ -62,14 +62,14 @@ class Cookie extends Command {
       const newDate = new Date();
       const lastDate = res.date;
       const ms = newDate - lastDate;
-      const timeRemaining = 86400000 - ms;
+      const timeRemaining = 43200000 - ms;
       let totalSecs = (timeRemaining / 1000);
       const timeRemainingHrs = Math.floor(totalSecs / 3600);
       totalSecs %= 3600;
       const timeRemainingMins = Math.floor(totalSecs / 60);
       const timeRemainingSecs = totalSecs % 60;
 
-      return this.respond(`You can only use this command once per 24hrs (${timeRemainingHrs}hrs, ${timeRemainingMins}m and ${Math.trunc(timeRemainingSecs)}s)`);
+      return this.respond(`You can only use this command once per 12hrs (${timeRemainingHrs}hrs, ${timeRemainingMins}m and ${Math.trunc(timeRemainingSecs)}s)`);
     });
   }
 }
