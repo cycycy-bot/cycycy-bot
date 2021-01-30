@@ -20,7 +20,6 @@ class RandomLine extends Command {
     const twitchUser = args[0];
     if (!twitchUser) {
       TwitchLog.aggregate([
-        { $match: { channel: message.channelName } },
         { $sample: { size: 1 } },
       ]).then((res) => {
         const newTime = new Date();
@@ -33,18 +32,18 @@ class RandomLine extends Command {
         const seconds = totalSecs % 60;
 
         const resMessage = res[0].message;
-        const cleanedStr = resMessage.replace(/[^\x20-\x7E]/g, '');
+        const hasAscii = /[^\x20-\x7E]/g.test(resMessage);
 
         console.log(resMessage);
 
-        this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res[0].userName}: ${filter.clean(cleanedStr)}`);
+        this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
       });
       return;
     }
 
 
     TwitchLog.aggregate([
-      { $match: { channel: message.channelName, userName: clean(twitchUser.toLowerCase()) } },
+      { $match: { userName: clean(twitchUser.toLowerCase()) } },
       { $sample: { size: 1 } },
     ]).then((res) => {
       if (!res) return this.bot.say(message.channelName, `Twitch user not found in my DB ${nam}`);
@@ -58,9 +57,9 @@ class RandomLine extends Command {
       const seconds = totalSecs % 60;
 
       const resMessage = res[0].message;
-      const cleanedStr = resMessage.replace(/[^\x20-\x7E]/g, '');
+      const hasAscii = /[^\x20-\x7E]/g.test(resMessage);
 
-      this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res[0].userName}: ${filter.clean(cleanedStr)}`);
+      this.bot.say(message.channelName, `${days > 0 ? `${days}days (${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago)` : `(${hours}hrs, ${minutes}m${Math.trunc(seconds)}s ago)`} ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
     });
   }
 }

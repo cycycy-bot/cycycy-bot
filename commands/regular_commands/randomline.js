@@ -34,7 +34,7 @@ class RandomLine extends Command {
     }
 
     TwitchLog.aggregate([
-      { $match: { userName: twitchUser.toLowerCase() } },
+      { $match: { channel: 'lacari', userName: twitchUser.toLowerCase() } },
       { $sample: { size: 1 } },
     ]).then((res) => {
       const newTime = new Date();
