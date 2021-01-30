@@ -34,9 +34,11 @@ class RandomLine extends Command {
     }
 
     TwitchLog.aggregate([
-      { $match: { channel: 'lacari', userName: twitchUser.toLowerCase() } },
+      { $match: { userName: twitchUser.toLowerCase() } },
       { $sample: { size: 1 } },
     ]).then((res) => {
+      console.log(res);
+      if (!res.length) return this.respond(`Twitch user not found in my Database ${nam}`);
       const newTime = new Date();
       const ms = newTime - res[0].date;
       let totalSecs = (ms / 1000);
