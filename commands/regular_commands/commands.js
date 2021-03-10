@@ -35,7 +35,7 @@ class Commands extends Command {
         output += `${cmdArr[i].join(', ')}\n`;
       }
 
-      return this.respond(output, { code: 'asciidoc', split: { char: '\u200b' } });
+      return this.respond(output, { code: 'asciidoc', split: { char: '\n' } });
     }).catch(err => this.reply(`Error ${err}`));
   }
 }
