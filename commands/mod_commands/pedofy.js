@@ -35,11 +35,11 @@ class Pedofy extends Command {
           permissions: ['SEND_MESSAGES'],
         };
         pedoRole = message.guild.roles.create({ data: roleData, reason: 'No Pedo Role' })
-          .then(prole => pedo.roles.cache.add(prole.id))
+          .then(prole => pedo.roles.add(prole.id))
           .then(this.respond(`${pedo.user.username} is now a Pedo`))
           .catch(err => this.reply(`Error ${err}`));
       } else {
-        return pedo.roles.cache.add(pedoRole)
+        return pedo.roles.add(pedoRole)
           .then(this.respond(`${pedo.user.username} is now a Pedo`))
           .catch(err => this.reply(`Error ${err}`));
       }

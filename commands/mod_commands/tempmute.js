@@ -72,6 +72,7 @@ class TempMute extends Command {
       this.reply(`<@${toMute.id}> has been muted for ${muteTime}`);
 
       Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
+        if (!logRes) return;
         const logChannel = this.bot.channels.cache.get(logRes.logChannelID);
         if (!logChannel) return;
 
@@ -91,11 +92,12 @@ class TempMute extends Command {
             .setAuthor(`[UNMUTED] | ${toMute.user.username}#${toMute.user.discriminator}`)
             .setFooter(`USER ID: ${toMute.user.id}`)
             .setTimestamp();
-
-          toMute.roles.remove(muteRole.id);
           logChannel.send(unmuteEmbed);
         }, ms(muteTime));
       });
+      setTimeout(() => {
+        toMute.roles.remove(muteRole.id);
+      }, ms(muteTime));
     });
   }
 }
