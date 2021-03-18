@@ -50,7 +50,7 @@ class RandomLine extends Command {
         { $match: { userName: twitchUser.toLowerCase(), channel: twitchChannel.toLowerCase() } },
         { $sample: { size: 1 } },
       ]).then((res) => {
-        if (!res.length) return this.bot.say(message.channelName, `Twitch channel not found in my DB ${nam}`);
+        if (!res.length) return this.bot.say(message.channelName, `Twitch user/channel not found in my DB ${nam}`);
 
         const newTime = new Date();
         const ms = newTime - res[0].date;
