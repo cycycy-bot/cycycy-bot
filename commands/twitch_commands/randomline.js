@@ -39,8 +39,8 @@ class RandomLine extends Command {
 
         console.log(resMessage);
 
-        this.bot.say(message.channelName, days > 0 ? `(${days}days ago ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
-          : `${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
+        this.bot.say(message.channelName, days > 0 ? `(${days}days ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
+          : `(${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
       });
       return;
     }
@@ -67,7 +67,7 @@ class RandomLine extends Command {
         console.log(resMessage);
 
         this.bot.say(message.channelName, days > 0 ? `(${days}days ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
-          : `${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
+          : `(${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
       });
       return;
     }
@@ -90,8 +90,8 @@ class RandomLine extends Command {
       const resMessage = res[0].message;
       const hasAscii = /[^\x20-\x7E]/g.test(resMessage);
 
-      this.bot.say(message.channelName, days > 0 ? `(${days}days ago ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
-        : `${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
+      this.bot.say(message.channelName, days > 0 ? `(${days}days ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
+        : `(${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
     });
   }
 }
