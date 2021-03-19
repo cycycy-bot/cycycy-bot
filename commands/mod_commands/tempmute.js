@@ -33,10 +33,9 @@ class TempMute extends Command {
       if (toMute.hasPermission('ADMINISTRATOR')) {
         return message.reply(`Can't mute administrator ${nam}`);
       }
-      if (message.member.hasPermission('ADMINISTRATOR') && toMute.roles.cache.has(res.modName)) {
-        console.log(`${new Date().toLocaleString()}: ${message.author.tag} muted a mod ${toMute.user.username}#${toMute.user.discriminator}`);
-      } else if ((res.modName === serverRole.id && message.member.roles.cache.has(serverRole.id)) && toMute.roles.cache.has(res.modName)) {
-        return message.reply(`Mod can't mute a mod ${nam}`);
+      if ((res.modName === serverRole.id
+        && ((message.member.roles.cache.has(serverRole.id)) || message.member.hasPermission('ADMINISTRATOR')) && toMute.roles.cache.has(res.modName))) {
+        return message.reply(`Admin/Mod can't mute a mod ${nam}`);
       }
 
 
