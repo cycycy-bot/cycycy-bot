@@ -33,14 +33,15 @@ class TempMute extends Command {
       if (toMute.hasPermission('ADMINISTRATOR')) {
         return message.reply(`Can't mute administrator ${nam}`);
       }
-      if (message.member.hasPermission('ADMINISTRATOR') && toMute.roles.cache.has(res.modName)) {
-        console.log(`${new Date().toLocaleString()}: ${message.author.tag} muted a mod ${toMute.user.username}#${toMute.user.discriminator}`);
-      } else if ((res.modName === serverRole.id && message.member.roles.cache.has(serverRole.id)) && toMute.roles.cache.has(res.modName)) {
-        return message.reply(`Mod can't mute a mod ${nam}`);
+      if ((res.modName === serverRole.id
+        && ((message.member.roles.cache.has(serverRole.id)) || message.member.hasPermission('ADMINISTRATOR')) && toMute.roles.cache.has(res.modName))) {
+        return message.reply(`Admin/Mod can't mute a mod ${nam}`);
       }
 
 
       let muteRole = message.guild.roles.cache.find(role => role.name === 'muted');
+      const muteReason = args.slice(2);
+      const muteReasonJoined = muteReason.join(' ');
       if (!muteRole) {
         const roleData = {
           name: 'muted',
@@ -49,11 +50,13 @@ class TempMute extends Command {
         };
         try {
           muteRole = await message.guild.roles.create({ data: roleData, reason: 'No Muted Role' });
-          message.guild.channels.forEach(async (channel) => {
-            await channel.overwritePermissions(muteRole, {
-              SEND_MESSAGES: false,
-              ADD_REACTIONS: false,
-            });
+          message.guild.channels.cache.forEach(async (channel) => {
+            await channel.overwritePermissions([
+              {
+                id: muteRole.id,
+                deny: ['SEND_MESSAGES', 'ADD_REACTIONS'],
+              },
+            ], muteReasonJoined);
           });
         } catch (e) {
           console.log(e.stack);
@@ -61,16 +64,16 @@ class TempMute extends Command {
       }
 
       const muteTime = args[1];
-      const muteReason = args.slice(2);
-      const muteReasonJoined = muteReason.join(' ');
       if (!muteTime || ms(muteTime) === undefined) return this.reply("You didn't specify a time!");
       if (toMute.roles.cache.get(muteRole.id)) return this.reply(`${toMute.user.username} is already muted`);
 
       await toMute.roles.add(muteRole);
       this.reply(`<@${toMute.id}> has been muted for ${muteTime}`);
-      Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
-        const logChannel = this.bot.channels.cache.get(logRes.logChannelID);
 
+      Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
+        if (!logRes) return;
+        const logChannel = this.bot.channels.cache.get(logRes.logChannelID);
+        if (!logChannel) return;
 
         const logEmbed = new Discord.MessageEmbed()
           .setColor('#ff0000')
@@ -82,17 +85,18 @@ class TempMute extends Command {
           .setTimestamp();
         logChannel.send(logEmbed);
 
-        const unmuteEmbed = new Discord.MessageEmbed()
-          .setColor('#00ff00')
-          .setAuthor(`[UNMUTED] | ${toMute.user.username}#${toMute.user.discriminator}`)
-          .setFooter(`USER ID: ${toMute.user.id}`)
-          .setTimestamp();
-
         setTimeout(() => {
-          toMute.roles.remove(muteRole.id);
+          const unmuteEmbed = new Discord.MessageEmbed()
+            .setColor('#00ff00')
+            .setAuthor(`[UNMUTED] | ${toMute.user.username}#${toMute.user.discriminator}`)
+            .setFooter(`USER ID: ${toMute.user.id}`)
+            .setTimestamp();
           logChannel.send(unmuteEmbed);
         }, ms(muteTime));
       });
+      setTimeout(() => {
+        toMute.roles.remove(muteRole.id);
+      }, ms(muteTime));
     });
   }
 }

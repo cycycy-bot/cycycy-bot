@@ -18,6 +18,7 @@ class RoleCount extends Command {
 
     const role = args.join(' ');
     const roleFinder = message.guild.roles.cache.find(r => r.name === role);
+    message.guild.members.fetch().then(console.log);
     if (roleFinder) {
       const roleSize = message.guild.roles.cache.get(roleFinder.id).members;
       if (roleSize) return this.respond(`${role} has ${roleSize.size} members in this server`);

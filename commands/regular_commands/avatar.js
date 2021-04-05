@@ -22,7 +22,7 @@ class Avatar extends Command {
     }
 
     const avatarEmbed = new Discord.MessageEmbed()
-      .setImage(aUser.user.displayAvatarURL());
+      .setImage(aUser.user.displayAvatarURL({ dynamic: true, size: 1024 }));
     return this.respond(avatarEmbed);
   }
 }

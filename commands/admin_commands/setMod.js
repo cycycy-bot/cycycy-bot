@@ -30,7 +30,7 @@ class SetMod extends Command {
 
     Mod.find({ serverID: message.guild.id }).then((res) => {
       if (res.length >= 1) {
-        return this.reply(`Mod already exist in this server ${nam} You can edit mod name in this server by doing $editmod ${nam}`);
+        return this.reply(`Mod already exist in this server ${nam} You can delete mod by using $delmod ${nam}`);
       }
       return mod.save()
         .then(this.reply(`Mod role added ${nam}`))
