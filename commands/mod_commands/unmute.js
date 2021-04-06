@@ -9,7 +9,7 @@ class Unmute extends Command {
       usage: '$unmute <member>',
       cooldown: 0,
       permission: 'MODERATOR',
-      aliases: ['um'],
+      aliases: ['um', 'ungulag', 'free'],
       category: 'mod',
     });
   }
