@@ -30,10 +30,10 @@ class Corona extends Command {
             } = stateData;
             const coronaEmbed = new Discord.MessageEmbed()
               .setTitle(state)
-              .addField('Confirmed Cases:', cases, true)
-              .addField('Cases Today:', todayCases, true)
-              .addField('Deaths:', deaths, true)
-              .addField('Deaths Today:', todayDeaths, true);
+	      .addField('Confirmed Cases:', Number(cases).toLocaleString(), true)
+	      .addField('Cases Today:', Number(todayCases).toLocaleString(), true)
+	      .addField('Deaths:', Number(deaths).toLocaleString(), true)
+	      .addField('Deaths Today:', Number(todayDeaths).toLocaleString(), true);
             return this.respond(coronaEmbed);
           }
         });
@@ -54,11 +54,11 @@ class Corona extends Command {
         const coronaEmbed = new Discord.MessageEmbed()
           .setTitle(country)
           .setThumbnail(flag)
-          .addField('Confirmed Cases:', cases, true)
-          .addField('Cases Today:', todayCases, true)
-          .addField('Deaths:', deaths, true)
-          .addField('Deaths Today:', todayDeaths, true)
-          .addField('Recovered:', recovered, true);
+	  .addField('Confirmed Cases:', Number(cases).toLocaleString(), true)
+	  .addField('Cases Today:', Number(todayCases).toLocaleString(), true)
+	  .addField('Deaths:', Number(deaths).toLocaleString(), true)
+	  .addField('Deaths Today:', Number(todayDeaths).toLocaleString(), true);
+          .addField('Recovered:', Number(recovered).toLocaleString(), true);
         this.respond(coronaEmbed);
       });
     }
