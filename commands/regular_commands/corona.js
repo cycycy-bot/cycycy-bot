@@ -54,10 +54,10 @@ class Corona extends Command {
         const coronaEmbed = new Discord.MessageEmbed()
           .setTitle(country)
           .setThumbnail(flag)
-	  .addField('Confirmed Cases:', Number(cases).toLocaleString(), true)
-	  .addField('Cases Today:', Number(todayCases).toLocaleString(), true)
-	  .addField('Deaths:', Number(deaths).toLocaleString(), true)
-	  .addField('Deaths Today:', Number(todayDeaths).toLocaleString(), true);
+          .addField('Confirmed Cases:', Number(cases).toLocaleString(), true)
+          .addField('Cases Today:', Number(todayCases).toLocaleString(), true)
+          .addField('Deaths:', Number(deaths).toLocaleString(), true)
+          .addField('Deaths Today:', Number(todayDeaths).toLocaleString(), true)
           .addField('Recovered:', Number(recovered).toLocaleString(), true);
         this.respond(coronaEmbed);
       });

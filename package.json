@@ -29,6 +29,7 @@
     "newsapi": "^2.4.1",
     "node-fetch": "^2.6.1",
     "novelcovid": "^1.2.7",
+    "python-shell": "^3.0.0",
     "steam-user": "^4.17.1",
     "tmi.js": "^1.5.0",
     "websocket": "^1.0.32",
