@@ -1,5 +1,6 @@
 const messageChecker = require('../utils/messageChecker');
 
+
 module.exports = (bot, message) => {
   if (message.author.bot) return;
   if (message.channel.type === 'dm') return;
