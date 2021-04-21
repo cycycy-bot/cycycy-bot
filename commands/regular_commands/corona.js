@@ -41,7 +41,10 @@ class Corona extends Command {
     }
     if (!countryName) {
       track.all().then((cInfo) => {
-        const { cases, deaths, recovered } = cInfo;
+          let { cases, deaths, recovered }  = cInfo;
+	  cases = Number(cases).toLocaleString();
+	  deaths = Number(deaths).toLocaleString();
+	  recovered = Number(recovered).toLocaleString();
         this.reply(`The world has ${cases} confirmed cases, ${deaths} deaths, and ${recovered} recovered cases`);
       });
     } else {
