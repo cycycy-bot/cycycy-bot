@@ -31,6 +31,7 @@ class Unmute extends Command {
 
       await unMute.roles.remove(muteRole.id);
       this.reply(`<@${unMute.id}> has been unmuted!`);
+      clearTimeout(cb.timeouts[unMute.id]);
 
       Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
         const logChannel = this.bot.channels.cache.get(logRes.logChannelID);

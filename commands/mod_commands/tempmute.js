@@ -70,9 +70,11 @@ class TempMute extends Command {
       await toMute.roles.add(muteRole);
       this.reply(`<@${toMute.id}> has been muted for ${muteTime}`);
 
+      let logChannel;
+
       Logger.findOne({ serverID: message.guild.id }).then((logRes) => {
         if (!logRes) return;
-        const logChannel = this.bot.channels.cache.get(logRes.logChannelID);
+        logChannel = this.bot.channels.cache.get(logRes.logChannelID);
         if (!logChannel) return;
 
         const logEmbed = new Discord.MessageEmbed()
@@ -84,18 +86,17 @@ class TempMute extends Command {
           .setFooter(`USER ID: ${toMute.user.id}`)
           .setTimestamp();
         logChannel.send(logEmbed);
-
-        setTimeout(() => {
-          const unmuteEmbed = new Discord.MessageEmbed()
-            .setColor('#00ff00')
-            .setAuthor(`[UNMUTED] | ${toMute.user.username}#${toMute.user.discriminator}`)
-            .setFooter(`USER ID: ${toMute.user.id}`)
-            .setTimestamp();
-          logChannel.send(unmuteEmbed);
-        }, ms(muteTime));
       });
-      setTimeout(() => {
+
+      cb.timeouts[toMute.id] = setTimeout(() => {
         toMute.roles.remove(muteRole.id);
+
+        const unmuteEmbed = new Discord.MessageEmbed()
+          .setColor('#00ff00')
+          .setAuthor(`[UNMUTED] | ${toMute.user.username}#${toMute.user.discriminator}`)
+          .setFooter(`USER ID: ${toMute.user.id}`)
+          .setTimestamp();
+        logChannel.send(unmuteEmbed);
       }, ms(muteTime));
     });
   }

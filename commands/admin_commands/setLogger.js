@@ -17,7 +17,7 @@ class SetLogger extends Command {
     const { mongoose, Logger } = cb.db;
 
     const logChannelName = args[1];
-    const channelFinder = message.guild.channels.find(channel => channel.name === logChannelName);
+    const channelFinder = message.guild.channels.cache.find(channel => channel.name === logChannelName);
     const isEnabled = args[0];
 
     if (!isEnabled) return this.reply('Please add enable or disable. Use `$help setlogger` for setting the logger channel.');
