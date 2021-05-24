@@ -54,7 +54,7 @@ class RandomLine extends Command {
         const seconds = totalSecs % 60;
 
         this.respond(days > 0 ? `(${days}days ago in ${res[0].channel}) \`${res[0].userName}\`: ${clean(res[0].message)}`
-          : `${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago \`${res[0].userName}\`: ${clean(res[0].message)}`);
+          : `(${hours}hrs, ${minutes}m ${Math.trunc(seconds)}s) ago \`${res[0].userName}\`: ${clean(res[0].message)}`);
       });
       return;
     }

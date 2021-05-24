@@ -50,7 +50,7 @@ class RandomLine extends Command {
         { $match: { userName: twitchUser.toLowerCase(), channel: twitchChannel.toLowerCase() } },
         { $sample: { size: 1 } },
       ]).then((res) => {
-        if (!res.length) return this.bot.say(message.channelName, `Twitch user/channel not found in my DB ${nam}`);
+        if (!res.length) return this.bot.say(message.channelName, `Twitch user/channel not found in my DB ${nam} Try $rl [username] [channel]`);
 
         const newTime = new Date();
         const ms = newTime - res[0].date;
@@ -77,7 +77,7 @@ class RandomLine extends Command {
       { $match: { userName: clean(twitchUser.toLowerCase()) } },
       { $sample: { size: 1 } },
     ]).then((res) => {
-      if (!res) return this.bot.say(message.channelName, `Twitch user not found in my DB ${nam}`);
+      if (!res) return this.bot.say(message.channelName, `Twitch user not found in my DB ${nam} Try $rl [username]`);
       const newTime = new Date();
       const ms = newTime - res[0].date;
       let totalSecs = (ms / 1000);
