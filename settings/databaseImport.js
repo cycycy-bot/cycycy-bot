@@ -11,6 +11,7 @@ const Pedo = require('../models/pedoModDB');
 const TwitchLog = require('../models/twitchLog');
 const Timeout = require('../models/timeoutDB');
 const CookieDB = require('../models/cookieDB');
+const TwitchUser = require('../models/bannedUsersDB');
 
 module.exports = {
   mongoose,
@@ -26,4 +27,5 @@ module.exports = {
   TwitchLog,
   Timeout,
   CookieDB,
+  TwitchUser,
 };

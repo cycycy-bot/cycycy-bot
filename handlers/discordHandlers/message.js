@@ -1,4 +1,4 @@
-const messageChecker = require('../utils/messageChecker');
+const messageChecker = require('../../utils/messageChecker');
 
 
 module.exports = (bot, message) => {

@@ -16,10 +16,14 @@ class RandomLine extends Command {
   async run(message, args) {
     const nam = 'NaM';
     const clean = msg => msg.replace(/@|#/g, '');
-    const { TwitchLog } = cb.db;
-    const twitchUser = args[0];
+    const { TwitchLog, TwitchUser } = cb.db;
 
+    const twitchUser = args[0];
     const twitchChannel = args[1];
+
+    const bannedUser = await TwitchUser.findOne({ channel: message.channelID, username: twitchUser });
+    console.log(bannedUser);
+    if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
 
     if (!twitchUser) {
       TwitchLog.aggregate([

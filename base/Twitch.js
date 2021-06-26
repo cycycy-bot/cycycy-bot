@@ -163,6 +163,7 @@ class TwitchClient extends ChatClient {
       // donker
       if (message.channelName === 'cycycy') {
         const donks = ['donk', 'feelsdankman', 'feelsdonkman'];
+
         if (donks.some(donk => message.messageText.toLowerCase().includes(donk.toLowerCase()))) {
           if (this.cooldown.has(message.senderUserID)) return;
           this.say(message.channelName, 'FeelsDonkMan 👍 ');

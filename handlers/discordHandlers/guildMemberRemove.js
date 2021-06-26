@@ -1,13 +1,12 @@
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
-const db = require('../settings/databaseImport');
-const LeaveQueueDB = require('../models/leaveQueueDB');
+const LeaveQueueDB = require('../../models/leaveQueueDB');
 
 module.exports = async (bot, member) => {
   await new Promise(r => setTimeout(r, 250));
 
   await member.guild.fetchAuditLogs().then((audit) => {
-    db.Logger.findOne({ serverID: member.guild.id }).then((logRes) => {
+    cb.db.Logger.findOne({ serverID: member.guild.id }).then((logRes) => {
       if (!logRes) return;
 
       if (logRes.isEnabled && logRes.isEnabled === 'enable') {

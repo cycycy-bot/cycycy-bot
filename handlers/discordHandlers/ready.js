@@ -1,8 +1,8 @@
 module.exports = (bot) => {
   console.log(`${bot.user.username} is online! on ${bot.guilds.size} servers!`);
   bot.channels.cache.get('531967060306165796').send(`${bot.user.username} is online on ${bot.guilds.cache.size} servers!`); // my discord's bot test channel
-  const { status } = require('../botconfig.json');
-  const { version } = require('../package.json');
+  const { status } = require('../../botconfig.json');
+  const { version } = require('../../package.json');
   let i = 0;
   setInterval(() => {
     const toDisplay = `${status[parseInt(i, 10)].name.replace('{serversCount}', bot.guilds.size)} | v${version}`;

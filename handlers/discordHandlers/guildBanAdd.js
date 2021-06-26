@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const db = require('../settings/databaseImport');
+const db = require('../../settings/databaseImport');
 
 module.exports = async (bot, guild, member) => {
   await new Promise(r => setTimeout(r, 1000));
@@ -11,7 +11,12 @@ module.exports = async (bot, guild, member) => {
       const avartarURL = `https://cdn.discordapp.com/avatars/${member.id}/${member.avartar}.png`;
       const logEmbed = new Discord.MessageEmbed()
         .setColor('#ff0000')
-        .setAuthor(`[${audit.entries.first().action}] | ${member.username}#${member.discriminator}`, avartarURL)
+        .setAuthor(
+          `[${audit.entries.first().action}] | ${member.username}#${
+            member.discriminator
+          }`,
+          avartarURL,
+        )
         .addField('User', `<@${member.id}>`, true)
         .addField('Reason', reason, true)
         .addField('Executor', executor, true)
