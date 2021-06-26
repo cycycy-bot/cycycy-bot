@@ -21,7 +21,7 @@ class FilterBanUser extends Command {
 
     const tUser = new TwitchUser({
       _id: mongoose.Types.ObjectId(),
-      username: twitchUser,
+      username: twitchUser.toLowerCase(),
       channel: message.channelID,
     });
 

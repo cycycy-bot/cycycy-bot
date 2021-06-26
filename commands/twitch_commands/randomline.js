@@ -21,8 +21,7 @@ class RandomLine extends Command {
     const twitchUser = args[0];
     const twitchChannel = args[1];
 
-    const bannedUser = await TwitchUser.findOne({ channel: message.channelID, username: twitchUser });
-    console.log(bannedUser);
+    const bannedUser = await TwitchUser.findOne({ channel: message.channelID, username: twitchUser.toLowerCase() });
     if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
 
     if (!twitchUser) {
