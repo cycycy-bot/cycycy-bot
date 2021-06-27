@@ -13,21 +13,33 @@ class RandomLine extends Command {
     });
   }
 
+  async isBanned(channel, user) {
+    const { TwitchUser } = cb.db;
+    const bannedUser = await TwitchUser.findOne({ channel, username: user.toLowerCase() });
+    if (bannedUser) {
+      return true;
+    }
+    return false;
+  }
+
   async run(message, args) {
     const nam = 'NaM';
     const clean = msg => msg.replace(/@|#/g, '');
-    const { TwitchLog, TwitchUser } = cb.db;
+    const { TwitchLog } = cb.db;
 
     const twitchUser = args[0];
     const twitchChannel = args[1];
 
-    const bannedUser = await TwitchUser.findOne({ channel: message.channelID, username: twitchUser.toLowerCase() });
+    const bannedUser = await this.isBanned(message.channelID, twitchUser);
     if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
 
     if (!twitchUser) {
       TwitchLog.aggregate([
         { $sample: { size: 1 } },
-      ]).then((res) => {
+      ]).then(async (res) => {
+        const resUser = await this.isBanned(res[0].channel, res[0].userName);
+        if (resUser) return this.bot.say(message.channelName, `User is banned`);
+
         const newTime = new Date();
         const ms = newTime - res[0].date;
         let totalSecs = (ms / 1000);
