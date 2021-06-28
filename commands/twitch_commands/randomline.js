@@ -33,6 +33,7 @@ class RandomLine extends Command {
 
   async isBanned(channel, user) {
     const { TwitchUser } = cb.db;
+    console.log({ channel, username: user.toLowerCase() });
     const bannedUser = await TwitchUser.findOne({ channel, username: user.toLowerCase() });
     if (bannedUser) {
       return true;
@@ -57,7 +58,7 @@ class RandomLine extends Command {
 
   async run(message, args) {
     const nam = 'NaM';
-    const clean = msg => msg.replace(/@|#/g, '');
+    const clean = msg => msg.replace(/[^a-z0-9+_-]+/gi, '');
     const { TwitchLog } = cb.db;
 
     const twitchUser = args[0];
@@ -67,10 +68,11 @@ class RandomLine extends Command {
       const res = await TwitchLog.aggregate([
         { $sample: { size: 1 } },
       ]);
-      const resMessage = res[0].message;
-      const bannedUser = await this.isBanned(res[0].channel, res[0].userName);
-      const isBanphrase = await this.isBanphrase(resMessage);
+      const bannedUser = await this.isBanned(message.channelID, clean(res[0].userName));
       if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
+
+      const resMessage = res[0].message;
+      const isBanphrase = await this.isBanphrase(resMessage);
       if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
 
       const date = this.getDate(res[0].date);
@@ -85,14 +87,15 @@ class RandomLine extends Command {
 
     if (twitchChannel) {
       const res = await TwitchLog.aggregate([
-        { $match: { userName: twitchUser.toLowerCase(), channel: twitchChannel.toLowerCase() } },
+        { $match: { userName: clean(twitchUser.toLowerCase()), channel: twitchChannel.toLowerCase() } },
         { $sample: { size: 1 } },
       ]);
       if (!res.length) return this.bot.say(message.channelName, `Twitch user/channel not found in my DB ${nam} Try $rl [username] [channel]`);
-      const resMessage = res[0].message;
-      const bannedUser = await this.isBanned(res[0].channel, res[0].userName);
-      const isBanphrase = await this.isBanphrase(resMessage);
+      const bannedUser = await this.isBanned(message.channelID, clean(res[0].userName));
       if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
+
+      const resMessage = res[0].message;
+      const isBanphrase = await this.isBanphrase(resMessage);
       if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
 
       const date = this.getDate(res[0].date);
@@ -105,16 +108,16 @@ class RandomLine extends Command {
       return;
     }
 
+    const bannedUser = await this.isBanned(message.channelID, clean(twitchUser));
+    if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
 
     const res = await TwitchLog.aggregate([
       { $match: { userName: clean(twitchUser.toLowerCase()) } },
       { $sample: { size: 1 } },
     ]);
-    if (!res) return this.bot.say(message.channelName, `Twitch user not found in my DB ${nam} Try $rl [username]`);
+    if (!res.length) return this.bot.say(message.channelName, `Twitch user not found in my DB ${nam} Try $rl [username]`);
     const resMessage = res[0].message;
-    const bannedUser = await this.isBanned(res[0].channel, res[0].userName);
     const isBanphrase = await this.isBanphrase(resMessage);
-    if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
     if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
 
     const date = this.getDate(res[0].date);
