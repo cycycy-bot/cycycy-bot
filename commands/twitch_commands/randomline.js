@@ -72,16 +72,15 @@ class RandomLine extends Command {
       if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
 
       const resMessage = res[0].message;
-      const isBanphrase = await this.isBanphrase(resMessage);
-      if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
-
       const date = this.getDate(res[0].date);
       const hasAscii = /[^\x20-\x7E]/g.test(resMessage);
 
-      console.log(resMessage);
+      const messageToSend = date.days > 0 ? `(${date.days}days ago) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
+        : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`;
+      const isBanphrase = await this.isBanphrase(messageToSend);
+      if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
 
-      this.bot.say(message.channelName, date.days > 0 ? `(${date.days}days) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
-        : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
+      this.bot.say(message.channelName, messageToSend);
       return;
     }
 
@@ -95,16 +94,15 @@ class RandomLine extends Command {
       if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
 
       const resMessage = res[0].message;
-      const isBanphrase = await this.isBanphrase(resMessage);
-      if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
-
       const date = this.getDate(res[0].date);
       const hasAscii = /[^\x20-\x7E]/g.test(resMessage);
 
-      console.log(resMessage);
+      const messageToSend = date.days > 0 ? `(${date.days}days ago) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
+        : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`;
+      const isBanphrase = await this.isBanphrase(messageToSend);
+      if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
 
-      this.bot.say(message.channelName, date.days > 0 ? `(${date.days}days ago) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
-        : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
+      this.bot.say(message.channelName, messageToSend);
       return;
     }
 
@@ -117,14 +115,15 @@ class RandomLine extends Command {
     ]);
     if (!res.length) return this.bot.say(message.channelName, `Twitch user not found in my DB ${nam} Try $rl [username]`);
     const resMessage = res[0].message;
-    const isBanphrase = await this.isBanphrase(resMessage);
-    if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
-
     const date = this.getDate(res[0].date);
     const hasAscii = /[^\x20-\x7E]/g.test(resMessage);
 
-    this.bot.say(message.channelName, date.days > 0 ? `(${date.days}days ago) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
-      : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
+    const messageToSend = date.days > 0 ? `(${date.days}days ago) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
+      : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`;
+    const isBanphrase = await this.isBanphrase(messageToSend);
+    if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
+
+    this.bot.say(message.channelName, messageToSend);
   }
 }
 
