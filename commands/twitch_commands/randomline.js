@@ -80,8 +80,8 @@ class RandomLine extends Command {
 
       console.log(resMessage);
 
-      this.bot.say(message.channelName, date.days > 0 ? `(${date.days}days ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
-        : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
+      this.bot.say(message.channelName, date.days > 0 ? `(${date.days}days ago in ${res[0].channel}) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
+        : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago in ${res[0].channel}) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
       return;
     }
 
@@ -103,8 +103,8 @@ class RandomLine extends Command {
 
       console.log(resMessage);
 
-      this.bot.say(message.channelName, date.days > 0 ? `(${date.days}days ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
-        : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
+      this.bot.say(message.channelName, date.days > 0 ? `(${date.days}days ago in ${res[0].channel}) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
+        : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago in ${res[0].channel}) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
       return;
     }
 
@@ -123,8 +123,8 @@ class RandomLine extends Command {
     const date = this.getDate(res[0].date);
     const hasAscii = /[^\x20-\x7E]/g.test(resMessage);
 
-    this.bot.say(message.channelName, date.days > 0 ? `(${date.days}days ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
-      : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
+    this.bot.say(message.channelName, date.days > 0 ? `(${date.days}days ago in ${res[0].channel}) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
+      : `(${date.hours}hrs, ${date.minutes}m ${Math.trunc(date.seconds)}s ago in ${res[0].channel}) ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`);
   }
 }
 
