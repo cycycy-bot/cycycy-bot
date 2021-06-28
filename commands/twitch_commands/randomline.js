@@ -40,6 +40,21 @@ class RandomLine extends Command {
     return false;
   }
 
+  async isBanphrase(message) {
+    const URL = 'https://lacari.live/api/v1/banphrases/test';
+    const res = await cb.fetch(URL, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message,
+      }),
+    });
+    const json = await res.json();
+    return json.banned;
+  }
+
   async run(message, args) {
     const nam = 'NaM';
     const clean = msg => msg.replace(/@|#/g, '');
@@ -52,11 +67,13 @@ class RandomLine extends Command {
       const res = await TwitchLog.aggregate([
         { $sample: { size: 1 } },
       ]);
+      const resMessage = res[0].message;
       const bannedUser = await this.isBanned(res[0].channel, res[0].userName);
+      const isBanphrase = await this.isBanphrase(resMessage);
       if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
+      if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
 
       const date = this.getDate(res[0].date);
-      const resMessage = res[0].message;
       const hasAscii = /[^\x20-\x7E]/g.test(resMessage);
 
       console.log(resMessage);
@@ -72,11 +89,13 @@ class RandomLine extends Command {
         { $sample: { size: 1 } },
       ]);
       if (!res.length) return this.bot.say(message.channelName, `Twitch user/channel not found in my DB ${nam} Try $rl [username] [channel]`);
-      const bannedUser = await this.isBanned(message.channelID, twitchUser);
+      const resMessage = res[0].message;
+      const bannedUser = await this.isBanned(res[0].channel, res[0].userName);
+      const isBanphrase = await this.isBanphrase(resMessage);
       if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
+      if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
 
       const date = this.getDate(res[0].date);
-      const resMessage = res[0].message;
       const hasAscii = /[^\x20-\x7E]/g.test(resMessage);
 
       console.log(resMessage);
@@ -92,11 +111,13 @@ class RandomLine extends Command {
       { $sample: { size: 1 } },
     ]);
     if (!res) return this.bot.say(message.channelName, `Twitch user not found in my DB ${nam} Try $rl [username]`);
-    const bannedUser = await this.isBanned(message.channelID, twitchUser);
+    const resMessage = res[0].message;
+    const bannedUser = await this.isBanned(res[0].channel, res[0].userName);
+    const isBanphrase = await this.isBanphrase(resMessage);
     if (bannedUser) return this.bot.say(message.channelName, `User is banned`);
+    if (isBanphrase) return this.bot.say(message.channelName, `Message banphrase`);
 
     const date = this.getDate(res[0].date);
-    const resMessage = res[0].message;
     const hasAscii = /[^\x20-\x7E]/g.test(resMessage);
 
     this.bot.say(message.channelName, date.days > 0 ? `(${date.days}days ago in ${res[0].channel}) ${res[0].userName}: ${hasAscii ? 'contains ASCII characters' : filter.clean(resMessage)}`
