@@ -24,7 +24,7 @@ class FilterBanUser extends Command {
       username: twitchUser.toLowerCase(),
       channel: message.channelID,
     });
-
+    console.log(twitchUser);
     const user = await TwitchUser.findOne({ channel: message.channelID, username: twitchUser });
     if (addOrDel === "add") {
       if (!user) {

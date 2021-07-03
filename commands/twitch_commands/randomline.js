@@ -35,6 +35,7 @@ class RandomLine extends Command {
     const { TwitchUser } = cb.db;
     console.log({ channel, username: user.toLowerCase() });
     const bannedUser = await TwitchUser.findOne({ channel, username: user.toLowerCase() });
+    console.log(bannedUser, user);
     if (bannedUser) {
       return true;
     }
@@ -63,7 +64,6 @@ class RandomLine extends Command {
 
     const twitchUser = args[0];
     const twitchChannel = args[1];
-
     if (!twitchUser) {
       const res = await TwitchLog.aggregate([
         { $sample: { size: 1 } },
